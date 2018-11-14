@@ -3,6 +3,7 @@ import os
 from ringcentral import SDK
 from urllib.parse import parse_qs
 import logging
+from core.db import db
 
 class Bot:
 
