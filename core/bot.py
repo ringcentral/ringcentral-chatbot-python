@@ -3,7 +3,7 @@ import os
 from ringcentral import SDK
 from urllib.parse import parse_qs
 import logging
-from core.db import db
+import core.db
 
 class Bot:
 
@@ -21,12 +21,12 @@ class Bot:
       self.token = token
 
   def writeTodb(self):
-
+    print('todo')
 
   def auth(self, code):
     redirect_url = os.environ['REDIRECT_HOST']+'/bot/oauth_prod'
     self.platform.login(code=code, redirect_uri=redirect_url)
     print('data from platform:')
-    self.token = self.platform.auth().data())
+    self.token = self.platform.auth().data()
 
 
