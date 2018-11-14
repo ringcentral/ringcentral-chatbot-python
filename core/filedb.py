@@ -1,6 +1,7 @@
 """
 file db
 """
+import pydash as _
 import sys, os
 import json
 from core.common import tables, debug
@@ -27,6 +28,16 @@ def prepareDb():
       join(dbPath, table)
     )
 
+def readFile(toOpen):
+  """
+  read file as json dict
+  """
+  with open(toOpen, 'r') as toOpenFile:
+    f = toOpenFile.read()
+    f = json.loads(f)
+    toOpenFile.close()
+    return f
+
 def action(tableName, action, data):
   """db action wrapper
   * @param {String} tableName, user or bot
@@ -41,6 +52,7 @@ def action(tableName, action, data):
   prepareDb()
   id = data['id']
   toOpen = join(dbPath, tableName, id + '.json')
+
   if action == 'add':
     id = data['id']
     toOpen = join(dbPath, tableName, id + '.json')
@@ -48,10 +60,26 @@ def action(tableName, action, data):
     r = json.dumps(data, indent=2)
     with open(toOpen, 'w') as toOpenFile:
       toOpenFile.write(r)
+      toOpenFile.close()
+
   elif action == 'remove':
     os.remove(toOpen)
-  elif action == 'get':
-    with open(toOpen, 'r') as toOpenFile:
+
+  elif action == 'update':
+    with open(toOpen, 'r+') as toOpenFile:
       f = toOpenFile.read()
       f = json.loads(f)
+      _.assign(f, data)
+      f = json.dumps(f, indent=2)
+      toOpenFile.write(f)
+      toOpenFile.close()
+
+  elif action == 'get':
+    if id:
+      return readFile(toOpen)
+    else:
+      p = join(dbPath, tableName)
+      files = [f for f in os.listdir(p)]
+      return map(lambda x: readFile(join(p, x)), files)
+
   return action
