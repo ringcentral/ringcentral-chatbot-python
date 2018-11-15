@@ -3,6 +3,7 @@ common props, function
 """
 
 import sys, os
+import pydash as _
 
 isProduction = False
 try:
@@ -16,3 +17,16 @@ def debug(*argv):
   if isProduction:
     return
   print(argv)
+
+def result(
+  msg,
+  status = 200,
+  options = {}
+):
+  return _.assign({
+    'statusCode': status,
+    'body': msg,
+  }, options)
+
+def subscribeInterval():
+  return '/restapi/v1.0/subscription/~?threshold=59&interval=15'

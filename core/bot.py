@@ -1,9 +1,19 @@
 
-import os
+from os import environ
 from ringcentral import SDK
 from urllib.parse import parse_qs
 import logging
 from core.db import dbAction
+from core.common import debug
+
+try:
+  RINGCENTRAL_BOT_CLIENT_ID = environ['RINGCENTRAL_BOT_CLIENT_ID']
+  RINGCENTRAL_BOT_CLIENT_SECRET = environ['RINGCENTRAL_BOT_CLIENT_SECRET']
+  RINGCENTRAL_SERVER = environ['RINGCENTRAL_SERVER']
+  RINGCENTRAL_BOT_SERVER = environ['RINGCENTRAL_BOT_SERVER']
+
+except:
+  debug('load env error')
 
 class Bot:
 
@@ -26,8 +36,12 @@ class Bot:
 
   id: ''
 
-  def __init__(self, eventFilters, token, id):
-    self.rcsdk = SDK(os.environ['BOT_CLIENT_ID'],os.environ['BOT_CLIENT_SECRET'],os.environ['RINGCENTRAL_ENV'])
+  def __init__(self, eventFilters=False, token=False, id=False):
+    self.rcsdk = SDK(
+      RINGCENTRAL_BOT_CLIENT_ID,
+      RINGCENTRAL_BOT_CLIENT_SECRET,
+      RINGCENTRAL_SERVER
+    )
     self.platform = self.rcsdk.platform()
     if eventFilters:
       self.eventFilters = eventFilters
@@ -36,7 +50,7 @@ class Bot:
     if id:
       self.id = id
 
-  def writeTodb(self, item):
+  def writeToDb(self, item=False):
     if item:
       dbAction('bot', 'add', item)
     else:
@@ -48,14 +62,66 @@ class Bot:
       })
 
   def auth(self, code):
-    redirect_url = os.environ['REDIRECT_HOST']+'/bot/oauth_prod'
+    redirect_url = RINGCENTRAL_BOT_SERVER +'/bot-oauth'
     self.platform.login(code=code, redirect_uri=redirect_url)
-    print('data from platform:')
     self.token = self.platform.auth().data()
     self.id = self.token.owner_id
-    self.writeTodb()
+    self.writeToDb(False)
 
-  def renewWebHooks(event):
+  def setupWebhook(self, event):
+    try:
+     self.platform.post('/subscription', {
+        'eventFilters': self.eventFilters,
+        'expiresIn': 500000000,
+        'deliveryMode': {
+          'transportType': 'WebHook',
+          'address': RINGCENTRAL_BOT_SERVER + '/bot-webhook'
+        }
+      })
+    except:
+      # todo check sub-406 error and retry
+      debug('setupWebhook error')
 
-  def setupWebhook(event):
+  def renewWebHooks(self, event):
+    try:
+      r = self.platform.get('/subscription')
+      r = r.json()
+      filtered = filter(
+        lambda r: r.deliveryMode.address == RINGCENTRAL_BOT_SERVER +'/bot-webhook',
+        r
+      )
+      debug(
+        'bot subs list',
+        ','.join(map(lambda g: g.id, filtered))
+      )
+      self.setupWebhook(event)
+      for sub in filtered:
+        self.delSubscription(sub.id)
 
+    except:
+      debug('renewWebHooks error')
+
+  def delSubscription (self, id):
+    debug('del bot sub id:', id)
+    try:
+      self.platform.delete('/subscription/' + id)
+    except:
+      debug('delSubscription error')
+
+  def sendMessage (self, groupId, messageObj):
+    try:
+      self.platform.post(
+        '/glip/groups/{groupId}/posts',
+        messageObj
+      )
+    except:
+      debug('sendMessage error')
+
+  def validate (self):
+    try:
+      self.platform.get('/account/~/extension/~')
+      return True
+    except:
+      self.removeBot(self.id)
+      # todo: 'OAU-232' || 'CMN-405' error triggers remove
+      return False
