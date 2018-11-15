@@ -66,10 +66,11 @@ def action(tableName, action, data):
     os.remove(toOpen)
 
   elif action == 'update':
+    update = data['update']
     with open(toOpen, 'r+') as toOpenFile:
       f = toOpenFile.read()
       f = json.loads(f)
-      _.assign(f, data)
+      _.assign(f, update)
       f = json.dumps(f, indent=2)
       toOpenFile.write(f)
       toOpenFile.close()

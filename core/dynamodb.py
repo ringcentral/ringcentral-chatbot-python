@@ -3,41 +3,155 @@ dynamodb
 """
 import pydash as _
 import sys, os
-import boto
+import boto3
 import json
 from core.common import tables, debug
 from os.path import join
+from functools import reduce
 
-cwd = os.getcwd()
-dbPath = join(cwd, 'filedb')
+boto3.setup_default_session(region_name=os.environ['AWS_REGION'])
+client = boto3.client('dynamodb')
+prefix = ''
+DYNAMODB_ReadCapacityUnits=5
+DYNAMODB_WriteCapacityUnits=5
+try:
+  prefix = os.environ['DYNAMODB_TABLE_PREFIX']
+  DYNAMODB_ReadCapacityUnits = os.environ['DYNAMODB_ReadCapacityUnits']
+  DYNAMODB_WriteCapacityUnits = os.environ['DYNAMODB_WriteCapacityUnits']
+except:
+  prefix = 'ringcentral_bot'
 
-def assess(path):
-  """
-  check path exist or not
-  """
-  return os.access(path, os.R_OK)
+def createTableName(table):
+  return prefix + '_' + table
+
+def describeTable(tableName):
+  try:
+    state = client.describe_table(
+      TableName=tableName
+    )
+    return state.Table.TableStatus
+  except:
+    return False
+
+def createTable(table):
+  name = createTableName(table)
+  table = client.create_table(
+    TableName=name,
+    KeySchema=[
+        {
+          'AttributeName': 'id',
+          'KeyType': 'HASH'
+        }
+    ],
+    AttributeDefinitions=[
+      {
+        'AttributeName': 'is',
+        'AttributeType': 'S'
+      }
+    ],
+    ProvisionedThroughput={
+      'ReadCapacityUnits': DYNAMODB_ReadCapacityUnits,
+      'WriteCapacityUnits': DYNAMODB_WriteCapacityUnits
+    }
+  )
+  for i in range(100):
+    debug(i)
+    status = describeTable(name)
+    if status == 'ACTIVE':
+      return True
+  return False
 
 def prepareDb():
-  """
-  prepare folders before operate
-  """
-  if assess(dbPath):
-    return
-  os.mkdir(dbPath)
-  for table in tables:
-    os.mkdir(
-      join(dbPath, table)
-    )
+  exist = describeTable(
+    createTableName(tables[0])
+  )
+  if exist != False:
+    return True
+  for t in tables:
+    createTable(t)
 
-def readFile(toOpen):
-  """
-  read file as json dict
-  """
-  with open(toOpen, 'r') as toOpenFile:
-    f = toOpenFile.read()
-    f = json.loads(f)
-    toOpenFile.close()
-    return f
+# function formatItem(item, table) {
+#   return Object.keys(item)
+#     .reduce((prev, key) => {
+#       let type = _.get(
+#         dynamodbDefinitions,
+#         `${table}.${key}[1]`
+#       )
+#       let v = _.get(item, `${key}.S`)
+#       if (!type) {
+#         v = JSON.parse(v)
+#       }
+#       return {
+#         ...prev,
+#         [key]: v
+#       }
+#     }, {})
+# }
+
+def putItem(item, table):
+  try:
+    def reducer(x, y):
+      v = item[y]
+      if isinstance(v, dict):
+        v = json.dumps(v)
+      x[y] = {
+        'S': v
+      }
+      return x
+    client.putItem(
+      TableName=createTableName(table),
+      Item=reduce(reducer, item.keys, {})
+    )
+    return True
+  except:
+    return False
+
+def removeItem(id, table):
+  try:
+    client.deleteItem(
+      TableName=createTableName(table),
+      Key={
+        'id': {
+          'S': id
+        }
+      }
+    )
+    return True
+  except:
+    return False
+
+def formatItem(item):
+  def reducer(x, y):
+    v = item[y]
+    if y != 'id':
+      v = json.load(v)
+    x[y] = v
+    return x
+  return reduce(reducer, item.keys())
+
+def getItem(id, table):
+  try:
+    res = client.getItem(
+      TableName=createTableName(table),
+      Key={
+        'id': {
+          'S': id
+        }
+      }
+    )
+    return formatItem(res.Item)
+  except:
+    return False
+
+def scan(table):
+  try:
+    res = client.getItem(
+      TableName=createTableName(table)
+    )
+    return map(formatItem, res.Items)
+  except:
+    return False
+
 
 def action(tableName, action, data):
   """db action wrapper
@@ -52,35 +166,23 @@ def action(tableName, action, data):
   debug('db op:', tableName, action, data)
   prepareDb()
   id = data['id']
-  toOpen = join(dbPath, tableName, id + '.json')
 
   if action == 'add':
-    id = data['id']
-    toOpen = join(dbPath, tableName, id + '.json')
-    debug('to open:', toOpen)
-    r = json.dumps(data, indent=2)
-    with open(toOpen, 'w') as toOpenFile:
-      toOpenFile.write(r)
-      toOpenFile.close()
+    putItem(data, tableName)
 
   elif action == 'remove':
-    os.remove(toOpen)
+    removeItem(id, tableName)
 
   elif action == 'update':
-    with open(toOpen, 'r+') as toOpenFile:
-      f = toOpenFile.read()
-      f = json.loads(f)
-      _.assign(f, data)
-      f = json.dumps(f, indent=2)
-      toOpenFile.write(f)
-      toOpenFile.close()
+    update = data['update']
+    old = getItem(id, tableName)
+    _.assign(old, update)
+    putItem(old, tableName)
 
   elif action == 'get':
     if id:
-      return readFile(toOpen)
+      return getItem(id, tableName)
     else:
-      p = join(dbPath, tableName)
-      files = [f for f in os.listdir(p)]
-      return map(lambda x: readFile(join(p, x)), files)
+      return scan(tableName)
 
   return action

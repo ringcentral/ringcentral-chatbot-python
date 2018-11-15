@@ -6,6 +6,9 @@ RingCentral Chatbot Framework for Python
 - Token/subscribe auto renew
 - Built-in suport for filedb and AWS dynamodb
 - Stateless, built-in suport for AWS lambda
+- Define custom bot behavior by `config.py`
+- Support fully customized db module, loaded when runtime check DB_TYPE
+- Custom every step of bot lifecycle throught `config.py`, including bot auth, bot webhook
 
 ## Under construction
 
