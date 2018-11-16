@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-import urllib
+from urllib.parse import parse_qs, urlencode
 from core.route import router
 
 @app.route('/<action>', methods=['GET', 'POST'])
@@ -10,7 +10,7 @@ def aws_lambda_handler(action):
     if not body:
       try:
         body = request.json
-      except Exception as e: # not valid json
+      except:
         pass
     response = router({
       'pathParameters': {
