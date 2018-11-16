@@ -16,18 +16,6 @@ except:
 
 class User:
 
-  @classmethod
-  def getUser(self, id):
-    return dbAction('user', 'get', {
-      'id': id
-    })
-
-  @classmethod
-  def removeUser(self, id):
-    return dbAction('user', 'remove', {
-      'id': id
-    })
-
   eventFilters: [
     '/restapi/v1.0/account/~/extension/~/message-store',
     subscribeInterval()
@@ -92,7 +80,7 @@ class User:
       self.writeToDb(False)
       return True
     except:
-      self.removeUser(self.id)
+      removeUser(self.id)
       debug('refresh token has expired')
       return False
 
@@ -154,3 +142,18 @@ class User:
     except:
       debug('User validate error')
       return self.refresh()
+
+
+def getUser(id):
+  userData = dbAction('user', 'get', {
+    'id': id
+  })
+  if userData != False:
+    return User(userData.id, userData.token)
+  else:
+    return False
+
+def removeUser(id):
+  return dbAction('user', 'remove', {
+    'id': id
+  })

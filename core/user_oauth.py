@@ -5,7 +5,11 @@ import time
 from core.common import result
 from core.user import User
 from core.bot import Bot
-from core.config.config import userAuthSuccessMessage, userAuthSuccessHtml, userAddGroupInfoActiob
+from core.config import configAll
+
+userAuthSuccessMessage = configAll.userAuthSuccessMessage
+userAuthSuccessHtml = configAll.userAuthSuccessHtml
+userAddGroupInfoActiob = configAll.userAddGroupInfoActiob
 
 def userAuth(event):
   user = User()

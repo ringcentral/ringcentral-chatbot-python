@@ -17,18 +17,6 @@ except:
 
 class Bot:
 
-  @classmethod
-  def getBot(self, id):
-    return dbAction('bot', 'get', {
-      'id': id
-    })
-
-  @classmethod
-  def removeBot(self, id):
-    return dbAction('bot', 'remove', {
-      'id': id
-    })
-
   eventFilters: [
     '/restapi/v1.0/glip/posts',
     '/restapi/v1.0/glip/groups'
@@ -36,7 +24,7 @@ class Bot:
 
   id: ''
 
-  def __init__(self, eventFilters=False, token=False, id=False):
+  def __init__(self, id=False, token=False, eventFilters=False):
     self.rcsdk = SDK(
       RINGCENTRAL_BOT_CLIENT_ID,
       RINGCENTRAL_BOT_CLIENT_SECRET,
@@ -47,6 +35,7 @@ class Bot:
       self.eventFilters = eventFilters
     if token:
       self.token = token
+      #todo platform set token
     if id:
       self.id = id
 
@@ -122,6 +111,20 @@ class Bot:
       self.platform.get('/account/~/extension/~')
       return True
     except:
-      self.removeBot(self.id)
+      removeBot(self.id)
       # todo: 'OAU-232' || 'CMN-405' error triggers remove
       return False
+
+def getBot(id):
+    botData = dbAction('bot', 'get', {
+      'id': id
+    })
+    if botData != False:
+      return Bot(botData.id, botData.token)
+    else:
+      return False
+
+def removeBot(id):
+    return dbAction('bot', 'remove', {
+      'id': id
+    })
