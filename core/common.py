@@ -4,6 +4,7 @@ common props, function
 
 import sys, os
 import pydash as _
+import json
 
 isProduction = False
 try:
@@ -30,3 +31,9 @@ def result(
 
 def subscribeInterval():
   return '/restapi/v1.0/subscription/~?threshold=59&interval=15'
+
+def defaultEventHandler(event):
+  return {
+    'statusCode': 200,
+    'body': json.dumps(event)
+  }
