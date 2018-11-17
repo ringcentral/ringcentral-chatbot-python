@@ -38,7 +38,7 @@ def readFile(toOpen):
     toOpenFile.close()
     return f
 
-def action(tableName, action, data):
+def action(tableName, action, data={ 'id': False }):
   """db action wrapper
   * @param {String} tableName, user or bot
   * @param {String} action, add, remove, update, get
@@ -51,14 +51,14 @@ def action(tableName, action, data):
   debug('db op:', tableName, action, data)
   prepareDb()
   id = data['id']
-  toOpen = join(dbPath, tableName, id + '.json')
+  toOpen = join(dbPath, tableName, (id or '') + '.json')
 
   if action == 'add':
     id = data['id']
     toOpen = join(dbPath, tableName, id + '.json')
     debug('to open:', toOpen)
     r = json.dumps(data, indent=2)
-    with open(toOpen, 'w') as toOpenFile:
+    with open(toOpen, 'w+') as toOpenFile:
       toOpenFile.write(r)
       toOpenFile.close()
 
@@ -72,7 +72,9 @@ def action(tableName, action, data):
       f = json.loads(f)
       _.assign(f, update)
       f = json.dumps(f, indent=2)
+      toOpenFile.seek(0)
       toOpenFile.write(f)
+      toOpenFile.truncate()
       toOpenFile.close()
 
   elif action == 'get':
@@ -81,6 +83,6 @@ def action(tableName, action, data):
     else:
       p = join(dbPath, tableName)
       files = [f for f in os.listdir(p)]
-      return map(lambda x: readFile(join(p, x)), files)
+      return list(map(lambda x: readFile(join(p, x)), files))
 
   return action

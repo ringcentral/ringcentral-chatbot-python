@@ -1,7 +1,10 @@
+
 # ringcentral-chatbot-python
+
 RingCentral Chatbot Framework for Python
 
 ## Features
+
 - Token management
 - Token/subscribe auto renew
 - Built-in suport for filedb and AWS dynamodb
@@ -10,10 +13,19 @@ RingCentral Chatbot Framework for Python
 - Support fully customized db module, loaded when runtime check DB_TYPE
 - Custom every step of bot lifecycle throught `config.py`, including bot auth, bot webhook
 
-## Under construction
+## Prerequisites
+
+- Python3 and Pip3
+- `pip3 install python-dotenv ringcentral pydash boto3`
 
 ## Dev
+
 ```bash
-pip3 install -u python-dotenv
-pip3 install -u ringcentral
+
+```
+
+## Unit Test
+
+```bash
+bin/test
 ```
