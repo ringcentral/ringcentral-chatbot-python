@@ -10,6 +10,8 @@ from os.path import join
 cwd = os.getcwd()
 dbPath = join(cwd, 'filedb')
 
+dbName = 'filedb'
+
 def assess(path):
   """
   check path exist or not

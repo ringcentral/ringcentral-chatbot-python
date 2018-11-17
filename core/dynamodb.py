@@ -8,6 +8,8 @@ import json
 from core.common import tables, debug
 from os.path import join
 from functools import reduce
+from pydash.predicates import is_string
+from pydash.strings import starts_with
 
 boto3.setup_default_session(region_name=os.environ['AWS_REGION'])
 client = boto3.client('dynamodb')
@@ -19,7 +21,9 @@ try:
   DYNAMODB_ReadCapacityUnits = os.environ['DYNAMODB_ReadCapacityUnits']
   DYNAMODB_WriteCapacityUnits = os.environ['DYNAMODB_WriteCapacityUnits']
 except:
-  prefix = 'ringcentral_bot'
+  prefix = 'ringcentral_bot_py'
+
+dbName = 'dynamodb'
 
 def createTableName(table):
   return prefix + '_' + table
@@ -29,7 +33,7 @@ def describeTable(tableName):
     state = client.describe_table(
       TableName=tableName
     )
-    return state.Table.TableStatus
+    return state['Table']['TableStatus']
   except:
     return False
 
@@ -38,14 +42,14 @@ def createTable(table):
   table = client.create_table(
     TableName=name,
     KeySchema=[
-        {
-          'AttributeName': 'id',
-          'KeyType': 'HASH'
-        }
+      {
+        'AttributeName': 'id',
+        'KeyType': 'HASH'
+      }
     ],
     AttributeDefinitions=[
       {
-        'AttributeName': 'is',
+        'AttributeName': 'id',
         'AttributeType': 'S'
       }
     ],
@@ -55,7 +59,6 @@ def createTable(table):
     }
   )
   for i in range(100):
-    debug(i)
     status = describeTable(name)
     if status == 'ACTIVE':
       return True
@@ -70,45 +73,29 @@ def prepareDb():
   for t in tables:
     createTable(t)
 
-# function formatItem(item, table) {
-#   return Object.keys(item)
-#     .reduce((prev, key) => {
-#       let type = _.get(
-#         dynamodbDefinitions,
-#         `${table}.${key}[1]`
-#       )
-#       let v = _.get(item, `${key}.S`)
-#       if (!type) {
-#         v = JSON.parse(v)
-#       }
-#       return {
-#         ...prev,
-#         [key]: v
-#       }
-#     }, {})
-# }
-
 def putItem(item, table):
   try:
     def reducer(x, y):
       v = item[y]
-      if isinstance(v, dict):
+      if not is_string(v):
         v = json.dumps(v)
       x[y] = {
         'S': v
       }
       return x
-    client.putItem(
+    client.put_item(
       TableName=createTableName(table),
-      Item=reduce(reducer, item.keys, {})
+      Item=reduce(reducer, item.keys(), {})
     )
     return True
-  except:
+  except Exception as e:
+    debug('dynamodb putitem error')
+    debug(e)
     return False
 
 def removeItem(id, table):
   try:
-    client.deleteItem(
+    client.delete_item(
       TableName=createTableName(table),
       Key={
         'id': {
@@ -117,21 +104,28 @@ def removeItem(id, table):
       }
     )
     return True
-  except:
+  except Exception as e:
+    debug('dynamodb removeItem error')
+    debug(e)
     return False
 
 def formatItem(item):
   def reducer(x, y):
-    v = item[y]
-    if y != 'id':
-      v = json.load(v)
+    v = item[y]['S']
+    isJson = False
+    try:
+      isJson = v != json.loads(v)
+    except:
+      pass
+    if isJson:
+      v = json.loads(v)
     x[y] = v
     return x
-  return reduce(reducer, item.keys())
+  return reduce(reducer, item.keys(), {})
 
 def getItem(id, table):
   try:
-    res = client.getItem(
+    res = client.get_item(
       TableName=createTableName(table),
       Key={
         'id': {
@@ -139,21 +133,25 @@ def getItem(id, table):
         }
       }
     )
-    return formatItem(res.Item)
-  except:
+    return formatItem(res['Item'])
+  except Exception as e:
+    debug('dynamodb getItem error')
+    debug(e)
     return False
 
 def scan(table):
   try:
-    res = client.getItem(
+    res = client.scan(
       TableName=createTableName(table)
     )
-    return map(formatItem, res.Items)
-  except:
+    return list(map(formatItem, res['Items']))
+  except Exception as e:
+    debug('dynamodb scan error')
+    debug(e)
     return False
 
 
-def action(tableName, action, data):
+def action(tableName, action, data = {'id': False}):
   """db action wrapper
   * @param {String} tableName, user or bot
   * @param {String} action, add, remove, update, get

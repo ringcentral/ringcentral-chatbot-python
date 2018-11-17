@@ -1,4 +1,5 @@
 #!/bin/bash
 cd `dirname $0`
 cd ..
-python3 test/filedb_spec.py
+#python3 test/filedb_spec.py
+AWS_REGION=us-east-1 python3 test/dynamodb_spec.py
