@@ -1,11 +1,12 @@
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 import unittest
-from core.filedb import action
+from ringcentral_bot_framework.core.db import dbAction as action, DBNAME
 
 class TestStringMethods(unittest.TestCase):
 
     def test_basic(self):
+      self.assertEqual(DBNAME, 'filedb')
       x = action('bot', 'add', {'s': 's', 'id': 'xss', 'dgfdf': [
         'sdfs', 'sdfsd'
       ]})

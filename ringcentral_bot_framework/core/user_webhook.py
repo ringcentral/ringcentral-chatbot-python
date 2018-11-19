@@ -1,8 +1,8 @@
-from core.common import result, subscribeInterval
-from core.user import User, getUser
-from core.bot import Bot, getBot
+from .common import result, subscribeInterval
+from .user import User, getUser
+from .bot import Bot, getBot
 import time
-from core.config import configAll
+from .config import configAll
 
 botJoinPrivateChatAction = configAll.botJoinPrivateChatAction
 botGotPostAddAction = configAll.botGotPostAddAction

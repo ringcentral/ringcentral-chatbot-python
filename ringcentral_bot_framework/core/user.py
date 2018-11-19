@@ -2,17 +2,17 @@
 from os import environ
 from ringcentral import SDK
 from urllib.parse import parse_qs, urlencode
-from core.db import dbAction
-from core.common import debug, subscribeInterval
+from .db import dbAction
+from .common import printError, debug, subscribeInterval
 
 try:
   RINGCENTRAL_USER_CLIENT_ID = environ['RINGCENTRAL_USER_CLIENT_ID']
   RINGCENTRAL_USER_CLIENT_SECRET = environ['RINGCENTRAL_USER_CLIENT_SECRET']
   RINGCENTRAL_SERVER = environ['RINGCENTRAL_SERVER']
-  RINGCENTRAL_BOT_SERVER = environ['RINGCENTRAL_USER_SERVER']
+  RINGCENTRAL_BOT_SERVER = environ['RINGCENTRAL_BOT_SERVER']
 
-except:
-  debug('load env error')
+except Exception as e:
+  printError(e, 'load env')
 
 class User:
 
@@ -35,6 +35,7 @@ class User:
       self.eventFilters = eventFilters
     if token:
       self.token = token
+      self.platform._auth.set_data(token)
     if id:
       self.id = id
 
@@ -79,9 +80,9 @@ class User:
       self.token = self.platform.auth().data()
       self.writeToDb(False)
       return True
-    except:
+    except Exception as e:
+      printError(e, 'refrefresh token has expired')
       removeUser(self.id)
-      debug('refresh token has expired')
       return False
 
   def setupWebhook(self, event = False):
@@ -94,9 +95,8 @@ class User:
           'address': RINGCENTRAL_BOT_SERVER + '/bot-webhook'
         }
       })
-    except:
-      # todo check sub-406 error and retry
-      debug('setupWebhook error')
+    except Exception as e:
+      printError(e, 'setupWebhook')
 
   def renewWebHooks(self, event):
     try:
@@ -114,22 +114,22 @@ class User:
       for sub in filtered:
         self.delSubscription(sub.id)
 
-    except:
-      debug('renewWebHooks error')
+    except Exception as e:
+      printError(e, 'renewWebHooks')
 
   def delSubscription (self, id):
-    debug('del bot sub id:', id)
+    debug('del user sub id:', id)
     try:
       self.platform.delete('/subscription/' + id)
-    except:
-      debug('delSubscription error')
+    except Exception as e:
+      printError(e, 'delSubscription')
 
   def removeGroup(self, id):
     self.groups.pop(id, None)
     self.writeToDb(False)
 
   def addGroup (self, groupId, botId):
-    hasNoGroup = self.groups.keys().length == 0
+    hasNoGroup = len(self.groups.keys()) == 0
     self.groups[groupId] = botId
     self.writeToDb()
     if hasNoGroup:
@@ -139,8 +139,8 @@ class User:
     try:
       self.platform.get('/account/~/extension/~')
       return True
-    except:
-      debug('User validate error')
+    except Exception as e:
+      printError(e, 'validate')
       return self.refresh()
 
 

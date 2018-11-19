@@ -8,11 +8,11 @@ route /{action} to different event handeler
 extend or overide default route by set `routes` in config.py
 """
 
-from core.bot_oauth import botAuth
-from core.user_oauth import userAuth
-from core.bot_webhook import botWebhook
-from core.user_webhook import userWebhook
-from core.common import debug, defaultEventHandler
+from .bot_oauth import botAuth
+from .user_oauth import userAuth
+from .bot_webhook import botWebhook
+from .user_webhook import userWebhook
+from .common import debug, defaultEventHandler
 
 routes = {
   '/bot-oauth': botAuth,
@@ -24,5 +24,9 @@ routes = {
 def router(event):
   debug('got event', event)
   action = event.pathParameters.action
-  handler = routes[action] or defaultEventHandler
+  handler = defaultEventHandler
+  try:
+    handler = routes[action]
+  except:
+    pass
   return handler(event)

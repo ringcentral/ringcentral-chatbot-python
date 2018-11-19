@@ -2,10 +2,10 @@
 user auth
 """
 import time
-from core.common import result
-from core.user import User
-from core.bot import Bot
-from core.config import configAll
+from .common import result
+from .user import User
+from .bot import Bot, getBot
+from .config import configAll
 
 userAuthSuccessMessage = configAll.userAuthSuccessMessage
 userAuthSuccessHtml = configAll.userAuthSuccessHtml
@@ -17,7 +17,7 @@ def userAuth(event):
   arr = ':'.split(event.queryStringParameters.state)
   groupId = arr[0]
   botId = arr[1]
-  bot = Bot.getBot(botId)
+  bot = getBot(botId)
   bot.sendMessage(
     groupId, userAuthSuccessMessage(user.id)
   )

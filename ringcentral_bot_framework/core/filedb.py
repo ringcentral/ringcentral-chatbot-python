@@ -1,10 +1,13 @@
 """
 file db
 """
+__name__ = 'filedb'
+__package__ = 'ringcentral_bot_framework.core'
+
 import pydash as _
 import sys, os
 import json
-from core.common import tables, debug
+from .common import tables, debug
 from os.path import join
 
 cwd = os.getcwd()
@@ -58,7 +61,6 @@ def action(tableName, action, data={ 'id': False }):
   if action == 'add':
     id = data['id']
     toOpen = join(dbPath, tableName, id + '.json')
-    debug('to open:', toOpen)
     r = json.dumps(data, indent=2)
     with open(toOpen, 'w+') as toOpenFile:
       toOpenFile.write(r)

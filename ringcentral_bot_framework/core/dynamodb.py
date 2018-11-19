@@ -1,11 +1,14 @@
 """
 dynamodb
 """
+__name__ = 'dynamodb'
+__package__ = 'ringcentral_bot_framework.core'
+
 import pydash as _
 import sys, os
 import boto3
 import json
-from core.common import tables, debug
+from .common import tables, debug
 from os.path import join
 from functools import reduce
 from pydash.predicates import is_string

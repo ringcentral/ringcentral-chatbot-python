@@ -2,8 +2,8 @@
 bot auth
 """
 import time
-from core.common import result
-from core.bot import Bot
+from .common import result
+from .bot import Bot
 
 def botAuth(event):
   bot = Bot()

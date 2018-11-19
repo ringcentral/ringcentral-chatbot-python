@@ -2,6 +2,8 @@
 default config module
 could write config.py to override all the bot behavior
 """
+__name__ = 'defaultConfig'
+__package__ = 'ringcentral_bot_framework.core'
 
 def userAuthSuccessMessage(userId):
   """

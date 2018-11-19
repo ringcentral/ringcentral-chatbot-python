@@ -3,8 +3,8 @@ from os import environ
 from ringcentral import SDK
 from urllib.parse import parse_qs
 import logging
-from core.db import dbAction
-from core.common import debug
+from .db import dbAction
+from .common import debug, printError
 
 try:
   RINGCENTRAL_BOT_CLIENT_ID = environ['RINGCENTRAL_BOT_CLIENT_ID']
@@ -12,8 +12,8 @@ try:
   RINGCENTRAL_SERVER = environ['RINGCENTRAL_SERVER']
   RINGCENTRAL_BOT_SERVER = environ['RINGCENTRAL_BOT_SERVER']
 
-except:
-  debug('load env error')
+except Exception as e:
+  printError(e, 'load env')
 
 class Bot:
 
@@ -35,7 +35,7 @@ class Bot:
       self.eventFilters = eventFilters
     if token:
       self.token = token
-      #todo platform set token
+      self.platform._auth.set_data(token)
     if id:
       self.id = id
 
@@ -67,9 +67,9 @@ class Bot:
           'address': RINGCENTRAL_BOT_SERVER + '/bot-webhook'
         }
       })
-    except:
+    except Exception as e:
       # todo check sub-406 error and retry
-      debug('setupWebhook error')
+      printError(e, 'setupWebhook')
 
   def renewWebHooks(self, event):
     try:
@@ -87,15 +87,15 @@ class Bot:
       for sub in filtered:
         self.delSubscription(sub.id)
 
-    except:
-      debug('renewWebHooks error')
+    except Exception as e:
+      printError(e, 'renewWebHooks')
 
   def delSubscription (self, id):
     debug('del bot sub id:', id)
     try:
       self.platform.delete('/subscription/' + id)
-    except:
-      debug('delSubscription error')
+    except Exception as e:
+      printError(e, 'delSubscription')
 
   def sendMessage (self, groupId, messageObj):
     try:
@@ -103,16 +103,17 @@ class Bot:
         '/glip/groups/{groupId}/posts',
         messageObj
       )
-    except:
-      debug('sendMessage error')
+    except Exception as e:
+      printError(e, 'sendMessage')
 
   def validate (self):
     try:
       self.platform.get('/account/~/extension/~')
       return True
-    except:
-      removeBot(self.id)
-      # todo: 'OAU-232' || 'CMN-405' error triggers remove
+    except Exception as e:
+      errStr = str(e)
+      if 'OAU-232' in errStr or 'CMN-405' in errStr:
+        removeBot(self.id)
       return False
 
 def getBot(id):

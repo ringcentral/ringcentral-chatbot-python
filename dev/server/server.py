@@ -1,9 +1,15 @@
 from flask import Flask, request, jsonify
+from dotenv import load_dotenv
+load_dotenv()
 from urllib.parse import parse_qs, urlencode
-from core.route import router
+import os, sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../..')
+from ringcentral_bot_framework import router
+
+app = Flask('devtest')
 
 @app.route('/<action>', methods=['GET', 'POST'])
-def aws_lambda_handler(action):
+def act(action):
     body = request.data
     if not body and request.form:
       body = urlencode(request.form)
@@ -26,6 +32,16 @@ def aws_lambda_handler(action):
         resp.headers = response['headers']
     return resp, response['statusCode']
 
-if __name__ == '__main__':
-  app = Flask('devtest')
-  app.run()
+@app.route('/', methods=['GET'])
+def index():
+  return 'rincgentral bot dev server running'
+@app.route('/favicon.ico', methods=['GET'])
+def favicon():
+  return ''
+
+app.run(
+  host='localhost',
+  port=8989,
+  debug=True,
+  load_dotenv=True
+)
