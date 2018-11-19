@@ -5,6 +5,8 @@ from urllib.parse import parse_qs
 import logging
 from .db import dbAction
 from .common import debug, printError
+from pydash.predicates import is_dict
+import json
 
 try:
   RINGCENTRAL_BOT_CLIENT_ID = environ['RINGCENTRAL_BOT_CLIENT_ID']
@@ -16,13 +18,6 @@ except Exception as e:
   printError(e, 'load env')
 
 class Bot:
-
-  eventFilters: [
-    '/restapi/v1.0/glip/posts',
-    '/restapi/v1.0/glip/groups'
-  ]
-
-  id: ''
 
   def __init__(self, id=False, token=False, eventFilters=False):
     self.rcsdk = SDK(
@@ -39,8 +34,15 @@ class Bot:
     if id:
       self.id = id
 
+  eventFilters = [
+    '/restapi/v1.0/glip/posts',
+    '/restapi/v1.0/glip/groups'
+  ]
+
+  id = ''
+
   def writeToDb(self, item=False):
-    if item:
+    if is_dict(item):
       dbAction('bot', 'add', item)
     else:
       dbAction('bot', 'update', {
@@ -54,8 +56,11 @@ class Bot:
     redirect_url = RINGCENTRAL_BOT_SERVER +'/bot-oauth'
     self.platform.login(code=code, redirect_uri=redirect_url)
     self.token = self.platform.auth().data()
-    self.id = self.token.owner_id
-    self.writeToDb(False)
+    self.id = self.token['owner_id']
+    self.writeToDb({
+      'id': self.id,
+      'token': self.token
+    })
 
   def setupWebhook(self, event):
     try:
@@ -74,9 +79,9 @@ class Bot:
   def renewWebHooks(self, event):
     try:
       r = self.platform.get('/subscription')
-      r = r.json()
+      r = json.loads(r.text())['records']
       filtered = filter(
-        lambda r: r.deliveryMode.address == RINGCENTRAL_BOT_SERVER +'/bot-webhook',
+        lambda x: x['deliveryMode']['address'] == RINGCENTRAL_BOT_SERVER + '/bot-webhook',
         r
       )
       debug(
@@ -99,9 +104,15 @@ class Bot:
 
   def sendMessage (self, groupId, messageObj):
     try:
+      url = f'/restapi/v1.0/glip/groups/{groupId}/posts'
+      data = self.platform.auth().data()
+      headers = {
+        'Authorization': 'bearer ' + data['access_token']
+      }
       self.platform.post(
-        '/glip/groups/{groupId}/posts',
-        messageObj
+        url,
+        messageObj,
+        headers=headers
       )
     except Exception as e:
       printError(e, 'sendMessage')
@@ -120,8 +131,8 @@ def getBot(id):
     botData = dbAction('bot', 'get', {
       'id': id
     })
-    if botData != False:
-      return Bot(botData.id, botData.token)
+    if is_dict(botData):
+      return Bot(botData['id'], botData['token'])
     else:
       return False
 

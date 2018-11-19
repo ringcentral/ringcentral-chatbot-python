@@ -2,26 +2,29 @@ from .common import result
 from .bot import Bot, getBot
 import time
 from .config import configAll
+from pydash import get, is_dict
 
 botJoinPrivateChatAction = configAll.botJoinPrivateChatAction
 botGotPostAddAction = configAll.botGotPostAddAction
 
 def botWebhook(event):
-  message = event.body
-  body = message.body
+  message = get(event, 'body')
+  body = get(message, 'body')
   defaultResponse = result('bot WebHook replied', 200, {
     'headers': {
-      'validation-token': event.headers['validation-token'] or event.headers['Validation-Token']
+      'validation-token': get(event, 'headers.validation-token') or get(event, 'headers.Validation-Token')
     }
   })
-  if body == None:
+  if not is_dict(body) :
     return defaultResponse
 
-  botId = message.ownerId
-  eventType = body.eventType
-  groupId = body.id
+  botId = get(message, 'ownerId')
+  eventType = get(body, 'eventType')
+  groupId = get(body, 'groupId')
   bot = getBot(botId)
-  if not bot:
+  creatorId = get(body, 'creatorId')
+
+  if not isinstance(bot, Bot):
     return defaultResponse
 
   if eventType == 'GroupJoined':
@@ -29,8 +32,8 @@ def botWebhook(event):
 
   elif eventType == 'PostAdded':
     # for bot self post, ignore
-    if body.creatorId == botId:
+    if creatorId == botId:
       return defaultResponse
-    botGotPostAddAction(bot, groupId, body.text)
+    botGotPostAddAction(bot, groupId, creatorId, body['text'])
 
   return defaultResponse

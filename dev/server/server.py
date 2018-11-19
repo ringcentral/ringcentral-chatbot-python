@@ -5,6 +5,7 @@ from urllib.parse import parse_qs, urlencode
 import os, sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../..')
 from ringcentral_bot_framework import router
+import json
 
 app = Flask('devtest')
 
@@ -22,9 +23,9 @@ def act(action):
       'pathParameters': {
         'action': action
       },
-      'queryStringParameters': request.args,
-      'body': body,
-      'headers': request.headers
+      'queryStringParameters': dict(request.args),
+      'body': json.loads(body or '{}'),
+      'headers': dict(request.headers)
     })
 
     resp = jsonify(response['body'])

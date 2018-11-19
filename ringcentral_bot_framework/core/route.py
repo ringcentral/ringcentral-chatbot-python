@@ -15,16 +15,17 @@ from .user_webhook import userWebhook
 from .common import debug, defaultEventHandler
 
 routes = {
-  '/bot-oauth': botAuth,
-  '/user-oauth': userAuth,
-  '/bot-webhook': botWebhook,
-  '/user-webhook': userWebhook
+  'bot-oauth': botAuth,
+  'user-oauth': userAuth,
+  'bot-webhook': botWebhook,
+  'user-webhook': userWebhook
 }
 
 def router(event):
   debug('got event', event)
-  action = event.pathParameters.action
+  action = event['pathParameters']['action']
   handler = defaultEventHandler
+  print('action=====', action)
   try:
     handler = routes[action]
   except:
