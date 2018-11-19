@@ -1,7 +1,9 @@
 
 # ringcentral-chatbot-python
 
-RingCentral Chatbot Framework for Python
+RingCentral Chatbot Framework for Python.
+
+For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/ringcentral-chatbot-js)
 
 ## Features
 
@@ -59,3 +61,10 @@ cp config.sample.py config.py
 ```bash
 bin/test
 ```
+
+## Todos
+Visit https://github.com/zxdong262/ringcentral-chatbot-python/issues
+
+## License
+
+MIT
