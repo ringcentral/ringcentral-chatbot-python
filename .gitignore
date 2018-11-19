@@ -107,3 +107,4 @@ venv.bak/
 # custom
 /temp/
 /filedb/
+/config.py

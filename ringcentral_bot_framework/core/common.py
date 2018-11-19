@@ -18,6 +18,12 @@ except:
 
 tables = ('bot', 'user')
 
+def assign_module(src, ext):
+  for key in dir(ext):
+    if not _.strings.starts_with(key, '__'):
+      setattr(src, key, getattr(ext, key))
+  return src
+
 @contextmanager
 def add_to_path(p):
     old_path = sys.path
