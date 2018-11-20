@@ -21,8 +21,8 @@ DYNAMODB_ReadCapacityUnits=5
 DYNAMODB_WriteCapacityUnits=5
 try:
   prefix = os.environ['DYNAMODB_TABLE_PREFIX']
-  DYNAMODB_ReadCapacityUnits = os.environ['DYNAMODB_ReadCapacityUnits']
-  DYNAMODB_WriteCapacityUnits = os.environ['DYNAMODB_WriteCapacityUnits']
+  DYNAMODB_ReadCapacityUnits = int(os.environ['DYNAMODB_ReadCapacityUnits'])
+  DYNAMODB_WriteCapacityUnits = int(os.environ['DYNAMODB_WriteCapacityUnits'])
 except:
   prefix = 'ringcentral_bot_py'
 

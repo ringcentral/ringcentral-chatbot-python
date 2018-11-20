@@ -105,9 +105,8 @@ class Bot:
   def sendMessage (self, groupId, messageObj):
     try:
       url = f'/restapi/v1.0/glip/groups/{groupId}/posts'
-      data = self.platform.auth().data()
       headers = {
-        'Authorization': 'bearer ' + data['access_token']
+        'Authorization': 'bearer ' + self.token['access_token']
       }
       self.platform.post(
         url,

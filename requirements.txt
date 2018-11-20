@@ -1,0 +1,4 @@
+python-dotenv
+ringcentral
+pydash
+boto3

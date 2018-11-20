@@ -13,6 +13,9 @@ from .user_oauth import userAuth
 from .bot_webhook import botWebhook
 from .user_webhook import userWebhook
 from .common import debug, defaultEventHandler
+from pydash import get
+from pydash.predicates import is_dict
+import json
 
 routes = {
   'bot-oauth': botAuth,
@@ -23,9 +26,14 @@ routes = {
 
 def router(event):
   debug('got event', event)
-  action = event['pathParameters']['action']
+  action = get(event, 'pathParameters.action')
   handler = defaultEventHandler
-  print('action=====', action)
+  debug('action=====', action)
+  if not is_dict(event['body']):
+    try:
+      event['body'] = json.loads(event['body'] or '{}')
+    except:
+      pass
   try:
     handler = routes[action]
   except:

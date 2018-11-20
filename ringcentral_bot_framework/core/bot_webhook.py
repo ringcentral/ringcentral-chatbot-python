@@ -1,4 +1,4 @@
-from .common import result
+from .common import result, debug
 from .bot import Bot, getBot
 import time
 from .config import configAll
@@ -20,10 +20,9 @@ def botWebhook(event):
 
   botId = get(message, 'ownerId')
   eventType = get(body, 'eventType')
-  groupId = get(body, 'groupId')
+  groupId = get(body, 'groupId') or get(body, 'id')
   bot = getBot(botId)
   creatorId = get(body, 'creatorId')
-
   if not isinstance(bot, Bot):
     return defaultResponse
 

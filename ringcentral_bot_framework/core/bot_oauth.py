@@ -5,10 +5,11 @@ import time
 from .common import result
 from .bot import Bot
 from pydash.predicates import is_number
+from pydash import get
 
 def botAuth(event):
   bot = Bot()
-  bot.auth(event['queryStringParameters']['code'])
+  bot.auth(get(event, 'queryStringParameters.code'))
   bot.renewWebHooks(event)
   # todo inject user custom hook here
   return result('Bot added')

@@ -36,7 +36,7 @@ def botJoinPrivateChatAction(bot, groupId):
   bot.sendMessage(
     groupId,
     {
-      'text': f'Hello, I am a chatbot. Please reply "![:Person]({bot.id})" if you want to talk to me.'
+      'text': f'Hello, I am a chatbot.'
     }
   )
 
