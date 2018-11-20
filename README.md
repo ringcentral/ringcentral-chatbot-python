@@ -18,6 +18,7 @@ For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/
 ## Prerequisites
 
 - Python3 and Pip3
+- Nodejs 8.10+/npm, use nvm to install nodejs/npm, https://github.com/creationix/nvm
 - `pip3 install python-dotenv ringcentral pydash boto3`
 - Create the bot App: Login to [developer.ringcentral.com](https://developer.ringcentral.com) and create an `public` `Server/Bot` app with permissions: `ReadContacts, ReadMessages, ReadPresence, Contacts, ReadAccounts, SMS, InternalMessages, ReadCallLog, ReadCallRecording, WebhookSubscriptions, Glip`
 

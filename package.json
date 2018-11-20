@@ -1,0 +1,35 @@
+{
+  "name": "ringcentral-chatbot-python",
+  "version": "0.0.2",
+  "description": "RingCentral Chatbot Framework for Python",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "bin/test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zxdong262/ringcentral-chatbot-python.git"
+  },
+  "keywords": [
+    "ringcentral",
+    "bot",
+    "framework",
+    "python"
+  ],
+  "author": "Drake Zhao <drake.zhao@ringcentral.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zxdong262/ringcentral-chatbot-python/issues"
+  },
+  "homepage": "https://github.com/zxdong262/ringcentral-chatbot-python#readme",
+  "devDependencies": {
+    "ngrok": "3.1.0",
+    "serverless": "1.33.2",
+    "serverless-python-requirements": "4.2.5",
+    "shelljs": "0.8.3"
+  }
+}

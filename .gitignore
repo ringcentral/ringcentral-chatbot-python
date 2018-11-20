@@ -108,3 +108,10 @@ venv.bak/
 /temp/
 /filedb/
 /config.py
+/package-lock.json
+/yarn.lock
+/node_modules
+/dev/lambda/serverless.yml
+/dev/lambda/requirements.txt
+.serverless
+/dev/lambda/ringcentral_bot_framework

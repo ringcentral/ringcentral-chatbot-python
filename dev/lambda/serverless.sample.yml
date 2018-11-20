@@ -11,14 +11,14 @@
 #
 # Happy Coding!
 
-service: poc-ringcentral-ai-bot # NOTE: update this with your service name
+service: ringcentral-bot # NOTE: update this with your service name
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: python3.6
 
 # you can overwrite defaults here
 #  stage: dev
@@ -42,8 +42,7 @@ provider:
 
 # you can define service wide environment variables here
   environment:
-    NODE_ENV: production
-    DB_TYPE: dynamodb
+    ENV: production
     # ringcentral apps
 
     ## bots
@@ -51,34 +50,39 @@ provider:
     RINGCENTRAL_BOT_CLIENT_SECRET:
 
     ## user
-    RINGCENTRAL_USER_CLIENT_ID:
-    RINGCENTRAL_USER_CLIENT_SECRET:
+    RINGCENTRAL_USER_CLIENT_ID: xxxx
+    RINGCENTRAL_USER_CLIENT_SECRET: xxxx
 
     ## common
-    RINGCENTRAL_SERVER:https://platform.devtest.ringcentral.com
-    RINGCENTRAL_BOT_SERVER:https://xxx.ngrok.io
-
-    ## for google cloud api crendential path
-    GOOGLE_APPLICATION_CREDENTIALS:
+    RINGCENTRAL_SERVER: https://platform.devtest.ringcentral.com
+    RINGCENTRAL_BOT_SERVER: https://xxxxx.xxx
 
     # db
     DB_TYPE: dynamodb
-    DYNAMODB_TABLE_PREFIX: rc_ai_bot1
+    DYNAMODB_TABLE_PREFIX: ringcentral-bot
     DYNAMODB_REGION: us-east-1
 
 # you can add packaging information here
-# package:
-#  include:
-#    - lib/**
-#    -
+package:
+  include:
+    - ringcentral_bot_framework
+
 exclude:
   - package-lock*
+  - __pycache__
   - serverless.sample.yml
 
 functions:
   bot:
     handler: handler.bot
     timeout: 400
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details

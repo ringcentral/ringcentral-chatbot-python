@@ -1,7 +1,7 @@
 import json
-from .core.route import router
+from ringcentral_bot_framework import router
 
-def hello(event, context):
+def bot(event, context):
 
     return router(event)
 

@@ -13,6 +13,7 @@ from .user_oauth import userAuth
 from .bot_webhook import botWebhook
 from .user_webhook import userWebhook
 from .common import debug, defaultEventHandler
+from pydash import get
 
 routes = {
   'bot-oauth': botAuth,
@@ -23,7 +24,7 @@ routes = {
 
 def router(event):
   debug('got event', event)
-  action = event['pathParameters']['action']
+  action = get(event, 'pathParameters.action')
   handler = defaultEventHandler
   print('action=====', action)
   try:

@@ -20,7 +20,7 @@ def botWebhook(event):
 
   botId = get(message, 'ownerId')
   eventType = get(body, 'eventType')
-  groupId = get(body, 'groupId')
+  groupId = get(body, 'groupId') or get(body, 'id')
   bot = getBot(botId)
   creatorId = get(body, 'creatorId')
 
