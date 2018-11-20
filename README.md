@@ -37,6 +37,9 @@ virtualenv venv --python=python3
 # use env
 source ./venv/bin/activate
 
+# install deps
+pip install python-dotenv ringcentral pydash boto3 flask pylint
+
 # run ngrok proxy
 # require npm, use nvm to install nodejs to get npm https://github.com/creationix/nvm
 ./bin/proxy
