@@ -19,7 +19,7 @@ try:
   dbPath = os.environ['DB_MODULE_PATH']
 except:
   pass
-
+print('Use database', dbType)
 try:
   if dbType in builtInDbs:
     dir_path = dirname(realpath(__file__))
