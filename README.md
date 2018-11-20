@@ -28,6 +28,15 @@ For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/
 git clone git@github.com:zxdong262/ringcentral-chatbot-python.git
 cd ringcentral-chatbot-python
 
+# use virtualenv
+pip3 install virtualenv # might need sudo
+
+# init virtual env
+virtualenv venv --python=python3
+
+# use env
+source ./venv/bin/activate
+
 # run ngrok proxy
 # require npm, use nvm to install nodejs to get npm https://github.com/creationix/nvm
 ./bin/proxy
