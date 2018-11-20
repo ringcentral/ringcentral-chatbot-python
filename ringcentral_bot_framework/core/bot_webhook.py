@@ -10,8 +10,6 @@ botGotPostAddAction = configAll.botGotPostAddAction
 def botWebhook(event):
   message = get(event, 'body')
   body = get(message, 'body')
-  print(body)
-  print(is_dict(body), 'is_dict')
   defaultResponse = result('bot WebHook replied', 200, {
     'headers': {
       'validation-token': get(event, 'headers.validation-token') or get(event, 'headers.Validation-Token')
@@ -25,16 +23,13 @@ def botWebhook(event):
   groupId = get(body, 'groupId') or get(body, 'id')
   bot = getBot(botId)
   creatorId = get(body, 'creatorId')
-  debug('bot---------------', bot)
   if not isinstance(bot, Bot):
     return defaultResponse
 
   if eventType == 'GroupJoined':
-    debug('gj---------------')
     botJoinPrivateChatAction(bot, groupId)
 
   elif eventType == 'PostAdded':
-    debug('pa---------------')
     # for bot self post, ignore
     if creatorId == botId:
       return defaultResponse

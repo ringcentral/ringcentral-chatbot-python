@@ -28,7 +28,7 @@ def router(event):
   debug('got event', event)
   action = get(event, 'pathParameters.action')
   handler = defaultEventHandler
-  print('action=====', action)
+  debug('action=====', action)
   if not is_dict(event['body']):
     try:
       event['body'] = json.loads(event['body'] or '{}')
