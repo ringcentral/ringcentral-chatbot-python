@@ -10,6 +10,8 @@ botGotPostAddAction = configAll.botGotPostAddAction
 def botWebhook(event):
   message = get(event, 'body')
   body = get(message, 'body')
+  print(body)
+  print(is_dict(body), 'is_dict')
   defaultResponse = result('bot WebHook replied', 200, {
     'headers': {
       'validation-token': get(event, 'headers.validation-token') or get(event, 'headers.Validation-Token')
