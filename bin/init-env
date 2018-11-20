@@ -1,4 +1,5 @@
 #!/bin/bash
 cd `dirname $0`
 cd ..
+virtualenv venv --python=python3
 ./venv/bin/activate
