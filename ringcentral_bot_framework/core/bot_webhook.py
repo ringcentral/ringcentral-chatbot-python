@@ -1,4 +1,4 @@
-from .common import result
+from .common import result, debug
 from .bot import Bot, getBot
 import time
 from .config import configAll
@@ -23,14 +23,16 @@ def botWebhook(event):
   groupId = get(body, 'groupId') or get(body, 'id')
   bot = getBot(botId)
   creatorId = get(body, 'creatorId')
-
+  debug('bot---------------', bot)
   if not isinstance(bot, Bot):
     return defaultResponse
 
   if eventType == 'GroupJoined':
+    debug('gj---------------')
     botJoinPrivateChatAction(bot, groupId)
 
   elif eventType == 'PostAdded':
+    debug('pa---------------')
     # for bot self post, ignore
     if creatorId == botId:
       return defaultResponse
