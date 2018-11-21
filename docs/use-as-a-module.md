@@ -1,3 +1,22 @@
+
+# Use as a module
+
+## Install
+
+```bash
+# install
+pip3 install ringcentral_bot_framework
+
+# create .env
+wget https://raw.githubusercontent.com/zxdong262/ringcentral-chatbot-python/master/.sample.env -O .env
+
+# create config.py
+wget https://raw.githubusercontent.com/zxdong262/ringcentral-chatbot-python/master/config.sample.py -O config.py
+```
+
+## Use in flask app
+
+```python
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 load_dotenv()
@@ -53,3 +72,15 @@ app.run(
   debug=True,
   load_dotenv=True
 )
+
+```
+
+## Use in lambda
+
+```python
+from ringcentral_bot_framework import router
+
+def bot(event, context):
+
+    return router(event)
+```
