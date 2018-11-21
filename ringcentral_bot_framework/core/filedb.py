@@ -53,9 +53,10 @@ def action(tableName, action, data={ 'id': False }):
   * for update, {id: xxx, update: {...}}
   * for get, singleUser:{id: xxx}, allUser: {}
   """
-  debug('db op:', tableName, action, data)
+  #debug('db op:', tableName, action, data)
   prepareDb()
   id = data['id']
+  id = str(id)
   toOpen = join(dbPath, tableName, (id or '') + '.json')
 
   if action == 'add':

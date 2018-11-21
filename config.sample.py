@@ -6,14 +6,16 @@ edit config.py functions to override default bot behavior
 __name__ = 'localConfig'
 __package__ = 'ringcentral_bot_framework'
 
-def userAuthSuccessMessage(userId):
+
+def userAuthSuccessAction(bot, groupId, userId):
   """
   user auth bot app to access user data success,
-  bot would send this message to chat group
+  bot would do something
+  default: send login success message to chatgroup
   """
-  return {
+  bot.sendMessage({
     'text': f'![:Person]({userId}), you have successfully authorized me to access your RingCentral data!'
-  }
+  })
 
 def userAddGroupInfoAction(bot, user):
   """
@@ -23,7 +25,7 @@ def userAddGroupInfoAction(bot, user):
   """
   return
 
-def userAuthSuccessHtml():
+def userAuthSuccessHtml(user, conf):
   """
   user auth success, would see this html from browser
   """
@@ -41,7 +43,13 @@ def botJoinPrivateChatAction(bot, groupId):
     }
   )
 
-def botGotPostAddAction(bot, groupId, creatorId, text):
+def botGotPostAddAction(
+  bot,
+  groupId,
+  creatorId,
+  user,
+  text
+):
   """
   bot got group chat message: text
   bot could send some response
@@ -56,14 +64,20 @@ def botGotPostAddAction(bot, groupId, creatorId, text):
 def userEventAction(
   user,
   eventType,
-  groupId,
   event,
-  Bot,
   getBot
 ):
   """
   bot got subscribed user event,
   do something about it
+  default: post to chatgroup about the event
   """
-  return
-
+  groups = user.groups
+  keys = groups.keys()
+  for groupId in keys:
+    botId = groups[groupId]
+    bot = getBot(botId)
+    if bot != False and eventType != 'PostAdded':
+      bot.sendMessage(groupId, {
+        'text': f'![:Person]({user.id}), got event "{eventType}"'
+      })

@@ -55,13 +55,13 @@ def printError(e, type = ''):
   print(e)
 
 def result(
-  msg,
+  msg = '',
   status = 200,
   options = {}
 ):
   return _.assign({
     'statusCode': status,
-    'body': msg,
+    'body': msg or '',
   }, options)
 
 def subscribeInterval():
