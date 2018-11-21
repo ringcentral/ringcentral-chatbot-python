@@ -1,0 +1,10 @@
+#!/bin/bash
+cd `dirname $0`
+cd ..
+git checkout master
+git pull
+git pull
+git delete-branch test
+git create-branch test
+git push origin test -u
+git checkout master

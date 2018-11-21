@@ -14,7 +14,7 @@ def userAuthSuccessMessage(userId):
     'text': f'![:Person]({userId}), you have successfully authorized me to access your RingCentral data!'
   }
 
-def userAddGroupInfoActiob(bot, user):
+def userAddGroupInfoAction(bot, user):
   """
   user add group and bot connect info,
   bot or user could do something about it,
@@ -31,24 +31,24 @@ def userAuthSuccessHtml():
 def botJoinPrivateChatAction(bot, groupId):
   """
   bot join private chat event handler
-  bot could send some some welcome message
+  bot could send some welcome message or help, or something else
   """
   bot.sendMessage(
     groupId,
     {
-      'text': f'Hello, I am a chatbot.'
+      'text': f'Hello, I am a chatbot. Please reply "![:Person]({bot.id})" if you want to talk to me.'
     }
   )
 
 def botGotPostAddAction(bot, groupId, creatorId, text):
   """
-  bot join private chat event handler
-  bot could send some some welcome message
+  bot got group chat message: text
+  bot could send some response
   """
   bot.sendMessage(
     groupId,
     {
-      'text': f'![:Person]({creatorId}), Hello, you just post "{text}".'
+      'text': f'![:Person]({creatorId}), Hello, you just posted "{text}"'
     }
   )
 

@@ -1,18 +1,30 @@
 
 # ringcentral-chatbot-python
 
+[![Build Status](https://travis-ci.org/zxdong262/ringcentral-chatbot-python.svg?branch=test)](https://travis-ci.org/zxdong262/ringcentral-chatbot-python)
+
 RingCentral Chatbot Framework for Python.
 
 For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/ringcentral-chatbot-js)
+
+- [ringcentral-chatbot-python](#ringcentral-chatbot-python)
+  - [Features](#features)
+  - [Prerequisites](#prerequisites)
+  - [Development](#development)
+  - [Test bot](#test-bot)
+  - [Building and Deploying to AWS Lambda](#building-and-deploying-to-aws-lambda)
+  - [Unit Test](#unit-test)
+  - [Todos](#todos)
+  - [License](#license)
 
 ## Features
 
 - Token management
 - Token/subscribe auto renew
-- Built-in suport for filedb and AWS dynamodb
+- Built-in suport for filedb(local development/POC) and AWS dynamodb
 - Stateless, built-in suport for AWS lambda
 - Define custom bot behavior by `config.py`
-- Support fully customized db module, loaded when runtime check DB_TYPE
+- Support fully customized db module, loaded when runtime check `DB_TYPE` in `.env`
 - Custom every step of bot lifecycle throught `config.py`, including bot auth, bot webhook
 
 ## Prerequisites
@@ -41,7 +53,8 @@ source ./venv/bin/activate
 pip install python-dotenv ringcentral pydash boto3 flask pylint
 
 # run ngrok proxy
-# require npm, use nvm to install nodejs to get npm https://github.com/creationix/nvm
+# since bot need https server,
+# so we need a https proxy for ringcentral to visit our local server
 ./bin/proxy
 # will show:
 # Forwarding https://xxxxx.ngrok.io -> localhost:8989
