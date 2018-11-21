@@ -1,11 +1,9 @@
 from .common import result, debug
 from .bot import Bot, getBot
+from .user import User
 import time
-from .config import configAll
+from .config import configAll as conf
 from pydash import get, is_dict
-
-botJoinPrivateChatAction = configAll.botJoinPrivateChatAction
-botGotPostAddAction = configAll.botGotPostAddAction
 
 def botWebhook(event):
   message = get(event, 'body')
@@ -27,12 +25,20 @@ def botWebhook(event):
     return defaultResponse
 
   if eventType == 'GroupJoined':
-    botJoinPrivateChatAction(bot, groupId)
+    conf.botJoinPrivateChatAction(bot, groupId)
 
   elif eventType == 'PostAdded':
     # for bot self post, ignore
     if creatorId == botId:
       return defaultResponse
-    botGotPostAddAction(bot, groupId, creatorId, body['text'])
+
+    user = User()
+    conf.botGotPostAddAction(
+      bot,
+      groupId,
+      creatorId,
+      user,
+      get(body, 'text')
+    )
 
   return defaultResponse

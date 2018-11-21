@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ringcentral_bot_framework",
-    version="0.0.4",
+    version="0.0.5",
     author="Drake Zhao @ RingCentral",
     author_email="drake.zhao@ringcentral.com",
     description="RingCentral Chatbot Framework for Python",

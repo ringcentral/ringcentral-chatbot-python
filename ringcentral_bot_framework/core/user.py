@@ -1,8 +1,10 @@
 
 from os import environ
 from ringcentral import SDK
-from urllib.parse import parse_qs, urlencode
+from urllib.parse import urlencode
 from .db import dbAction
+from pydash.predicates import is_dict
+import json
 from .common import printError, debug, subscribeInterval
 
 try:
@@ -12,19 +14,17 @@ try:
   RINGCENTRAL_BOT_SERVER = environ['RINGCENTRAL_BOT_SERVER']
 
 except Exception as e:
-  printError(e, 'load env')
+  printError(e, 'user load env')
 
 class User:
 
-  eventFilters: [
-    '/restapi/v1.0/account/~/extension/~/message-store',
-    subscribeInterval()
-  ]
-
-  id: ''
-  groups: {}
-
-  def __init__(self, eventFilters=False, token=False, id=False):
+  def __init__(
+    self,
+    id=None,
+    token=None,
+    groups=None,
+    eventFilters=None
+  ):
     self.rcsdk = SDK(
       RINGCENTRAL_USER_CLIENT_ID,
       RINGCENTRAL_USER_CLIENT_SECRET,
@@ -32,22 +32,31 @@ class User:
     )
     self.platform = self.rcsdk.platform()
     if eventFilters:
-      self.eventFilters = eventFilters
+      self.eventFilters = eventFilters + [subscribeInterval()]
     if token:
       self.token = token
       self.platform._auth.set_data(token)
+    if groups:
+      self.groups = groups
     if id:
       self.id = id
 
+  id = ''
+  groups = {}
+  eventFilters = [
+    '/restapi/v1.0/account/~/extension/~/message-store',
+    subscribeInterval()
+  ]
+
   def writeToDb(self, item = False):
-    if item:
-      dbAction('bot', 'add', item)
+    if is_dict(item):
+      dbAction('user', 'add', item)
     else:
-      dbAction('bot', 'update', {
+      dbAction('user', 'update', {
         'id': self.id,
-        'group': self.groups,
         'update': {
-          'token': self.token
+          'token': self.token,
+          'groups': self.groups
         }
       })
 
@@ -68,11 +77,15 @@ class User:
     return f'{RINGCENTRAL_SERVER}/restapi/oauth/authorize?{query}'
 
   def auth(self, code):
-    redirect_url = RINGCENTRAL_BOT_SERVER +'/bot-oauth'
+    redirect_url = RINGCENTRAL_BOT_SERVER +'/user-oauth'
     self.platform.login(code=code, redirect_uri=redirect_url)
     self.token = self.platform.auth().data()
-    self.id = self.token.owner_id
-    self.writeToDb(False)
+    self.id = self.token['owner_id']
+    self.writeToDb({
+      'id': self.id,
+      'token': self.token,
+      'groups': self.groups
+    })
 
   def refresh (self):
     try:
@@ -81,48 +94,49 @@ class User:
       self.writeToDb(False)
       return True
     except Exception as e:
-      printError(e, 'refrefresh token has expired')
+      printError(e, 'user refrefresh token has expired')
       removeUser(self.id)
       return False
 
-  def setupWebhook(self, event = False):
+  def setupWebhook(self, event=None):
     try:
      self.platform.post('/subscription', {
         'eventFilters': self.eventFilters,
         'expiresIn': 1799,
         'deliveryMode': {
           'transportType': 'WebHook',
-          'address': RINGCENTRAL_BOT_SERVER + '/bot-webhook'
+          'address': RINGCENTRAL_BOT_SERVER + '/user-webhook'
         }
       })
     except Exception as e:
-      printError(e, 'setupWebhook')
+      printError(e, 'user setupWebhook')
 
-  def renewWebHooks(self, event):
+  def renewWebHooks(self, event=None):
     try:
       r = self.platform.get('/subscription')
-      r = r.json()
-      filtered = filter(
-        lambda x: x.deliveryMode.address == RINGCENTRAL_BOT_SERVER +'/bot-webhook',
+      r = json.loads(r.text())['records']
+      filtered = list(filter(
+        lambda x: x['deliveryMode']['address'] == RINGCENTRAL_BOT_SERVER + '/user-webhook',
         r
-      )
+      ))
       debug(
         'user subs list',
-        ','.join(map(lambda g: g.id, filtered))
+        ','.join(list(map(lambda g: g['id'], filtered)))
       )
       self.setupWebhook(event)
+      debug(filtered, 'fffff--------')
       for sub in filtered:
-        self.delSubscription(sub.id)
+        self.delSubscription(sub['id'])
 
     except Exception as e:
-      printError(e, 'renewWebHooks')
+      printError(e, 'user renewWebHooks')
 
   def delSubscription (self, id):
     debug('del user sub id:', id)
     try:
       self.platform.delete('/subscription/' + id)
     except Exception as e:
-      printError(e, 'delSubscription')
+      printError(e, 'user delSubscription')
 
   def removeGroup(self, id):
     self.groups.pop(id, None)
@@ -133,14 +147,14 @@ class User:
     self.groups[groupId] = botId
     self.writeToDb()
     if hasNoGroup:
-      self.setupWebhook()
+      self.renewWebHooks()
 
   def validate (self):
     try:
       self.platform.get('/account/~/extension/~')
       return True
     except Exception as e:
-      printError(e, 'validate')
+      printError(e, 'user validate')
       return self.refresh()
 
 
@@ -148,8 +162,12 @@ def getUser(id):
   userData = dbAction('user', 'get', {
     'id': id
   })
-  if userData != False:
-    return User(userData.id, userData.token)
+  if is_dict(userData):
+    return User(
+      userData['id'],
+      userData['token'],
+      userData['groups']
+    )
   else:
     return False
 

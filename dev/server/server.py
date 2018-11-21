@@ -27,11 +27,11 @@ def act(action):
       'body': json.loads(body or '{}'),
       'headers': dict(request.headers)
     })
-
-    resp = jsonify(response['body'])
+    resp = response['body']
+    headers = {}
     if 'headers' in response:
-        resp.headers = response['headers']
-    return resp, response['statusCode']
+        headers = response['headers']
+    return resp, response['statusCode'], headers
 
 @app.route('/', methods=['GET'])
 def index():

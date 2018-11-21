@@ -1,8 +1,6 @@
 
 from os import environ
 from ringcentral import SDK
-from urllib.parse import parse_qs
-import logging
 from .db import dbAction
 from .common import debug, printError
 from pydash.predicates import is_dict
@@ -80,17 +78,17 @@ class Bot:
     try:
       r = self.platform.get('/subscription')
       r = json.loads(r.text())['records']
-      filtered = filter(
+      filtered = list(filter(
         lambda x: x['deliveryMode']['address'] == RINGCENTRAL_BOT_SERVER + '/bot-webhook',
         r
-      )
+      ))
       debug(
         'bot subs list',
-        ','.join(map(lambda g: g.id, filtered))
+        ','.join(list(map(lambda g: g['id'], filtered)))
       )
       self.setupWebhook(event)
       for sub in filtered:
-        self.delSubscription(sub.id)
+        self.delSubscription(sub['id'])
 
     except Exception as e:
       printError(e, 'renewWebHooks')
@@ -127,13 +125,15 @@ class Bot:
       return False
 
 def getBot(id):
-    botData = dbAction('bot', 'get', {
-      'id': id
-    })
-    if is_dict(botData):
-      return Bot(botData['id'], botData['token'])
-    else:
-      return False
+  if not id:
+    return False
+  botData = dbAction('bot', 'get', {
+    'id': id
+  })
+  if is_dict(botData):
+    return Bot(botData['id'], botData['token'])
+  else:
+    return False
 
 def removeBot(id):
     return dbAction('bot', 'remove', {

@@ -166,7 +166,7 @@ def action(tableName, action, data = {'id': False}):
   """
   debug('db op:', tableName, action, data)
   prepareDb()
-  id = data['id']
+  id = str(data['id'])
 
   if action == 'add':
     putItem(data, tableName)
