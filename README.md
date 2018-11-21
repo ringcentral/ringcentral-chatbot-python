@@ -1,5 +1,5 @@
 
-# ringcentral-chatbot-python
+# ringcentral-chatbot-python <!-- omit in toc -->
 
 [![Build Status](https://travis-ci.org/zxdong262/ringcentral-chatbot-python.svg?branch=test)](https://travis-ci.org/zxdong262/ringcentral-chatbot-python)
 
@@ -7,19 +7,17 @@ RingCentral Chatbot Framework for Python.
 
 For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/ringcentral-chatbot-js)
 
-## Table of contents
+## Table of contents <!-- omit in toc -->
 
-- [ringcentral-chatbot-python](#ringcentral-chatbot-python)
-  - [Table of contents](#table-of-contents)
-  - [Features](#features)
-  - [Use as a module](#use-as-a-module)
-  - [Prerequisites](#prerequisites)
-  - [Development](#development)
-  - [Test bot](#test-bot)
-  - [Building and Deploying to AWS Lambda](#building-and-deploying-to-aws-lambda)
-  - [Unit Test](#unit-test)
-  - [Todos](#todos)
-  - [License](#license)
+- [Features](#features)
+- [Use as a module](#use-as-a-module)
+- [Prerequisites](#prerequisites)
+- [Development](#development)
+- [Test bot](#test-bot)
+- [Building and Deploying to AWS Lambda](#building-and-deploying-to-aws-lambda)
+- [Unit Test](#unit-test)
+- [Todos](#todos)
+- [License](#license)
 
 ## Features
 
