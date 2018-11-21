@@ -10,6 +10,7 @@ For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/
 ## Table of contents <!-- omit in toc -->
 
 - [Features](#features)
+- [Use CLI tool to create an bot app](#use-cli-tool-to-create-an-bot-app)
 - [Use as a module](#use-as-a-module)
 - [Prerequisites](#prerequisites)
 - [Development](#development)
@@ -28,6 +29,17 @@ For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/
 - Define custom bot behavior by `config.py`
 - Support fully customized db module, loaded when runtime check `DB_TYPE` in `.env`
 - Custom every step of bot lifecycle throught `config.py`, including bot auth, bot webhook
+
+## Use CLI tool to create an bot app
+
+- Using [ringcentral-chatbot-factory](https://github.com/zxdong262/ringcentral-chatbot-factory) to init a rinncentral chatbot app would be fast!
+- require npm 5.2+, recommend using [nvm](https://github.com/creationix/nvm) to install nodejs/npm
+
+```bash
+npx ringcentral-chatbot-factory my-ringcentral-chat-bot
+```
+
+Then just fill the promots, follow `my-ringcentral-chat-bot/README.md`'s guide, it is done.
 
 ## Use as a module
 
