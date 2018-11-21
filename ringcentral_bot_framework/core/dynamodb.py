@@ -16,7 +16,7 @@ from pydash.strings import starts_with
 
 boto3.setup_default_session(region_name=os.environ['AWS_REGION'])
 client = boto3.client('dynamodb')
-prefix = ''
+prefix = 'ringcentral_dynamo1'
 DYNAMODB_ReadCapacityUnits=5
 DYNAMODB_WriteCapacityUnits=5
 try:
@@ -24,7 +24,7 @@ try:
   DYNAMODB_ReadCapacityUnits = int(os.environ['DYNAMODB_ReadCapacityUnits'])
   DYNAMODB_WriteCapacityUnits = int(os.environ['DYNAMODB_WriteCapacityUnits'])
 except:
-  prefix = 'ringcentral_bot_py'
+  pass
 
 dbName = 'dynamodb'
 

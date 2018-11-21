@@ -2,7 +2,7 @@
 db wrapper
 """
 import os
-from os.path import dirname, realpath, join
+from os.path import dirname, realpath, join, isabs
 import pydash as _
 import importlib.util
 from .filedb import action, dbName
@@ -15,18 +15,27 @@ DBNAME = dbName
 
 try:
   dbType = os.environ['DB_TYPE']
-  dbName = os.environ['DB_MODULE_NAME']
-  dbPath = os.environ['DB_MODULE_PATH']
 except:
   pass
-print('Use database', dbType)
+
+pdbName = 'ringcentral_bot_framework.custom_db'
+
 try:
   if dbType in builtInDbs:
     dir_path = dirname(realpath(__file__))
     dbPath = join(dir_path, dbType + '.py')
     pdbName = 'ringcentral_bot_framework.core.' + dbType
-  db = path_import(dbName, dbPath)
+  else:
+    dbPath = dbType
+    if not isabs(dbPath):
+      dbPath = join(os.getcwd(), dbPath)
+  db = path_import(pdbName, dbPath)
   dbAction = db.action
   DBNAME = db.dbName
 except Exception as e:
   debug(e)
+
+type2 = 'custom'
+if dbType in builtInDbs:
+  type2 = 'built-in'
+print('Use database', type2, DBNAME)

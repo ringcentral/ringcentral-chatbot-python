@@ -27,6 +27,7 @@ class TestStringMethods(unittest.TestCase):
       self.assertEqual(x2['s']['n'], 45)
       self.assertEqual(x2['fg'], 'sdf')
       x2 = action('bot', 'get')
+      print(x2)
       self.assertEqual(x2[1]['fg'], 'sdf')
 if __name__ == '__main__':
     unittest.main()
