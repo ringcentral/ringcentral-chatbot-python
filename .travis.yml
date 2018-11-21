@@ -18,7 +18,7 @@ before_install:
   - pip3 -V
 install:
   - npm install
-  - sudo pip3 install -r requirements.txt
+  - pip3 install -r requirements.txt
 script: ./bin/test
 env:
   global:
