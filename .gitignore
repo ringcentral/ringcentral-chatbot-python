@@ -116,3 +116,4 @@ venv.bak/
 .serverless
 /dev/lambda/ringcentral_bot_framework
 /custom_db.py
+/ringcentral_bot_framework.egg-info

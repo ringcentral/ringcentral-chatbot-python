@@ -7,8 +7,12 @@ RingCentral Chatbot Framework for Python.
 
 For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/ringcentral-chatbot-js)
 
+## Table of contents
+
 - [ringcentral-chatbot-python](#ringcentral-chatbot-python)
+  - [Table of contents](#table-of-contents)
   - [Features](#features)
+  - [Use as a module](#use-as-a-module)
   - [Prerequisites](#prerequisites)
   - [Development](#development)
   - [Test bot](#test-bot)
@@ -27,10 +31,14 @@ For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/
 - Support fully customized db module, loaded when runtime check `DB_TYPE` in `.env`
 - Custom every step of bot lifecycle throught `config.py`, including bot auth, bot webhook
 
+## Use as a module
+
+[docs/use-as-a-module.md](docs/use-as-a-module.md)
+
 ## Prerequisites
 
-- Python3 and Pip3
-- Nodejs 8.10+/npm, use nvm to install nodejs/npm, https://github.com/creationix/nvm
+- Python3.6+ and Pip3
+- Nodejs 8.10+/npm, recommend using [nvm](https://github.com/creationix/nvm) to install nodejs/npm
 - `pip3 install python-dotenv ringcentral pydash boto3 flask`
 - Create the bot App: Login to [developer.ringcentral.com](https://developer.ringcentral.com) and create an `public` `Server/Bot` app with permissions: `ReadContacts, ReadMessages, ReadPresence, Contacts, ReadAccounts, SMS, InternalMessages, ReadCallLog, ReadCallRecording, WebhookSubscriptions, Glip`
 
