@@ -4,7 +4,9 @@ from ringcentral import SDK
 from .db import dbAction
 from .common import debug, printError
 from pydash.predicates import is_dict
+from pydash.objects import omit
 import json
+from .config import configAll as conf
 
 try:
   RINGCENTRAL_BOT_CLIENT_ID = environ['RINGCENTRAL_BOT_CLIENT_ID']
@@ -17,27 +19,30 @@ except Exception as e:
 
 class Bot:
 
-  def __init__(self, id=False, token=False, eventFilters=False):
+  def __init__(
+    self,
+    id=None,
+    token=None,
+    data=None
+  ):
     self.rcsdk = SDK(
       RINGCENTRAL_BOT_CLIENT_ID,
       RINGCENTRAL_BOT_CLIENT_SECRET,
       RINGCENTRAL_SERVER
     )
     self.platform = self.rcsdk.platform()
-    if eventFilters:
-      self.eventFilters = eventFilters
-    if token:
+    if not token is None:
       self.token = token
       self.platform._auth.set_data(token)
-    if id:
+    if not data is None:
+      self.data = data
+    if not id is None:
       self.id = id
 
-  eventFilters = [
-    '/restapi/v1.0/glip/posts',
-    '/restapi/v1.0/glip/groups'
-  ]
-
+  eventFilters = conf.botFilteres()
   id = ''
+  token = {}
+  data = {}
 
   def writeToDb(self, item=False):
     if is_dict(item):
@@ -47,7 +52,8 @@ class Bot:
         'id': self.id,
         'update': {
           'token': self.token
-        }
+        },
+        'data': self.data
       })
 
   def auth(self, code):
@@ -57,7 +63,8 @@ class Bot:
     self.id = self.token['owner_id']
     self.writeToDb({
       'id': self.id,
-      'token': self.token
+      'token': self.token,
+      'data': self.data
     })
 
   def setupWebhook(self, event):
@@ -131,7 +138,11 @@ def getBot(id):
     'id': id
   })
   if is_dict(botData):
-    return Bot(botData['id'], botData['token'])
+    return Bot(
+      botData['id'],
+      botData['token'],
+      botData['data']
+    )
   else:
     return False
 

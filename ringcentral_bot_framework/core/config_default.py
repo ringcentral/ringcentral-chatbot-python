@@ -35,6 +35,14 @@ def botGotPostAddAction(
     }
   )
 
+def botAuthAction(bot):
+  '''
+  After bot auth success,
+  can do some bot actions
+  default: do nothing
+  '''
+  return
+
 def userAuthSuccessAction(bot, groupId, userId):
   """
   user auth bot app to access user data success,
@@ -46,7 +54,7 @@ def userAuthSuccessAction(bot, groupId, userId):
     'text': f'![:Person]({userId}), you have successfully authorized me to access your RingCentral data!'
   })
 
-def userAddGroupInfoAction(bot, user):
+def userAddGroupInfoAction(bot, user, groupId):
   """
   user add group and bot connect info,
   bot or user could do something about it,
@@ -84,3 +92,19 @@ def userEventAction(
         'text': f'![:Person]({user.id}), got event "{eventType}"'
       })
 
+def botFilteres():
+  '''
+  customize bot filters
+  '''
+  return [
+    '/restapi/v1.0/glip/posts',
+    '/restapi/v1.0/glip/groups'
+  ]
+
+def userFilteres():
+  '''
+  customize user filters
+  '''
+  return [
+    '/restapi/v1.0/account/~/extension/~/message-store'
+  ]

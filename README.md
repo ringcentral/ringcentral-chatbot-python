@@ -58,7 +58,7 @@ Then just fill the promots, follow `my-ringcentral-chat-bot/README.md`'s guide, 
 
 - Python3.6+ and Pip3
 - Nodejs 8.10+/npm, recommend using [nvm](https://github.com/creationix/nvm) to install nodejs/npm
-- `pip3 install python-dotenv ringcentral pydash boto3 flask`
+- `pip3 install python-dotenv ringcentral pydash boto3 flask pylint`
 - Create the bot App: Login to [developer.ringcentral.com](https://developer.ringcentral.com) and create an `public` `Server/Bot` app with permissions: `ReadContacts, ReadMessages, ReadPresence, Contacts, ReadAccounts, SMS, InternalMessages, ReadCallLog, ReadCallRecording, WebhookSubscriptions, Glip`
 
 ## Development & quick start
