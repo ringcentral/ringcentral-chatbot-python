@@ -28,12 +28,13 @@ def botGotPostAddAction(
   bot got group chat message: text
   bot could send some response
   """
-  bot.sendMessage(
-    groupId,
-    {
-      'text': f'![:Person]({creatorId}), Hello, you just posted "{text}"'
-    }
-  )
+  if f'![:Person]({bot.id})' in text:
+    bot.sendMessage(
+      groupId,
+      {
+        'text': f'![:Person]({creatorId}), Hello, you just posted "{text}"'
+      }
+    )
 
 def botAuthAction(bot):
   '''
