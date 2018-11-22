@@ -52,7 +52,7 @@ def userAuthSuccessAction(bot, groupId, userId):
   default: send login success message to chatgroup
   if you only have bot app, it is not needed
   """
-  bot.sendMessage({
+  bot.sendMessage(groupId, {
     'text': f'![:Person]({userId}), you have successfully authorized me to access your RingCentral data!'
   })
 
