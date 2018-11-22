@@ -6,31 +6,6 @@ edit config.py functions to override default bot behavior
 __name__ = 'localConfig'
 __package__ = 'ringcentral_bot_framework'
 
-
-def userAuthSuccessAction(bot, groupId, userId):
-  """
-  user auth bot app to access user data success,
-  bot would do something
-  default: send login success message to chatgroup
-  """
-  bot.sendMessage({
-    'text': f'![:Person]({userId}), you have successfully authorized me to access your RingCentral data!'
-  })
-
-def userAddGroupInfoAction(bot, user):
-  """
-  user add group and bot connect info,
-  bot or user could do something about it,
-  default: do nothing
-  """
-  return
-
-def userAuthSuccessHtml(user, conf):
-  """
-  user auth success, would see this html from browser
-  """
-  return '<div style="text-align: center;font-size: 20px;border: 5px solid #08c;padding: 30px;">You have authorized the bot to access your RingCentral data! Please close this page and get back to Glip</div>'
-
 def botJoinPrivateChatAction(bot, groupId):
   """
   bot join private chat event handler
@@ -61,6 +36,33 @@ def botGotPostAddAction(
     }
   )
 
+def userAuthSuccessAction(bot, groupId, userId):
+  """
+  user auth bot app to access user data success,
+  bot would do something
+  default: send login success message to chatgroup
+  if you only have bot app, it is not needed
+  """
+  bot.sendMessage({
+    'text': f'![:Person]({userId}), you have successfully authorized me to access your RingCentral data!'
+  })
+
+def userAddGroupInfoAction(bot, user):
+  """
+  user add group and bot connect info,
+  bot or user could do something about it,
+  default: do nothing
+  if you only have bot app, it is not needed
+  """
+  return
+
+def userAuthSuccessHtml(user, conf):
+  """
+  user auth success, would see this html from browser
+  if you only have bot app, it is not needed
+  """
+  return '<div style="text-align: center;font-size: 20px;border: 5px solid #08c;padding: 30px;">You have authorized the bot to access your RingCentral data! Please close this page and get back to Glip</div>'
+
 def userEventAction(
   user,
   eventType,
@@ -71,6 +73,7 @@ def userEventAction(
   bot got subscribed user event,
   do something about it
   default: post to chatgroup about the event
+  if you only have bot app, it is not needed
   """
   groups = user.groups
   keys = groups.keys()
