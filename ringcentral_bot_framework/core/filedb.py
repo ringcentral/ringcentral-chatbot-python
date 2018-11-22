@@ -7,7 +7,7 @@ __package__ = 'ringcentral_bot_framework.core'
 import pydash as _
 import sys, os
 import json
-from .common import tables, debug
+from .common import tables, debug, printError
 from os.path import join
 
 cwd = os.getcwd()
@@ -54,42 +54,46 @@ def action(tableName, action, data=None):
   * for get, singleUser:{id: xxx}, allUser: {}
   """
   #debug('db op:', tableName, action, data)
-  prepareDb()
-  id = _.get(data, 'id')
-  if _.predicates.is_number(id):
-    id = str(id)
-  if _.predicates.is_string(id):
-    toOpen = join(dbPath, tableName, (id or '') + '.json')
+  try:
+    prepareDb()
+    id = _.get(data, 'id')
+    if _.predicates.is_number(id):
+      id = str(id)
+    if _.predicates.is_string(id):
+      toOpen = join(dbPath, tableName, (id or '') + '.json')
 
-  if action == 'add':
-    id = data['id']
-    toOpen = join(dbPath, tableName, id + '.json')
-    r = json.dumps(data, indent=2)
-    with open(toOpen, 'w+') as toOpenFile:
-      toOpenFile.write(r)
-      toOpenFile.close()
+    if action == 'add':
+      id = data['id']
+      toOpen = join(dbPath, tableName, id + '.json')
+      r = json.dumps(data, indent=2)
+      with open(toOpen, 'w+') as toOpenFile:
+        toOpenFile.write(r)
+        toOpenFile.close()
 
-  elif action == 'remove':
-    os.remove(toOpen)
+    elif action == 'remove':
+      os.remove(toOpen)
 
-  elif action == 'update':
-    update = data['update']
-    with open(toOpen, 'r+') as toOpenFile:
-      f = toOpenFile.read()
-      f = json.loads(f)
-      _.assign(f, update)
-      f = json.dumps(f, indent=2)
-      toOpenFile.seek(0)
-      toOpenFile.write(f)
-      toOpenFile.truncate()
-      toOpenFile.close()
+    elif action == 'update':
+      update = data['update']
+      with open(toOpen, 'r+') as toOpenFile:
+        f = toOpenFile.read()
+        f = json.loads(f)
+        _.assign(f, update)
+        f = json.dumps(f, indent=2)
+        toOpenFile.seek(0)
+        toOpenFile.write(f)
+        toOpenFile.truncate()
+        toOpenFile.close()
 
-  elif action == 'get':
-    if id:
-      return readFile(toOpen)
-    else:
-      p = join(dbPath, tableName)
-      files = [f for f in os.listdir(p)]
-      return list(map(lambda x: readFile(join(p, x)), files))
+    elif action == 'get':
+      if id:
+        return readFile(toOpen)
+      else:
+        p = join(dbPath, tableName)
+        files = [f for f in os.listdir(p)]
+        return list(map(lambda x: readFile(join(p, x)), files))
 
-  return action
+    return action
+  except Exception as e:
+    printError(e, 'db action')
+    return False
