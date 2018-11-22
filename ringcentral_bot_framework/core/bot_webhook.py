@@ -24,15 +24,15 @@ def botWebhook(event):
   if not isinstance(bot, Bot):
     return defaultResponse
 
+  user = User()
   if eventType == 'GroupJoined':
-    conf.botJoinPrivateChatAction(bot, groupId)
+    conf.botJoinPrivateChatAction(bot, groupId, user)
 
   elif eventType == 'PostAdded':
     # for bot self post, ignore
     if creatorId == botId:
       return defaultResponse
 
-    user = User()
     conf.botGotPostAddAction(
       bot,
       groupId,

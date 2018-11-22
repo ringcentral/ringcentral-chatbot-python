@@ -5,7 +5,7 @@ could write config.py to override all the bot behavior
 __name__ = 'defaultConfig'
 __package__ = 'ringcentral_bot_framework.core'
 
-def botJoinPrivateChatAction(bot, groupId):
+def botJoinPrivateChatAction(bot, groupId, user):
   """
   bot join private chat event handler
   bot could send some welcome message or help, or something else
