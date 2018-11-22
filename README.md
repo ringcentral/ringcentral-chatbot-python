@@ -5,6 +5,10 @@
 
 RingCentral Chatbot Framework for Python.
 
+```bash
+pip3 install ringcentral_bot_framework
+```
+
 For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/ringcentral-chatbot-js)
 
 ## Table of contents <!-- omit in toc -->
@@ -12,6 +16,7 @@ For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/
 - [Features](#features)
 - [Use CLI tool to create an bot app](#use-cli-tool-to-create-an-bot-app)
 - [Use as a module](#use-as-a-module)
+- [Example bot apps](#example-bot-apps)
 - [Prerequisites](#prerequisites)
 - [Development](#development)
 - [Test bot](#test-bot)
@@ -44,6 +49,10 @@ Then just fill the promots, follow `my-ringcentral-chat-bot/README.md`'s guide, 
 ## Use as a module
 
 [docs/use-as-a-module.md](docs/use-as-a-module.md)
+
+## Example bot apps
+
+- [date-time-chatbot](https://github.com/zxdong262/ringcentral-date-time-chatbot) : Simple demo ringcentral chatbot which can tell time/date created with [ringcentral-chatbot-framework](https://github.com/zxdong262/ringcentral-chatbot-python) and [ringcentral-chatbot-factory](https://github.com/zxdong262/ringcentral-chatbot-factory)
 
 ## Prerequisites
 
@@ -147,11 +156,11 @@ Edit `lambda/serverless.yml`, and make sure you set the proper name and required
 
 ```
 
-Deploy to AWS Lambda with `bin/build`
+Deploy to AWS Lambda with `bin/deploy`
 
 ```bash
 # Run this cmd to deploy to AWS Lambda, full build, may take more time
-bin/build
+bin/deploy
 
 ## watch Lambda server log
 bin/watch
