@@ -154,7 +154,7 @@ def scan(table):
     return False
 
 
-def action(tableName, action, data = {'id': False}):
+def action(tableName, action, data = None):
   """db action wrapper
   * @param {String} tableName, user or bot
   * @param {String} action, add, remove, update, get
@@ -166,7 +166,9 @@ def action(tableName, action, data = {'id': False}):
   """
   debug('db op:', tableName, action, data)
   prepareDb()
-  id = str(data['id'])
+  id = _.get(data, 'id')
+  if _.predicates.is_number(id):
+    id = str(id)
 
   if action == 'add':
     putItem(data, tableName)

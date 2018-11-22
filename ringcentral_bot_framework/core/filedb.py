@@ -43,7 +43,7 @@ def readFile(toOpen):
     toOpenFile.close()
     return f
 
-def action(tableName, action, data={ 'id': False }):
+def action(tableName, action, data=None):
   """db action wrapper
   * @param {String} tableName, user or bot
   * @param {String} action, add, remove, update, get
@@ -55,9 +55,11 @@ def action(tableName, action, data={ 'id': False }):
   """
   #debug('db op:', tableName, action, data)
   prepareDb()
-  id = data['id']
-  id = str(id)
-  toOpen = join(dbPath, tableName, (id or '') + '.json')
+  id = _.get(data, 'id')
+  if _.predicates.is_number(id):
+    id = str(id)
+  if _.predicates.is_string(id):
+    toOpen = join(dbPath, tableName, (id or '') + '.json')
 
   if action == 'add':
     id = data['id']
