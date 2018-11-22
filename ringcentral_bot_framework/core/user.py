@@ -4,8 +4,10 @@ from ringcentral import SDK
 from urllib.parse import urlencode
 from .db import dbAction
 from pydash.predicates import is_dict
+from pydash.objects import omit
 import json
 from .common import printError, debug, subscribeInterval
+from .config import configAll as conf
 
 try:
   RINGCENTRAL_USER_CLIENT_ID = environ['RINGCENTRAL_USER_CLIENT_ID']
@@ -23,7 +25,7 @@ class User:
     id=None,
     token=None,
     groups=None,
-    eventFilters=None
+    data=None
   ):
     self.rcsdk = SDK(
       RINGCENTRAL_USER_CLIENT_ID,
@@ -31,22 +33,21 @@ class User:
       RINGCENTRAL_SERVER
     )
     self.platform = self.rcsdk.platform()
-    if eventFilters:
-      self.eventFilters = eventFilters + [subscribeInterval()]
-    if token:
+    if not token is None:
       self.token = token
       self.platform._auth.set_data(token)
-    if groups:
+    if not groups is None:
       self.groups = groups
-    if id:
+    if not data is None:
+      self.data = data
+    if not id is None:
       self.id = id
 
   id = ''
   groups = {}
-  eventFilters = [
-    '/restapi/v1.0/account/~/extension/~/message-store',
-    subscribeInterval()
-  ]
+  data = {}
+  token = {}
+  eventFilters = conf.userFilters() + [subscribeInterval()]
 
   def writeToDb(self, item = False):
     if is_dict(item):
@@ -56,7 +57,8 @@ class User:
         'id': self.id,
         'update': {
           'token': self.token,
-          'groups': self.groups
+          'groups': self.groups,
+          'data': self.data
         }
       })
 
@@ -84,7 +86,8 @@ class User:
     self.writeToDb({
       'id': self.id,
       'token': self.token,
-      'groups': self.groups
+      'groups': self.groups,
+      'data': self.data
     })
 
   def refresh (self):
@@ -166,7 +169,8 @@ def getUser(id):
     return User(
       userData['id'],
       userData['token'],
-      userData['groups']
+      userData['groups'],
+      userData['data']
     )
   else:
     return False

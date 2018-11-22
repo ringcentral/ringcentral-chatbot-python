@@ -29,12 +29,21 @@ def botGotPostAddAction(
   bot got group chat message: text
   bot could send some response
   """
-  bot.sendMessage(
-    groupId,
-    {
-      'text': f'![:Person]({creatorId}), Hello, you just posted "{text}"'
-    }
-  )
+  if f'![:Person]({bot.id})' in text:
+    bot.sendMessage(
+      groupId,
+      {
+        'text': f'![:Person]({creatorId}), Hello, you just posted "{text}"'
+      }
+    )
+
+def botAuthAction(bot):
+  '''
+  After bot auth success,
+  can do some bot actions
+  default: do nothing
+  '''
+  return
 
 def userAuthSuccessAction(bot, groupId, userId):
   """
@@ -47,7 +56,7 @@ def userAuthSuccessAction(bot, groupId, userId):
     'text': f'![:Person]({userId}), you have successfully authorized me to access your RingCentral data!'
   })
 
-def userAddGroupInfoAction(bot, user):
+def userAddGroupInfoAction(bot, user, groupId):
   """
   user add group and bot connect info,
   bot or user could do something about it,
@@ -84,3 +93,20 @@ def userEventAction(
       bot.sendMessage(groupId, {
         'text': f'![:Person]({user.id}), got event "{eventType}"'
       })
+
+def botFilters():
+  '''
+  customize bot filters to subscribe
+  '''
+  return [
+    '/restapi/v1.0/glip/posts',
+    '/restapi/v1.0/glip/groups'
+  ]
+
+def userFilters():
+  '''
+  customize user filters to subscribe
+  '''
+  return [
+    '/restapi/v1.0/account/~/extension/~/message-store'
+  ]

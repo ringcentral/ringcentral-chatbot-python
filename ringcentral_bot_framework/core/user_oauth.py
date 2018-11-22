@@ -18,7 +18,7 @@ def userAuth(event):
   bot = getBot(botId)
   user.addGroup(groupId, botId)
   conf.userAuthSuccessAction(bot, groupId, user.id)
-  conf.userAddGroupInfoAction(user, bot)
+  conf.userAddGroupInfoAction(user, bot, groupId)
   return result(
     conf.userAuthSuccessHtml(user, bot),
     200,
