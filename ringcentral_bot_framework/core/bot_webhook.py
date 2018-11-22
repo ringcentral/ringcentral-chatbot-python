@@ -1,6 +1,6 @@
 from .common import result, debug
 from .bot import Bot, getBot
-from .user import User
+from .user import User, getUser
 import time
 from .config import configAll as conf
 from pydash import get, is_dict
@@ -24,7 +24,9 @@ def botWebhook(event):
   if not isinstance(bot, Bot):
     return defaultResponse
 
-  user = User()
+  user = getUser(creatorId)
+  if user == False:
+    user = User()
   if eventType == 'GroupJoined':
     conf.botJoinPrivateChatAction(bot, groupId, user)
 
