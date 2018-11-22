@@ -47,7 +47,7 @@ class User:
   groups = {}
   data = {}
   token = {}
-  eventFilters = conf.userFilteres() + [subscribeInterval()]
+  eventFilters = conf.userFilters() + [subscribeInterval()]
 
   def writeToDb(self, item = False):
     if is_dict(item):

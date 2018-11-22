@@ -39,7 +39,7 @@ class Bot:
     if not id is None:
       self.id = id
 
-  eventFilters = conf.botFilteres()
+  eventFilters = conf.botFilters()
   id = ''
   token = {}
   data = {}

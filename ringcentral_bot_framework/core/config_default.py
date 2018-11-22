@@ -93,18 +93,18 @@ def userEventAction(
         'text': f'![:Person]({user.id}), got event "{eventType}"'
       })
 
-def botFilteres():
+def botFilters():
   '''
-  customize bot filters
+  customize bot filters to subscribe
   '''
   return [
     '/restapi/v1.0/glip/posts',
     '/restapi/v1.0/glip/groups'
   ]
 
-def userFilteres():
+def userFilters():
   '''
-  customize user filters
+  customize user filters to subscribe
   '''
   return [
     '/restapi/v1.0/account/~/extension/~/message-store'
