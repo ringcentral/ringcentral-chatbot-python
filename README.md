@@ -18,7 +18,7 @@ For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/
 - [Use as a module](#use-as-a-module)
 - [Example bot apps](#example-bot-apps)
 - [Prerequisites](#prerequisites)
-- [Development](#development)
+- [Development & quick start](#development--quick-start)
 - [Test bot](#test-bot)
 - [Building and Deploying to AWS Lambda](#building-and-deploying-to-aws-lambda)
 - [Unit Test](#unit-test)
@@ -61,7 +61,7 @@ Then just fill the promots, follow `my-ringcentral-chat-bot/README.md`'s guide, 
 - `pip3 install python-dotenv ringcentral pydash boto3 flask`
 - Create the bot App: Login to [developer.ringcentral.com](https://developer.ringcentral.com) and create an `public` `Server/Bot` app with permissions: `ReadContacts, ReadMessages, ReadPresence, Contacts, ReadAccounts, SMS, InternalMessages, ReadCallLog, ReadCallRecording, WebhookSubscriptions, Glip`
 
-## Development
+## Development & quick start
 
 ```bash
 git clone git@github.com:zxdong262/ringcentral-chatbot-python.git
