@@ -52,7 +52,8 @@ Then just fill the promots, follow `my-ringcentral-chat-bot/README.md`'s guide, 
 
 ## Example bot apps
 
-- [date-time-chatbot](https://github.com/zxdong262/ringcentral-date-time-chatbot) : Simple demo ringcentral chatbot which can tell time/date created with [ringcentral-chatbot-framework](https://github.com/zxdong262/ringcentral-chatbot-python) and [ringcentral-chatbot-factory](https://github.com/zxdong262/ringcentral-chatbot-factory)
+- [date-time-chatbot](https://github.com/zxdong262/ringcentral-date-time-chatbot) : Simple ringcentral chatbot which can tell time/date.
+- [assistant-bot](https://github.com/zxdong262/ringcentral-assistant-bot) : Simple assistant Glip bot to show user/company information, this bot will show you how to access user data.
 
 ## Prerequisites
 
