@@ -2,14 +2,6 @@
   "name": "ringcentral-chatbot-python",
   "version": "0.0.8",
   "description": "RingCentral Chatbot Framework for Python",
-  "main": "index.js",
-  "directories": {
-    "example": "examples",
-    "test": "test"
-  },
-  "scripts": {
-    "test": "bin/test"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zxdong262/ringcentral-chatbot-python.git"
