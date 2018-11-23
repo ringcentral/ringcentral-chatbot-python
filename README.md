@@ -3,11 +3,9 @@
 
 [![Build Status](https://travis-ci.org/zxdong262/ringcentral-chatbot-python.svg?branch=test)](https://travis-ci.org/zxdong262/ringcentral-chatbot-python)
 
-RingCentral Chatbot Framework for Python.
+RingCentral Chatbot Framework for Python. With this framework, creating a RingCentral Glip chatbot would be seriously simple.
 
-```bash
-pip3 install ringcentral_bot_framework
-```
+To quick start, just jump to [Use CLI tool to create an bot app](#use-cli-tool-to-create-an-bot-app).
 
 For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/ringcentral-chatbot-js)
 

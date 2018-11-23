@@ -7,11 +7,19 @@ __package__ = 'ringcentral_bot_framework.core'
 import pydash as _
 import sys, os
 import json
-from .common import tables, debug, printError
+from .common import debug, printError
 from os.path import join
+from .config import configAll as conf
 
+folderName = 'filedb'
+try:
+  folderName = os.environ['FILEDB_FOLDER_NAME']
+except:
+  pass
+
+tables = conf.dbTables()
 cwd = os.getcwd()
-dbPath = join(cwd, 'filedb')
+dbPath = join(cwd, folderName)
 
 dbName = 'filedb'
 
@@ -53,7 +61,7 @@ def action(tableName, action, data=None):
   * for update, {id: xxx, update: {...}}
   * for get, singleUser:{id: xxx}, allUser: {}
   """
-  #debug('db op:', tableName, action, data)
+  debug('db op:', tableName, action, data)
   try:
     prepareDb()
     id = _.get(data, 'id')
@@ -86,7 +94,7 @@ def action(tableName, action, data=None):
         toOpenFile.close()
 
     elif action == 'get':
-      if id:
+      if not id is None:
         return readFile(toOpen)
       else:
         p = join(dbPath, tableName)

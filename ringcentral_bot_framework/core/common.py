@@ -16,8 +16,6 @@ try:
 except:
   pass
 
-tables = ('bot', 'user')
-
 def assign_module(src, ext):
   for key in dir(ext):
     if not _.strings.starts_with(key, '__'):

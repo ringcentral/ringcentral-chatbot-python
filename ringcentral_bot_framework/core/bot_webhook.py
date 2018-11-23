@@ -3,6 +3,7 @@ from .bot import Bot, getBot
 from .user import User, getUser
 import time
 from .config import configAll as conf
+from .db import dbAction
 from pydash import get, is_dict
 
 def botWebhook(event):
@@ -28,7 +29,7 @@ def botWebhook(event):
   if user == False:
     user = User()
   if eventType == 'GroupJoined':
-    conf.botJoinPrivateChatAction(bot, groupId, user)
+    conf.botJoinPrivateChatAction(bot, groupId, user, dbAction)
 
   elif eventType == 'PostAdded':
     # for bot self post, ignore
@@ -40,7 +41,8 @@ def botWebhook(event):
       groupId,
       creatorId,
       user,
-      get(body, 'text')
+      get(body, 'text'),
+      dbAction
     )
 
   return defaultResponse

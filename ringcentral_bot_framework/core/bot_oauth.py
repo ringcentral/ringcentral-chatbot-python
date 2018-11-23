@@ -6,13 +6,14 @@ from .common import result
 from .bot import Bot
 from pydash.predicates import is_number
 from pydash import get
+from .db import dbAction
 from .config import configAll as conf
 
 def botAuth(event):
   bot = Bot()
   bot.auth(get(event, 'queryStringParameters.code'))
   bot.renewWebHooks(event)
-  conf.botAuthAction(bot)
+  conf.botAuthAction(bot, dbAction)
   return result('Bot added')
 
 def renewBot (event):
