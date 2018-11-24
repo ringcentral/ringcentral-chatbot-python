@@ -2,6 +2,7 @@ import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 import unittest
 from ringcentral_bot_framework.core.db import dbAction as action, DBNAME
+import pydash as _
 
 class TestFiledbMethods(unittest.TestCase):
 
@@ -26,7 +27,11 @@ class TestFiledbMethods(unittest.TestCase):
     self.assertEqual(x2['s'], 45)
     self.assertEqual(x2['fg'], 'sdf')
     x2 = action('bot', 'get')
-    self.assertEqual(x2[0]['fg'], 'sdf')
+    xx2 = _.collections.find(
+      x2,
+      lambda x: x['id'] == 'bxx1'
+    )
+    self.assertEqual(xx2['fg'], 'sdf')
 
 if __name__ == '__main__':
     unittest.main()
