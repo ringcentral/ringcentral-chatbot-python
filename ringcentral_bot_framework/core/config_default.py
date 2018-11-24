@@ -122,7 +122,7 @@ def dbTables():
       'schemas': [
         {
           'name': 'id',
-          'type': 'string'
+          'type': 'string',
           'primary': True
         },
         {
