@@ -17,7 +17,7 @@ try:
 except:
   pass
 
-tables = conf.dbTables()
+tables = list(map(lambda x: x['name'], conf.dbTables()))
 cwd = os.getcwd()
 dbPath = join(cwd, folderName)
 

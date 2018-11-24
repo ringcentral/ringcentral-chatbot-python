@@ -117,7 +117,48 @@ def dbTables():
   '''
   db tables to init
   '''
-  return ('bot', 'user')
+  return [
+    {
+      'name': 'bot',
+      'schemas': [
+        {
+          'name': 'id',
+          'type': 'string',
+          'primary': True
+        },
+        {
+          'name': 'token',
+          'type': 'json'
+        },
+        {
+          'name': 'data',
+          'type': 'json'
+        }
+      ]
+    },
+    {
+      'name': 'user',
+      'schemas': [
+        {
+          'name': 'id',
+          'type': 'string',
+          'primary': True
+        },
+        {
+          'name': 'token',
+          'type': 'json'
+        },
+        {
+          'name': 'groups',
+          'type': 'json'
+        },
+        {
+          'name': 'data',
+          'type': 'json'
+        }
+      ]
+    }
+  ]
 
 def dbWrapper(tableName, action, data = None):
   """custom db action wrapper
@@ -148,12 +189,10 @@ def dbWrapper(tableName, action, data = None):
 
     elif action == 'remove':
       # todo
-      pass
       return 'removed'
 
     elif action == 'update':
       # todo
-      pass
       return 'updated'
 
     elif action == 'get':

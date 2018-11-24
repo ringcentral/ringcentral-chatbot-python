@@ -20,7 +20,7 @@ client = boto3.client('dynamodb')
 prefix = 'ringcentral_dynamo1'
 DYNAMODB_ReadCapacityUnits=5
 DYNAMODB_WriteCapacityUnits=5
-tables = conf.dbTables()
+tables = list(map(lambda x: x['name'], conf.dbTables()))
 
 try:
   prefix = os.environ['DYNAMODB_TABLE_PREFIX']
