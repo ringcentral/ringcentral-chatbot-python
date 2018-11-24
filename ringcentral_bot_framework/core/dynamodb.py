@@ -8,17 +8,20 @@ import pydash as _
 import sys, os
 import boto3
 import json
-from .common import tables, debug
+from .common import debug
 from os.path import join
 from functools import reduce
 from pydash.predicates import is_string
 from pydash.strings import starts_with
+from .config import configAll as conf
 
 boto3.setup_default_session(region_name=os.environ['AWS_REGION'])
 client = boto3.client('dynamodb')
 prefix = 'ringcentral_dynamo1'
 DYNAMODB_ReadCapacityUnits=5
 DYNAMODB_WriteCapacityUnits=5
+tables = list(map(lambda x: x['name'], conf.dbTables()))
+
 try:
   prefix = os.environ['DYNAMODB_TABLE_PREFIX']
   DYNAMODB_ReadCapacityUnits = int(os.environ['DYNAMODB_ReadCapacityUnits'])
@@ -183,7 +186,7 @@ def action(tableName, action, data = None):
     putItem(old, tableName)
 
   elif action == 'get':
-    if id:
+    if not id is None:
       return getItem(id, tableName)
     else:
       return scan(tableName)

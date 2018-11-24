@@ -4,6 +4,7 @@ from .bot import Bot, getBot
 import time
 from .config import configAll as conf
 from pydash import get, is_dict
+from .db import dbAction
 
 subscribeIntervalText = subscribeInterval()
 
@@ -26,21 +27,19 @@ def userWebhook(event):
   isRenewEvent = eventType == subscribeIntervalText
 
   if not isinstance(user, User):
-    print('no user')
     return defaultResponse
 
   if isRenewEvent:
-    print('isRenewEvent')
     user.renewWebHooks(event)
     user.refresh()
     return defaultResponse
 
   else:
-    print('dddddd')
     conf.userEventAction(
       user,
       eventType,
       event,
-      getBot
+      getBot,
+      dbAction
     )
     return defaultResponse

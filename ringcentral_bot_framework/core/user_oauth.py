@@ -6,6 +6,7 @@ from .common import result
 from .user import User
 from .bot import Bot, getBot
 from .config import configAll as conf
+from .db import dbAction
 from pydash import get
 
 def userAuth(event):
@@ -17,8 +18,8 @@ def userAuth(event):
   botId = get(arr, '[1]')
   bot = getBot(botId)
   user.addGroup(groupId, botId)
-  conf.userAuthSuccessAction(bot, groupId, user.id)
-  conf.userAddGroupInfoAction(user, bot, groupId)
+  conf.userAuthSuccessAction(bot, groupId, user.id, dbAction)
+  conf.userAddGroupInfoAction(user, bot, groupId, dbAction)
   return result(
     conf.userAuthSuccessHtml(user, bot),
     200,
