@@ -29,8 +29,6 @@ def router(event):
   debug('got event', event)
   action = get(event, 'pathParameters.action')
   handler = defaultEventHandler
-  if not is_dict(event['body']):
-    event['body'] = {}
   debug('action=====', action)
   if not is_dict(event['body']):
     try:
