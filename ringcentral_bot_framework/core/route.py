@@ -30,11 +30,14 @@ def router(event):
   action = get(event, 'pathParameters.action')
   handler = defaultEventHandler
   debug('action=====', action)
-  if not is_dict(event['body']):
+  body = get(event, 'body')
+  if 'application/x-www-form-urlencoded' in get(event, 'headers.Content-Type'):
+    event['body'] = parse_qs(body)
+  if not is_dict(body):
     try:
       event['body'] = json.loads(event['body'] or '{}')
     except:
-      event['body'] = parse_qs(event['body'])
+      event['body'] = body
   debug('event=====', event)
   try:
     handler = routes[action]
