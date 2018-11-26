@@ -31,8 +31,6 @@ def router(event):
   handler = defaultEventHandler
   debug('action=====', action)
   body = get(event, 'body')
-  if 'application/x-www-form-urlencoded' in get(event, 'headers.Content-Type'):
-    event['body'] = parse_qs(body)
   if not is_dict(body):
     if 'application/x-www-form-urlencoded' in get(event, 'headers.Content-Type'):
       event['body'] = parse_qs(body)
