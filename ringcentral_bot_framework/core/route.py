@@ -8,6 +8,7 @@ route /{action} to different event handeler
 extend or overide default route by set `routes` in config.py
 """
 
+from urllib.parse import parse_qs, urlencode
 from .bot_oauth import botAuth
 from .user_oauth import userAuth
 from .bot_webhook import botWebhook
@@ -29,11 +30,16 @@ def router(event):
   action = get(event, 'pathParameters.action')
   handler = defaultEventHandler
   debug('action=====', action)
-  if not is_dict(event['body']):
-    try:
-      event['body'] = json.loads(event['body'] or '{}')
-    except:
-      pass
+  body = get(event, 'body')
+  if not is_dict(body):
+    if 'application/x-www-form-urlencoded' in get(event, 'headers.Content-Type'):
+      event['body'] = parse_qs(body)
+    else:
+      try:
+        event['body'] = json.loads(event['body'] or '{}')
+      except:
+        event['body'] = {}
+  debug('event=====', event)
   try:
     handler = routes[action]
   except:

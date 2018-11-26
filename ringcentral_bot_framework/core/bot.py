@@ -67,6 +67,36 @@ class Bot:
       'data': self.data
     })
 
+  def authPrivateBot(self, _token):
+    access_token = _token['access_token'][0]
+    token = {
+      'token_type': 'bearer',
+      'access_token': access_token,
+      'expires_in': 2147483647,
+      'expire_time': 3690554048.892673,
+      'refresh_token': '',
+      'refresh_token_expires_in': 0,
+      'refresh_token_expire_time': 0,
+    }
+    self.platform._auth.set_data(token)
+    info = self.validate(True)
+    txt = json.loads(info.text())
+    token['owner_id'] = str(txt['id'])
+    token['name'] = txt['name']
+    token['scope'] = ' '.join(
+      list(
+        map(lambda x: x['featureName'], txt['serviceFeatures'])
+      )
+    )
+    self.platform._auth.set_data(token)
+    self.token = token
+    self.id = token['owner_id']
+    self.writeToDb({
+      'id': self.id,
+      'token': self.token,
+      'data': self.data
+    })
+
   def setupWebhook(self, event):
     try:
      self.platform.post('/subscription', {
@@ -121,12 +151,13 @@ class Bot:
     except Exception as e:
       printError(e, 'sendMessage')
 
-  def validate (self):
+  def validate (self, returnData=False):
     try:
-      self.platform.get('/account/~/extension/~')
-      return True
+      res = self.platform.get('/account/~/extension/~')
+      return res if returnData else True
     except Exception as e:
       errStr = str(e)
+      print(errStr, '----')
       if 'OAU-232' in errStr or 'CMN-405' in errStr:
         removeBot(self.id)
       return False

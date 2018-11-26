@@ -1,5 +1,5 @@
 
-echo 'building'
+echo 'watching'
 cd `dirname $0`
 cd ../dev/lambda
-serverless logs -f bot -t
+../../node_modules/.bin/serverless logs -f bot -t

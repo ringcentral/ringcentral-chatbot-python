@@ -5,6 +5,7 @@ from urllib.parse import parse_qs, urlencode
 import os, sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../..')
 from ringcentral_bot_framework import router
+import pydash as _
 import json
 
 app = Flask('devtest')
@@ -14,7 +15,8 @@ def act(action):
     body = request.data
     if not body and request.form:
       body = urlencode(request.form)
-    if not body:
+      body = parse_qs(body)
+    elif not body:
       try:
         body = request.json
       except:
@@ -24,7 +26,7 @@ def act(action):
         'action': action
       },
       'queryStringParameters': dict(request.args),
-      'body': json.loads(body or '{}'),
+      'body': body if _.predicates.is_dict(body) else json.loads(body or '{}'),
       'headers': dict(request.headers)
     })
     resp = response['body']

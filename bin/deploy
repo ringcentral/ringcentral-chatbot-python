@@ -2,6 +2,8 @@
 echo 'building'
 cd `dirname $0`
 cd ../dev/lambda
+rm -rf config.py
+rm -rf ringcentral_bot_framework
 cp -r ../../ringcentral_bot_framework ./
 cp -r ../../requirements.txt ./
 cp -r ../../config.py ./
