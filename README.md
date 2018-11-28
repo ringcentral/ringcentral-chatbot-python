@@ -7,8 +7,6 @@ RingCentral Chatbot Framework for Python. With this framework, creating a RingCe
 
 To quick start, just jump to [Use CLI tool to create an bot app](#use-cli-tool-to-create-an-bot-app).
 
-For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/ringcentral-chatbot-js)
-
 ## Table of contents <!-- omit in toc -->
 
 - [Features](#features)
@@ -21,6 +19,7 @@ For js developer, we have [ringcentral-chatbot-js](https://github.com/tylerlong/
 - [Building and Deploying to AWS Lambda](#building-and-deploying-to-aws-lambda)
 - [Unit Test](#unit-test)
 - [Todos](#todos)
+- [Credits](#credits)
 - [License](#license)
 
 ## Features
@@ -178,7 +177,12 @@ bin/test
 ```
 
 ## Todos
-Visit https://github.com/zxdong262/ringcentral-chatbot-python/issues
+
+Visit [https://github.com/zxdong262/ringcentral-chatbot-python/issues](https://github.com/zxdong262/ringcentral-chatbot-python/issues)
+
+## Credits
+
+The core bot framework logic is implanted from [ringcentral-ai-bot](https://github.com/ringcentral-tutorials/ringcentral-ai-bot) written by [@tylerlong](https://github.com/tylerlong)
 
 ## License
 

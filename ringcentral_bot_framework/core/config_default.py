@@ -2,8 +2,11 @@
 default config module
 could write config.py to override all the bot behavior
 """
+
 __name__ = 'defaultConfig'
 __package__ = 'ringcentral_bot_framework.core'
+
+import copy
 
 def botJoinPrivateChatAction(bot, groupId, user, dbAction):
   """
@@ -36,6 +39,41 @@ def botGotPostAddAction(
         'text': f'![:Person]({creatorId}), Hello, you just posted "{text}"'
       }
     )
+
+def botGroupLeftAction(
+  bot,
+  message,
+  dbAction
+):
+  """
+  got message that bot has left chat group
+  could do some clean up work here
+  default: remove group id ref in all user database
+  """
+  users = dbAction('user', 'get')
+  for user in users:
+    id = user['id']
+    groups = user['groups']
+    keys = groups.keys()
+    ngroups = copy.deepcopy(groups)
+    for groupId in keys:
+      if groups[groupId] == bot.id:
+        ngroups.pop(groupId, None)
+    dbAction('user', 'update', {
+      'id': id,
+      'update': {
+        'groups': ngroups
+      }
+    })
+
+
+def botDeleteAction(bot, message, dbAction):
+  """
+  got message that bot has beed deleted
+  could do some clean up work here
+  default: delete bot from database
+  """
+  bot.destroy()
 
 def botAuthAction(bot, dbAction):
   '''

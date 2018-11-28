@@ -45,4 +45,18 @@ def botWebhook(event):
       dbAction
     )
 
+  elif eventType == 'Delete':
+    conf.botDeleteAction(
+      bot,
+      message,
+      dbAction
+    )
+
+  elif eventType == 'GroupLeft':
+    conf.botGroupLeftAction(
+      bot,
+      message,
+      dbAction
+    )
+
   return defaultResponse

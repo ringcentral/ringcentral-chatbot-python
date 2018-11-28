@@ -60,6 +60,9 @@ class Bot:
     redirect_url = RINGCENTRAL_BOT_SERVER +'/bot-oauth'
     self.platform.login(code=code, redirect_uri=redirect_url)
     self.token = self.platform.auth().data()
+    info = self.validate(True)
+    txt = json.loads(info.text())
+    self.token['name'] = txt['name']
     self.id = self.token['owner_id']
     self.writeToDb({
       'id': self.id,
@@ -111,7 +114,7 @@ class Bot:
       # todo check sub-406 error and retry
       printError(e, 'setupWebhook')
 
-  def renewWebHooks(self, event):
+  def renewWebHooks(self, event, removeOnly = False):
     try:
       r = self.platform.get('/subscription')
       r = json.loads(r.text())['records']
@@ -123,7 +126,8 @@ class Bot:
         'bot subs list',
         ','.join(list(map(lambda g: g['id'], filtered)))
       )
-      self.setupWebhook(event)
+      if not removeOnly:
+        self.setupWebhook(event)
       for sub in filtered:
         self.delSubscription(sub['id'])
 
@@ -161,6 +165,10 @@ class Bot:
       if 'OAU-232' in errStr or 'CMN-405' in errStr:
         removeBot(self.id)
       return False
+
+  def destroy(self):
+    self.renewWebHooks(None, True)
+    removeBot(self.id)
 
 def getBot(id):
   if not id:

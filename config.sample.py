@@ -6,6 +6,9 @@ edit config.py functions to override default bot behavior
 __name__ = 'localConfig'
 __package__ = 'ringcentral_bot_framework'
 
+'''
+import copy
+
 def botJoinPrivateChatAction(bot, groupId, user, dbAction):
   """
   bot join private chat event handler
@@ -38,12 +41,47 @@ def botGotPostAddAction(
       }
     )
 
+def botGroupLeftAction(
+  bot,
+  message,
+  dbAction
+):
+  """
+  got message that bot has left chat group
+  could do some clean up work here
+  default: remove group id ref in all user database
+  """
+  users = dbAction('user', 'get')
+  for user in users:
+    id = user['id']
+    groups = user['groups']
+    keys = groups.keys()
+    ngroups = copy.deepcopy(groups)
+    for groupId in keys:
+      if groups[groupId] == bot.id:
+        ngroups.pop(groupId, None)
+    dbAction('user', 'update', {
+      'id': id,
+      'update': {
+        'groups': ngroups
+      }
+    })
+
+
+def botDeleteAction(bot, message, dbAction):
+  """
+  got message that bot has beed deleted
+  could do some clean up work here
+  default: delete bot from database
+  """
+  bot.destroy()
+
 def botAuthAction(bot, dbAction):
-  '''
+  """
   After bot auth success,
   can do some bot actions
   default: do nothing
-  '''
+  """
   return
 
 def userAuthSuccessAction(bot, groupId, userId, dbAction):
@@ -97,26 +135,26 @@ def userEventAction(
       })
 
 def botFilters():
-  '''
+  """
   customize bot filters to subscribe
-  '''
+  """
   return [
     '/restapi/v1.0/glip/posts',
     '/restapi/v1.0/glip/groups'
   ]
 
 def userFilters():
-  '''
+  """
   customize user filters to subscribe
-  '''
+  """
   return [
     '/restapi/v1.0/account/~/extension/~/message-store'
   ]
 
 def dbTables():
-  '''
+  """
   db tables to init
-  '''
+  """
   return [
     {
       'name': 'bot',
@@ -163,7 +201,7 @@ def dbTables():
 def dbWrapper(tableName, action, data = None):
   """custom db action wrapper
   * set DB_TYPE=custom in .env to activate
-  * if it will be used in lambda, make sure it it stateless,
+  * make sure it it stateless,
   * in every action, you should check database is ready or not, if not, init it first
   * check https://github.com/zxdong262/ringcentral-chatbot-python/blob/master/ringcentral_bot_framework/core/dynamodb.py or https://github.com/zxdong262/ringcentral-chatbot-python/blob/master/ringcentral_bot_framework/core/filedb.py as example
   * @param {String} tableName, user or bot, or other table you defined
@@ -207,8 +245,10 @@ def dbWrapper(tableName, action, data = None):
     return False
 
 def dbName():
-  '''
+  """
   return db name
   * set DB_TYPE=custom in .env to activate
-  '''
+  """
   return 'custom'
+
+'''
