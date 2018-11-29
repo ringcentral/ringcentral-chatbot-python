@@ -140,7 +140,8 @@ def botFilters():
   """
   return [
     '/restapi/v1.0/glip/posts',
-    '/restapi/v1.0/glip/groups'
+    '/restapi/v1.0/glip/groups',
+    '/restapi/v1.0/account/~/extension/~'
   ]
 
 def userFilters():
