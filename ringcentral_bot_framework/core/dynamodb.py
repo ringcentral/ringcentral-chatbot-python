@@ -18,8 +18,8 @@ from .config import configAll as conf
 boto3.setup_default_session(region_name=os.environ['AWS_REGION'])
 client = boto3.client('dynamodb')
 prefix = 'ringcentral_dynamo1'
-DYNAMODB_ReadCapacityUnits=5
-DYNAMODB_WriteCapacityUnits=5
+DYNAMODB_ReadCapacityUnits=1
+DYNAMODB_WriteCapacityUnits=1
 tables = list(map(lambda x: x['name'], conf.dbTables()))
 
 try:

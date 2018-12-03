@@ -61,8 +61,8 @@ provider:
     DB_TYPE: dynamodb
     DYNAMODB_TABLE_PREFIX: ringcentral-bot
     DYNAMODB_REGION: us-east-1
-    DYNAMODB_ReadCapacityUnits: 5
-    DYNAMODB_WriteCapacityUnits: 5
+    DYNAMODB_ReadCapacityUnits: 1
+    DYNAMODB_WriteCapacityUnits: 1
 
 # you can add packaging information here
 package:
