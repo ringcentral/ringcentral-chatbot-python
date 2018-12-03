@@ -11,7 +11,6 @@ To quick start, just jump to [Use CLI tool to create an bot app](#use-cli-tool-t
 
 - [Features](#features)
 - [Use CLI tool to create an bot app](#use-cli-tool-to-create-an-bot-app)
-- [Use as a module](#use-as-a-module)
 - [Example bot apps](#example-bot-apps)
 - [Prerequisites](#prerequisites)
 - [Development & quick start](#development--quick-start)
@@ -42,10 +41,6 @@ npx ringcentral-chatbot-factory my-ringcentral-chat-bot
 ```
 
 Then just fill the promots, follow `my-ringcentral-chat-bot/README.md`'s guide, it is done.
-
-## Use as a module
-
-[docs/use-as-a-module.md](docs/use-as-a-module.md)
 
 ## Example bot apps
 
