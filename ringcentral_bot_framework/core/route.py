@@ -13,6 +13,7 @@ from .bot_oauth import botAuth
 from .user_oauth import userAuth
 from .bot_webhook import botWebhook
 from .user_webhook import userWebhook
+from .data import dataView
 from .common import debug, defaultEventHandler
 from pydash import get
 from pydash.predicates import is_dict
@@ -22,7 +23,8 @@ routes = {
   'bot-oauth': botAuth,
   'user-oauth': userAuth,
   'bot-webhook': botWebhook,
-  'user-webhook': userWebhook
+  'user-webhook': userWebhook,
+  'data': dataView
 }
 
 def router(event):
