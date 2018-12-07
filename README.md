@@ -33,14 +33,16 @@ To quick start, just jump to [Use CLI tool to create an bot app](#use-cli-tool-t
 
 ## Use CLI tool to create an bot app
 
-- Using [ringcentral-chatbot-factory](https://github.com/zxdong262/ringcentral-chatbot-factory) to init a rinncentral chatbot app would be fast!
-- require npm 5.2+, recommend using [nvm](https://github.com/creationix/nvm) to install nodejs/npm
+- Using [ringcentral-chatbot-factory-py](https://github.com/zxdong262/ringcentral-chatbot-factory-py) to init a rinncentral chatbot app would be fast!
 
 ```bash
-npx ringcentral-chatbot-factory my-ringcentral-chat-bot
+pip3 install ringcentral_chatbot_factory
+rcf my-ringcentral-chat-bot
 ```
 
 Then just fill the promots, follow `my-ringcentral-chat-bot/README.md`'s guide, it is done.
+
+![ ](https://github.com/zxdong262/ringcentral-chatbot-factory-py/raw/master/screenshots/cli.png)
 
 ## Example bot apps
 
