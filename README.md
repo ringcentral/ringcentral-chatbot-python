@@ -17,7 +17,7 @@ To quick start, just jump to [Use CLI tool to create an bot app](#use-cli-tool-t
 - [Test bot](#test-bot)
 - [Building and Deploying to AWS Lambda](#building-and-deploying-to-aws-lambda)
 - [Use Extensions](#use-extensions)
-- [Write a extension your self](#write-a-extension-your-self)
+- [Write a extension yourself](#write-a-extension-yourself)
 - [Unit Test](#unit-test)
 - [Todos](#todos)
 - [Credits](#credits)
@@ -186,7 +186,7 @@ And install these exetnsions by `pip install ringcentral_bot_framework_extension
 
 You can search for more extension in [pypi.org](https://pypi.org) with keyword `ringcentral_bot_framework_extension`.
 
-## Write a extension your self
+## Write a extension yourself
 
 Write one extension will be simple, just check out [botinfo extension](https://github.com/zxdong262/ringcentral-chatbot-python-ext-bot-info) as an example, you just need to write one function there.
 
