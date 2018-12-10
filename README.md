@@ -190,6 +190,8 @@ You can search for more extension in [pypi.org](https://pypi.org) with keyword `
 
 Write one extension will be simple, just check out [botinfo extension](https://github.com/zxdong262/ringcentral-chatbot-python-ext-bot-info) as an example, you just need to write one function there.
 
+Make sure you follow the naming rule: starts with `ringcentral_bot_framework_extension_` and publish to pypi.org and it is done!
+
 ```python
 # botinfo extension's source code
 # https://github.com/zxdong262/ringcentral-chatbot-python-ext-bot-info/blob/master/ringcentral_bot_framework_extension_botinfo/__init__.py
