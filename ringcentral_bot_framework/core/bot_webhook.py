@@ -5,6 +5,7 @@ import time
 from .config import configAll as conf
 from .db import dbAction
 from pydash import get, is_dict
+from .extensions import runExtensionFunction
 
 def botWebhook(event):
   message = get(event, 'body')
@@ -35,14 +36,23 @@ def botWebhook(event):
     # for bot self post, ignore
     if creatorId == botId:
       return defaultResponse
-
-    conf.botGotPostAddAction(
+    handledByExtension = runExtensionFunction(
+      'botGotPostAddAction',
       bot,
       groupId,
       creatorId,
       user,
       get(body, 'text'),
       dbAction
+    )
+    conf.botGotPostAddAction(
+      bot,
+      groupId,
+      creatorId,
+      user,
+      get(body, 'text'),
+      dbAction,
+      handledByExtension
     )
 
   elif eventType == 'Delete':
