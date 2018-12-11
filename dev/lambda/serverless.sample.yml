@@ -19,6 +19,9 @@ service: ringcentral-bot # NOTE: update this with your service name
 provider:
   name: aws
   runtime: python3.6
+  iamManagedPolicies:
+    - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+    - arn:aws:iam::aws:policy/AWSLambdaRole
 
 # you can overwrite defaults here
 #  stage: dev
@@ -64,6 +67,16 @@ provider:
     DYNAMODB_ReadCapacityUnits: 1
     DYNAMODB_WriteCapacityUnits: 1
 
+    ## extensions, separate by `,`
+    # example: EXTENSIONS=ringcentral_bot_framework_extension_botinfo,ringcentral_bot_framework_extension_some_other_extnesion
+    # find more ringcentral_bot_framework_extensions from pypi.org, search by keyword `ringcentral_bot_framework_extension`
+    EXTENSIONS:
+
+    ## Dataviewer visit /data to check database data json
+    # enable it by set to `yes`
+    # Default is disbaled
+    DATA_VIEWER_ENABLED: no
+
 # you can add packaging information here
 package:
   include:
@@ -78,6 +91,9 @@ functions:
   bot:
     handler: handler.bot
     timeout: 400
+    events:
+      - http: 'ANY {action+}'
+      - http: 'ANY'
 
 plugins:
   - serverless-python-requirements
