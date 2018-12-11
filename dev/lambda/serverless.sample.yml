@@ -19,6 +19,9 @@ service: ringcentral-bot # NOTE: update this with your service name
 provider:
   name: aws
   runtime: python3.6
+  iamManagedPolicies:
+    - 'arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'
+    - 'arn:aws:iam::aws:policy/AWSLambdaExecute'
 
 # you can overwrite defaults here
 #  stage: dev
@@ -45,17 +48,17 @@ provider:
     ENV: production
     # ringcentral apps
 
-    ## bots
+    ## for bots auth, required
     RINGCENTRAL_BOT_CLIENT_ID:
     RINGCENTRAL_BOT_CLIENT_SECRET:
 
-    ## user
-    RINGCENTRAL_USER_CLIENT_ID: xxxx
-    RINGCENTRAL_USER_CLIENT_SECRET: xxxx
+    ## for user auth, could be empty if do not need user auth
+    RINGCENTRAL_USER_CLIENT_ID:
+    RINGCENTRAL_USER_CLIENT_SECRET:
 
     ## common
     RINGCENTRAL_SERVER: https://platform.devtest.ringcentral.com
-    RINGCENTRAL_BOT_SERVER: https://xxxxx.xxx
+    RINGCENTRAL_BOT_SERVER: https://xxxxx.execute-api.us-east-1.amazonaws.com/dev
 
     # db
     DB_TYPE: dynamodb
@@ -68,6 +71,10 @@ provider:
 package:
   include:
     - ringcentral_bot_framework
+  exclude:
+    - flask
+    - python-dotenv
+    - boto3
 
 exclude:
   - package-lock*
@@ -78,6 +85,11 @@ functions:
   bot:
     handler: handler.bot
     timeout: 400
+    events:
+      - http:
+          method: any
+          path: /{action+}
+          cors: true
 
 plugins:
   - serverless-python-requirements
@@ -85,6 +97,12 @@ plugins:
 custom:
   pythonRequirements:
     dockerizePip: non-linux
+    slim: true
+    noDeploy:
+      - flask
+      - python-dotenv
+      - pylint
+      - boto3
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
