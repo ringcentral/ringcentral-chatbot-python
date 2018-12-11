@@ -48,9 +48,9 @@ Then just fill the promots, follow `my-ringcentral-chat-bot/README.md`'s guide, 
 
 ## Example bot apps
 
-- [date-time-chatbot](https://github.com/zxdong262/ringcentral-date-time-chatbot) : Simple ringcentral chatbot which can tell time/date.
-- [assistant-bot](https://github.com/zxdong262/ringcentral-assistant-bot) : Simple assistant Glip bot to show user/company information, this bot will show you how to access user data.
-- [survey-bot](https://github.com/zxdong262/ringcentral-survey-bot) : Example survey bot, this bot will show you how to create/use custom database wrapper.
+- [date-time-chatbot](https://github.com/zxdong262/ringcentral-date-time-chatbot): simple Glip chatbot that can tell time/date.
+- [assistant-bot](https://github.com/zxdong262/ringcentral-assistant-bot): simple assistant Glip bot to show user/company information, this bot will show you how to access user data.
+- [survey-bot](https://github.com/zxdong262/ringcentral-survey-bot): example survey bot, this bot will show you how to create/use custom database wrapper.
 
 ## Prerequisites
 
@@ -121,13 +121,18 @@ aws_access_key_id = <your aws_access_key_id>
 aws_secret_access_key = <your aws_secret_access_key>
 ```
 
-For more information, refer to https://docs.aws.amazon.com/general/latest/gr/aws-security-credentials.html
+For more information, refer to [https://docs.aws.amazon.com/general/latest/gr/aws-security-credentials.html](https://docs.aws.amazon.com/general/latest/gr/aws-security-credentials.html)
 
 ```bash
+
+# install serverless
+npm i
+
+# create serverless.yml
 cp dev/lambda/serverless.sample.yml dev/lambda/serverless.yml
 ```
 
-Edit `lambda/serverless.yml`, and make sure you set the proper name and required env.
+Edit `dev/lambda/serverless.yml`, and make sure you set the proper name and required env.
 
 ```yml
 # you can define service wide environment variables here
