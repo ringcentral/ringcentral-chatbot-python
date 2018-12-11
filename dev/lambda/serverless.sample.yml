@@ -20,8 +20,8 @@ provider:
   name: aws
   runtime: python3.6
   iamManagedPolicies:
-    - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-    - arn:aws:iam::aws:policy/AWSLambdaRole
+    - 'arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'
+    - 'arn:aws:iam::aws:policy/AWSLambdaExecute'
 
 # you can overwrite defaults here
 #  stage: dev
@@ -48,17 +48,17 @@ provider:
     ENV: production
     # ringcentral apps
 
-    ## bots
+    ## for bots auth, required
     RINGCENTRAL_BOT_CLIENT_ID:
     RINGCENTRAL_BOT_CLIENT_SECRET:
 
-    ## user
-    RINGCENTRAL_USER_CLIENT_ID: xxxx
-    RINGCENTRAL_USER_CLIENT_SECRET: xxxx
+    ## for user auth, could be empty if do not need user auth
+    RINGCENTRAL_USER_CLIENT_ID:
+    RINGCENTRAL_USER_CLIENT_SECRET:
 
     ## common
     RINGCENTRAL_SERVER: https://platform.devtest.ringcentral.com
-    RINGCENTRAL_BOT_SERVER: https://xxxxx.xxx
+    RINGCENTRAL_BOT_SERVER: https://xxxxx.execute-api.us-east-1.amazonaws.com/dev
 
     # db
     DB_TYPE: dynamodb
@@ -67,20 +67,14 @@ provider:
     DYNAMODB_ReadCapacityUnits: 1
     DYNAMODB_WriteCapacityUnits: 1
 
-    ## extensions, separate by `,`
-    # example: EXTENSIONS=ringcentral_bot_framework_extension_botinfo,ringcentral_bot_framework_extension_some_other_extnesion
-    # find more ringcentral_bot_framework_extensions from pypi.org, search by keyword `ringcentral_bot_framework_extension`
-    EXTENSIONS:
-
-    ## Dataviewer visit /data to check database data json
-    # enable it by set to `yes`
-    # Default is disbaled
-    DATA_VIEWER_ENABLED: no
-
 # you can add packaging information here
 package:
   include:
     - ringcentral_bot_framework
+  exclude:
+    - flask
+    - python-dotenv
+    - boto3
 
 exclude:
   - package-lock*
@@ -92,8 +86,10 @@ functions:
     handler: handler.bot
     timeout: 400
     events:
-      - http: 'ANY {action+}'
-      - http: 'ANY'
+      - http:
+          method: any
+          path: /{action+}
+          cors: true
 
 plugins:
   - serverless-python-requirements
@@ -101,6 +97,12 @@ plugins:
 custom:
   pythonRequirements:
     dockerizePip: non-linux
+    slim: true
+    noDeploy:
+      - flask
+      - python-dotenv
+      - pylint
+      - boto3
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
