@@ -218,7 +218,6 @@ Write one extension will be simple, just check out [botinfo extension](https://g
 ```python
 # botinfo extension's source code
 # https://github.com/zxdong262/ringcentral-chatbot-python-ext-bot-info/blob/master/ringcentral_bot_framework_extension_botinfo/__init__.py
-import pydash as _
 import json
 
 name = 'ringcentral_bot_framework_extension_botinfo'
