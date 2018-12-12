@@ -33,6 +33,9 @@ def botGotPostAddAction(
   bot got group chat message: text
   bot could send some response
   """
+  if handledByExtension:
+    return
+
   if f'![:Person]({bot.id})' in text:
     bot.sendMessage(
       groupId,

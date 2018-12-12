@@ -51,6 +51,7 @@ Then just fill the promots, follow `my-ringcentral-chat-bot/README.md`'s guide, 
 - [date-time-chatbot](https://github.com/zxdong262/ringcentral-date-time-chatbot): simple Glip chatbot that can tell time/date.
 - [assistant-bot](https://github.com/zxdong262/ringcentral-assistant-bot): simple assistant Glip bot to show user/company information, this bot will show you how to access user data.
 - [survey-bot](https://github.com/zxdong262/ringcentral-survey-bot): example survey bot, this bot will show you how to create/use custom database wrapper.
+- [translate-bot](https://github.com/zxdong262/ringcentral-translate-bot): translate bot for glip.
 
 ## Prerequisites
 
@@ -104,8 +105,8 @@ cp config.sample.py config.py
 ## Test bot
 
 - Goto your ringcentral app's bot section, click 'Add to glip'
-- Login to https://glip-app.devtest.ringcentral.com, find the bot by searching its name. Talk to the bot.
-- Edit config.py to change bot bahavior and test in https://glip-app.devtest.ringcentral.com
+- Login to [https://glip-app.devtest.ringcentral.com](https://glip-app.devtest.ringcentral.com), find the bot by searching its name. Talk to the bot.
+- Edit config.py to change bot bahavior and test in [https://glip-app.devtest.ringcentral.com](https://glip-app.devtest.ringcentral.com)
 
 ## Building and Deploying to AWS Lambda
 
@@ -199,13 +200,13 @@ Do not forget to set your RingCentral app's redirect URL to Lambda's API Gateway
 
 RingCentral Chatbot Framework for Python Extensions will extend bot command support with simple setting in `.env`.
 
-Just set like this in `.env`
+Just set like this in `.env`, support multiple extensions seperated by `,`
 
 ```bash
-EXTENSIONS=ringcentral_bot_framework_extension_botinfo,ringcentral_bot_framework_extension_some_other_extension
+EXTENSIONS=ringcentral_bot_framework_extension_botinfo,ringcentral_bot_framework_extension_world_time
 ```
 
-And install these exetnsions by `pip install ringcentral_bot_framework_extension_botinfo ringcentral_bot_framework_extension_some_other_extension`, it is done.
+And install these exetnsions by `pip install ringcentral_bot_framework_extension_botinfo ringcentral_bot_framework_extension_world_time`, it is done.
 
 ![ ](https://github.com/zxdong262/ringcentral-chatbot-python-ext-bot-info/raw/master/screenshots/ss.png)
 
