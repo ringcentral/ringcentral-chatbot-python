@@ -44,4 +44,4 @@ def selfTrigger(event, Bot):
       ClientContext='string',
       Payload=json.dumps(event)
   )
-  time.sleep(event['wait'])
+  time.sleep(2)

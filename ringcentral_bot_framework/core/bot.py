@@ -113,17 +113,16 @@ class Bot:
       })
       raise Exception('SUB-406')
     except Exception as e:
-      # todo check sub-406 error and retry
       errStr = str(e)
       debug(errStr, 'errStr')
       if 'SUB-406' in errStr:
         printError('bot subscribe fail, will do subscribe one minutes later')
-        event['wait'] = 50 * 1000
+        event['wait'] = 50
         event['botId'] = self.id
         event['token'] = self.token
         event['pathParameters']['action'] = 'renew-bot'
         selfTrigger(event, Bot)
-        return
+        debug('self trigger end ok')
       printError(e, 'setupWebhook')
 
   def renewWebHooks(self, event, removeOnly = False):
