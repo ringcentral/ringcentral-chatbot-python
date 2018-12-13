@@ -115,7 +115,7 @@ class Bot:
     except Exception as e:
       errStr = str(e)
       debug(errStr, 'errStr')
-      if 'SUB-406' in errStr:
+      if 'SUB-406' in errStr and not 'wait' in event:
         printError('bot subscribe fail, will do subscribe one minutes later')
         event['wait'] = 50
         event['botId'] = self.id
