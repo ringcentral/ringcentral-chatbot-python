@@ -103,7 +103,7 @@ class Bot:
 
   def setupWebhook(self, event):
     try:
-     self.platform.post('/subscription', {
+      self.platform.post('/subscription', {
         'eventFilters': self.eventFilters,
         'expiresIn': 500000000,
         'deliveryMode': {
