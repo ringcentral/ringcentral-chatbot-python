@@ -15,27 +15,12 @@ def lambdaName():
   except:
     return False
 
-def renewBot (event, Bot):
-  """
-  for self call renewbot async
-  """
-  debug('self tringgering, renew bot')
-  if _.predicates.is_number(event['wait']):
-    time.sleep(event['wait'])
-
-  bot = Bot()
-  bot.id = event.id
-  event.botId
-  bot.token = event.token
-  bot.writeToDb()
-  bot.renewWebHooks(event)
-  return result('Bot renew done')
-
 def selfTrigger(event, Bot):
   debug('self tringgering')
   name = lambdaName()
   if not name:
-    return renewBot(event, Bot)
+    botAuth = import_module('ringcentral_bot_framework.core.bot_oauth')
+    return botAuth.renewBot(event)
   boto3 = import_module('boto3')
   client = boto3.client('lambda')
   client.invoke(
