@@ -30,7 +30,7 @@ def renewBot (event):
     time.sleep(event['wait'])
 
   bot = Bot()
-  bot.id = event['id']
+  bot.id = event['botId']
   bot.token = event['token']
   bot.writeToDb()
   bot.renewWebHooks(event)
