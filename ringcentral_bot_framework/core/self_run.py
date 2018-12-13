@@ -1,6 +1,6 @@
 '''
 self dispatch,
-used when bot auth fails, and we need retry
+used when bot subscribe webhook fails, and we need retry
 '''
 import os
 import pydash as _
