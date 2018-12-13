@@ -8,6 +8,7 @@ import time
 from .common import result, debug
 from importlib import import_module
 import json
+import threading
 
 def lambdaName():
   try:
@@ -20,7 +21,12 @@ def selfTrigger(event):
   name = lambdaName()
   if not name:
     botAuth = import_module('ringcentral_bot_framework.core.bot_oauth')
-    return botAuth.renewBot(event)
+    thread = threading.Thread(
+      target=botAuth.renewBot,
+      args=(event,)
+    )
+    thread.start()
+    return
   boto3 = import_module('boto3')
   client = boto3.client('lambda')
   client.invoke(

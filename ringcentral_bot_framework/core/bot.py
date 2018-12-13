@@ -111,19 +111,17 @@ class Bot:
           'address': RINGCENTRAL_BOT_SERVER + '/bot-webhook'
         }
       })
-      raise Exception('SUB-406')
     except Exception as e:
       errStr = str(e)
-      debug(errStr, 'errStr')
-      if 'SUB-406' in errStr and not 'wait' in event:
+      if 'SUB-406' in errStr:
         printError('bot subscribe fail, will do subscribe one minutes later')
         event['wait'] = 50
         event['botId'] = self.id
         event['token'] = self.token
         event['pathParameters']['action'] = 'renew-bot'
         selfTrigger(event)
-        debug('self trigger end ok')
-      printError(e, 'setupWebhook')
+      else:
+        printError(e, 'setupWebhook')
 
   def renewWebHooks(self, event, removeOnly = False):
     try:
