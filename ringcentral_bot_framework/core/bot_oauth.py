@@ -32,6 +32,10 @@ def renewBot (event):
   bot = Bot()
   bot.id = event['botId']
   bot.token = event['token']
-  bot.writeToDb()
+  bot.writeToDb({
+    'id': bot.id,
+    'token': bot.token,
+    'data': bot.data
+  })
   bot.renewWebHooks(event)
   return result('Bot renew done')
