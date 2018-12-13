@@ -2,7 +2,7 @@
 bot auth
 """
 import time
-from .common import result
+from .common import result, debug
 from .bot import Bot
 from pydash.predicates import is_number, is_string
 from pydash import get
@@ -25,6 +25,7 @@ def renewBot (event):
   """
   for self call renewbot async
   """
+  debug('self tringgering renew bot')
   if is_number(event['wait']):
     time.sleep(event['wait'])
 
