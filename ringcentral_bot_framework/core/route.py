@@ -9,7 +9,7 @@ extend or overide default route by set `routes` in config.py
 """
 
 from urllib.parse import parse_qs, urlencode
-from .bot_oauth import botAuth
+from .bot_oauth import botAuth, renewBot
 from .user_oauth import userAuth
 from .bot_webhook import botWebhook
 from .user_webhook import userWebhook
@@ -21,6 +21,7 @@ import json
 
 routes = {
   'bot-oauth': botAuth,
+  'renew-bot': renewBot,
   'user-oauth': userAuth,
   'bot-webhook': botWebhook,
   'user-webhook': userWebhook,

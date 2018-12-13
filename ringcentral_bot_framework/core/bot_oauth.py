@@ -2,7 +2,7 @@
 bot auth
 """
 import time
-from .common import result
+from .common import result, debug
 from .bot import Bot
 from pydash.predicates import is_number, is_string
 from pydash import get
@@ -25,13 +25,18 @@ def renewBot (event):
   """
   for self call renewbot async
   """
+  debug('self tringgering renew bot')
   if is_number(event['wait']):
     time.sleep(event['wait'])
 
   bot = Bot()
-  bot.id = event.id
-  event.botId
-  bot.token = event.token
-  bot.writeToDb()
+  bot.id = event['botId']
+  bot.token = event['token']
+  bot.platform._auth.set_data(bot.token)
+  bot.writeToDb({
+    'id': bot.id,
+    'token': bot.token,
+    'data': bot.data
+  })
   bot.renewWebHooks(event)
   return result('Bot renew done')

@@ -3,6 +3,7 @@ from os import environ
 from ringcentral import SDK
 from .db import dbAction
 from .common import debug, printError
+from .self_run import selfTrigger
 from pydash.predicates import is_dict
 from pydash.objects import omit
 import json
@@ -102,7 +103,7 @@ class Bot:
 
   def setupWebhook(self, event):
     try:
-     self.platform.post('/subscription', {
+      self.platform.post('/subscription', {
         'eventFilters': self.eventFilters,
         'expiresIn': 500000000,
         'deliveryMode': {
@@ -111,8 +112,16 @@ class Bot:
         }
       })
     except Exception as e:
-      # todo check sub-406 error and retry
-      printError(e, 'setupWebhook')
+      errStr = str(e)
+      if 'SUB-406' in errStr:
+        printError('bot subscribe fail, will do subscribe one minutes later')
+        event['wait'] = 50
+        event['botId'] = self.id
+        event['token'] = self.token
+        event['pathParameters']['action'] = 'renew-bot'
+        selfTrigger(event)
+      else:
+        printError(e, 'setupWebhook')
 
   def renewWebHooks(self, event, removeOnly = False):
     try:
