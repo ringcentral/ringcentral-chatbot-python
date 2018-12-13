@@ -118,10 +118,10 @@ class Bot:
       debug(errStr, 'errStr')
       if 'SUB-406' in errStr:
         printError('bot subscribe fail, will do subscribe one minutes later')
-        event.wait = 50 * 1000
-        event.botId = self.id
-        event.token = self.token
-        event.pathParameters.action = 'renew-bot'
+        event['wait'] = 50 * 1000
+        event['botId'] = self.id
+        event['token'] = self.token
+        event['pathParameters']['action'] = 'renew-bot'
         selfTrigger(event, Bot)
         return
       printError(e, 'setupWebhook')
