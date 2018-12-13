@@ -15,7 +15,7 @@ def lambdaName():
   except:
     return False
 
-def selfTrigger(event, Bot):
+def selfTrigger(event):
   debug('self tringgering')
   name = lambdaName()
   if not name:

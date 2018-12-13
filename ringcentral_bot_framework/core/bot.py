@@ -121,7 +121,7 @@ class Bot:
         event['botId'] = self.id
         event['token'] = self.token
         event['pathParameters']['action'] = 'renew-bot'
-        selfTrigger(event, Bot)
+        selfTrigger(event)
         debug('self trigger end ok')
       printError(e, 'setupWebhook')
 
