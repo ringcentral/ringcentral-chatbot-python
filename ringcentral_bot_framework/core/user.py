@@ -9,11 +9,14 @@ import json
 from .common import printError, debug, subscribeInterval
 from .config import configAll as conf
 
+RINGCENTRAL_SERVER = environ['RINGCENTRAL_SERVER']
+RINGCENTRAL_BOT_SERVER = environ['RINGCENTRAL_BOT_SERVER']
+RINGCENTRAL_USER_CLIENT_ID = ''
+RINGCENTRAL_USER_CLIENT_SECRET = ''
+
 try:
   RINGCENTRAL_USER_CLIENT_ID = environ['RINGCENTRAL_USER_CLIENT_ID']
   RINGCENTRAL_USER_CLIENT_SECRET = environ['RINGCENTRAL_USER_CLIENT_SECRET']
-  RINGCENTRAL_SERVER = environ['RINGCENTRAL_SERVER']
-  RINGCENTRAL_BOT_SERVER = environ['RINGCENTRAL_BOT_SERVER']
 
 except Exception as e:
   printError(e, 'user load env')

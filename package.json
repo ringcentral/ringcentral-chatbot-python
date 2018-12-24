@@ -1,6 +1,6 @@
 {
   "name": "ringcentral-chatbot-python",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "RingCentral Chatbot Framework for Python",
   "repository": {
     "type": "git",
