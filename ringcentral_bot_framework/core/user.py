@@ -165,6 +165,8 @@ class User:
 
 
 def getUser(id):
+  if RINGCENTRAL_USER_CLIENT_ID == '':
+    return False
   userData = dbAction('user', 'get', {
     'id': id
   })
@@ -179,6 +181,8 @@ def getUser(id):
     return False
 
 def removeUser(id):
+  if RINGCENTRAL_USER_CLIENT_ID == '':
+    return False
   return dbAction('user', 'remove', {
     'id': id
   })
