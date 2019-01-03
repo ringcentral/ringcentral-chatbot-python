@@ -7,6 +7,7 @@ from ringcentral_bot_framework.core.bot import Bot, getBot
 class TestBot(unittest.TestCase):
 
   def test_basic_bot(self):
+    print('running bot basic test')
     self.assertEqual(DBNAME, 'filedb')
     bot = Bot()
     self.assertEqual(bot.id, '')

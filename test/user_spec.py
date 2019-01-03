@@ -7,6 +7,7 @@ from ringcentral_bot_framework.core.user import User, getUser
 class TestUser(unittest.TestCase):
 
   def test_basic_user(self):
+    print('running user basic test')
     self.assertEqual(DBNAME, 'filedb')
     user = User()
     self.assertEqual(user.id, '')
