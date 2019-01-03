@@ -37,8 +37,10 @@ def runExtensionFunction(name, *args):
     return
 
   funcs = extensionFuntion[name]
+  hanldedByPrevious = False
   res = False
   for func in funcs:
-    res = res or func(*args)
+    hanldedByPrevious = func(*args, hanldedByPrevious)
+    res = res or hanldedByPrevious
 
   return res
