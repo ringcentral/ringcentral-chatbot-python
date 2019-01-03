@@ -1,2 +1,2 @@
-ringcentral
+ringcentral_client
 pydash
