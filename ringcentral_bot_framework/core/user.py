@@ -1,6 +1,6 @@
 
 from os import environ
-from ringcentral import SDK
+from ringcentral_client import RestClient
 from urllib.parse import urlencode
 from .db import dbAction
 from pydash.predicates import is_dict
@@ -30,15 +30,15 @@ class User:
     groups=None,
     data=None
   ):
-    self.rcsdk = SDK(
+    self.rc = RestClient(
       RINGCENTRAL_USER_CLIENT_ID,
       RINGCENTRAL_USER_CLIENT_SECRET,
       RINGCENTRAL_SERVER
     )
-    self.platform = self.rcsdk.platform()
+    self.platform = self.rc
     if not token is None:
       self.token = token
-      self.platform._auth.set_data(token)
+      self.rc.token = token
     if not groups is None:
       self.groups = groups
     if not data is None:
@@ -83,8 +83,8 @@ class User:
 
   def auth(self, code):
     redirect_url = RINGCENTRAL_BOT_SERVER +'/user-oauth'
-    self.platform.login(code=code, redirect_uri=redirect_url)
-    self.token = self.platform.auth().data()
+    self.rc.login(auth_code=code, redirect_uri=redirect_url)
+    self.token = self.rc.token
     self.id = self.token['owner_id']
     self.writeToDb({
       'id': self.id,
@@ -95,8 +95,8 @@ class User:
 
   def refresh (self):
     try:
-      self.platform.refresh()
-      self.token = self.platform.auth().data()
+      self.rc.refresh()
+      self.token = self.rc.token
       self.writeToDb(False)
       return True
     except Exception as e:
@@ -106,7 +106,7 @@ class User:
 
   def setupWebhook(self, event=None):
     try:
-     self.platform.post('/subscription', {
+     self.platform.post('/restapi/v1.0/subscription', {
         'eventFilters': self.eventFilters,
         'expiresIn': 1799,
         'deliveryMode': {
@@ -119,8 +119,8 @@ class User:
 
   def renewWebHooks(self, event=None):
     try:
-      r = self.platform.get('/subscription')
-      r = json.loads(r.text())['records']
+      r = self.platform.get('/restapi/v1.0/subscription')
+      r = json.loads(r.text)['records']
       filtered = list(filter(
         lambda x: x['deliveryMode']['address'] == RINGCENTRAL_BOT_SERVER + '/user-webhook',
         r
@@ -130,7 +130,6 @@ class User:
         ','.join(list(map(lambda g: g['id'], filtered)))
       )
       self.setupWebhook(event)
-      debug(filtered, 'fffff--------')
       for sub in filtered:
         self.delSubscription(sub['id'])
 
@@ -140,7 +139,7 @@ class User:
   def delSubscription (self, id):
     debug('del user sub id:', id)
     try:
-      self.platform.delete('/subscription/' + id)
+      self.platform.delete('/restapi/v1.0/subscription/' + id)
     except Exception as e:
       printError(e, 'user delSubscription')
 
@@ -157,7 +156,7 @@ class User:
 
   def validate (self):
     try:
-      self.platform.get('/account/~/extension/~')
+      self.rc.get('/restapi/v1.0/account/~/extension/~')
       return True
     except Exception as e:
       printError(e, 'user validate')

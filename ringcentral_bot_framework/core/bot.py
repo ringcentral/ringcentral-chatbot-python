@@ -1,6 +1,6 @@
 
 from os import environ
-from ringcentral import SDK
+from ringcentral_client import RestClient
 from .db import dbAction
 from .common import debug, printError
 from .self_run import selfTrigger
@@ -26,15 +26,15 @@ class Bot:
     token=None,
     data=None
   ):
-    self.rcsdk = SDK(
+    self.rc = RestClient(
       RINGCENTRAL_BOT_CLIENT_ID,
       RINGCENTRAL_BOT_CLIENT_SECRET,
       RINGCENTRAL_SERVER
     )
-    self.platform = self.rcsdk.platform()
+    self.platform = self.rc
     if not token is None:
       self.token = token
-      self.platform._auth.set_data(token)
+      self.rc.token = token
     if not data is None:
       self.data = data
     if not id is None:
@@ -59,10 +59,10 @@ class Bot:
 
   def auth(self, code):
     redirect_url = RINGCENTRAL_BOT_SERVER +'/bot-oauth'
-    self.platform.login(code=code, redirect_uri=redirect_url)
-    self.token = self.platform.auth().data()
+    self.rc.authorize(auth_code=code, redirect_uri=redirect_url)
+    self.token = self.rc.token
     info = self.validate(True)
-    txt = json.loads(info.text())
+    txt = json.loads(info.text)
     self.token['name'] = txt['name']
     self.id = self.token['owner_id']
     self.writeToDb({
@@ -82,9 +82,9 @@ class Bot:
       'refresh_token_expires_in': 0,
       'refresh_token_expire_time': 0,
     }
-    self.platform._auth.set_data(token)
+    self.rc.token = token
     info = self.validate(True)
-    txt = json.loads(info.text())
+    txt = json.loads(info.text)
     token['owner_id'] = str(txt['id'])
     token['name'] = txt['name']
     token['scope'] = ' '.join(
@@ -92,7 +92,7 @@ class Bot:
         map(lambda x: x['featureName'], txt['serviceFeatures'])
       )
     )
-    self.platform._auth.set_data(token)
+    self.rc.token = token
     self.token = token
     self.id = token['owner_id']
     self.writeToDb({
@@ -103,7 +103,7 @@ class Bot:
 
   def setupWebhook(self, event):
     try:
-      self.platform.post('/subscription', {
+      self.rc.post('/restapi/v1.0/subscription', {
         'eventFilters': self.eventFilters,
         'expiresIn': 500000000,
         'deliveryMode': {
@@ -126,8 +126,8 @@ class Bot:
 
   def renewWebHooks(self, event, removeOnly = False):
     try:
-      r = self.platform.get('/subscription')
-      r = json.loads(r.text())['records']
+      r = self.rc.get('/restapi/v1.0/subscription')
+      r = json.loads(r.text)['records']
       filtered = list(filter(
         lambda x: x['deliveryMode']['address'] == RINGCENTRAL_BOT_SERVER + '/bot-webhook',
         r
@@ -147,31 +147,27 @@ class Bot:
   def delSubscription (self, id):
     debug('del bot sub id:', id)
     try:
-      self.platform.delete('/subscription/' + id)
+      self.rc.delete('/restapi/v1.0/subscription/' + id)
     except Exception as e:
       printError(e, 'delSubscription')
 
   def sendMessage (self, groupId, messageObj):
     try:
       url = f'/restapi/v1.0/glip/groups/{groupId}/posts'
-      headers = {
-        'Authorization': 'bearer ' + self.token['access_token']
-      }
-      self.platform.post(
+      self.rc.post(
         url,
-        messageObj,
-        headers=headers
+        messageObj
       )
     except Exception as e:
       printError(e, 'sendMessage')
 
   def validate (self, returnData=False):
     try:
-      res = self.platform.get('/account/~/extension/~')
+      res = self.platform.get('/restapi/v1.0/account/~/extension/~')
       return res if returnData else True
     except Exception as e:
       errStr = str(e)
-      print(errStr, '----')
+      printError(errStr)
       if 'OAU-232' in errStr or 'CMN-405' in errStr:
         removeBot(self.id)
       return False
