@@ -7,6 +7,7 @@ import pydash as _
 class TestFiledbMethods(unittest.TestCase):
 
   def test_basic_filedb(self):
+    print('running filedb test')
     self.assertEqual(DBNAME, 'filedb')
     x = action('bot', 'add', {'s': 's', 'id': 'axx', 'dgfdf': [
       'sdfs', 'sdfsd'

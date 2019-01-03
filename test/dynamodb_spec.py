@@ -6,7 +6,7 @@ from ringcentral_bot_framework.core.db import dbAction as action, DBNAME
 class TestDynamodbMethods(unittest.TestCase):
 
   def test_basic_dynamodb(self):
-    print('dynamodb')
+    print('running dynamodb test')
     self.assertEqual(DBNAME, 'dynamodb')
     x = action('bot', 'add', {'s': 's', 'id': 'xss', 'dgfdf': [
       'sdfs', 'sdfsd'
