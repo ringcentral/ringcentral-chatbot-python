@@ -22,7 +22,7 @@ This framework requires Python3.6+ and Pip3.
 
 First we install [virtualenv](https://virtualenv.pypa.io/en/latest/) which will create an isolated environment in which to install and run all the python libraries needed by this framework. Using virtualenv will ensure that the libraries installed for this project do not conflict or disrupt the other python projects you are working on. 
 
-'''bash
+```bash
 $ pip3 install virtualenv
 $ virtualenv venv --python=python3
 $ pip3 install python-dotenv ringcentral pydash boto3 flask pylint ringcentral_client
