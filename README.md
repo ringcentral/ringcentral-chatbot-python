@@ -29,7 +29,7 @@ $ pip3 install python-dotenv ringcentral pydash boto3 flask pylint ringcentral_c
 $ source ./venv/bin/activate
 ```
 
-Next, we need to install and run [ngrok](https://ngrok.com/), a tool for routing web requests to a localhost. This is what will allow your local bot in development to receive webhooks from RingCentral.
+Next, we need to install and run [ngrok](https://ngrok.com/), a tool for routing web requests to a localhost. This is what will allow your local bot in development to receive webhooks from RingCentral. ngrok is a node app and is installed and start as follows:
 
 ```bash
 $ npm install
@@ -47,6 +47,8 @@ Make note of this URL, as you will need it in the next step.
 You will need to create your Bot App in RingCentral. Clicking the link, "Create Bot App" below will do this for you. When you click it, you will to enter in the callback URL for the bot. This will be the ngrok URL above, plus `/bot-oauth`. For example:
 
     https://kahsdfkhsd.ngrok.io/bot-oauth
+
+<input type="text" name="redirect" value="foo" />
 
 * [Create Bot App](https://developer.ringcentral.com/new-app?name=Sample+Bot+App&desc=A+sample+app+created+in+conjunction+with+the+python+bot+framework&public=false&type=ServerBot&carriers=7710,7310,3420&permissions=ReadAccounts,EditExtensions,SubscriptionWebhook,Glip&redirectUri=")
 
