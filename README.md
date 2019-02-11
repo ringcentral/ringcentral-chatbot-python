@@ -57,7 +57,7 @@ When you are finished creating your Bot Application, make note of the Client ID 
 A sample .env file can be found in `.env.sample`. Create a copy of this file:
 
 ```bash
-$ cp .env.sample .env
+$ cp .sample.env .env
 ```
 
 Then look for the following variables, and set them accordingly:
