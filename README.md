@@ -38,7 +38,7 @@ $ ./bin/proxy
 
 After ngrok has started, it will display the URL when the ngrok proxy is operating. It will say something like:
 
-```Forwarding https://xxxxx.ngrok.io -> localhost:8989```
+```Forwarding https://xxxxx.ngrok.io -> localhost:9898```
 
 Make note of this URL, as you will need it in the next step. 
 
