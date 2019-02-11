@@ -119,3 +119,4 @@ venv.bak/
 /ringcentral_bot_framework.egg-info
 *.db
 .DS_Store
+*~

@@ -1,37 +1,98 @@
-
 # [ringcentral-chatbot-python](https://github.com/zxdong262/ringcentral-chatbot-python) <!-- omit in toc -->
 
 [![Build Status](https://travis-ci.org/zxdong262/ringcentral-chatbot-python.svg?branch=test)](https://travis-ci.org/zxdong262/ringcentral-chatbot-python)
 
-RingCentral Chatbot Framework for Python. With this framework, creating a RingCentral Glip chatbot would be seriously simple, developer could focus on writing bot logic.
-
-To quick start, just jump to [Use CLI tool to create an bot app](#use-cli-tool-to-create-an-bot-app).
-
-## Table of contents <!-- omit in toc -->
-
-- [Features](#features)
-- [Use CLI tool to create an bot app](#use-cli-tool-to-create-an-bot-app)
-- [Example bot apps](#example-bot-apps)
-- [Prerequisites](#prerequisites)
-- [Development & quick start](#development--quick-start)
-- [Test bot](#test-bot)
-- [Building and Deploying to AWS Lambda](#building-and-deploying-to-aws-lambda)
-- [Use Extensions](#use-extensions)
-- [Write a extension your self](#write-a-extension-your-self)
-- [Unit Test](#unit-test)
-- [Todos](#todos)
-- [Credits](#credits)
-- [License](#license)
+Welcome to the RingCentral Chatbot Framework for Python. This framework dramatically simplifies the process of building a bot to work with Glip, RingCentral's group chat system. It is intended to do most of the heavy lifting for developers, allowing them to focus primarily on the logic and user experience of their bot.
 
 ## Features
 
-- Token management
-- Token/subscribe auto renew
-- Built-in suport for filedb(local development/POC) and AWS dynamodb
-- Stateless, built-in suport for AWS lambda
-- Define custom bot behavior by `config.py`
-- Support fully customized db module, loaded when runtime check `DB_TYPE` in `.env`
-- Custom every step of bot lifecycle throught `config.py`, including bot auth, bot webhook
+- **Token Management** - handles the server logic associated with bot authentication, and auth token persistence
+- **Event Subscribtion** - automatically subscribes to bot events, and renews those subscriptions when they expire
+- **Easy Customization** - modify bot behaviors by editing `config.py`
+- **Data Persistence** - built-in suport for filedb and AWS dynamodb, with fully customizable DB layer
+- **Turn-key hosting** - built-in suport for AWS lambda to host your bot
+
+## Development Quick Start
+
+Let's get a local chatbot server up and running so that you can understand how the framework functions. Our first chatbot will be a simple parrot bot that will repeat things back to you. Before we get started, let's get your development environment setup with everything you need.
+
+### Install Prerequisites
+
+This framework requires Python3.6+ and Pip3.
+
+First we install [virtualenv](https://virtualenv.pypa.io/en/latest/) which will create an isolated environment in which to install and run all the python libraries needed by this framework. Using virtualenv will ensure that the libraries installed for this project do not conflict or disrupt the other python projects you are working on. 
+
+'''bash
+$ pip3 install virtualenv
+$ virtualenv venv --python=python3
+$ pip3 install python-dotenv ringcentral pydash boto3 flask pylint ringcentral_client
+$ source ./venv/bin/activate
+```
+
+Next, we need to install and run [ngrok](https://ngrok.com/), a tool for routing web requests to a localhost. This is what will allow your local bot in development to receive webhooks from RingCentral.
+
+```bash
+$ npm install
+$ ./bin/proxy
+```
+
+After ngrok has started, it will display the URL when the ngrok proxy is operating. It will say something like:
+
+```Forwarding https://xxxxx.ngrok.io -> localhost:8989```
+
+Make note of this URL, as you will need it in the next step. 
+
+### Create Your Bot App
+
+You will need to create your Bot App in RingCentral. Clicking the link, "Create Bot App" below will do this for you. When you click it, you will to enter in the callback URL for the bot. This will be the ngrok URL above, plus `/bot-oauth`. For example:
+
+    https://kahsdfkhsd.ngrok.io/bot-oauth
+
+* [Create Bot App](https://developer.ringcentral.com/new-app?name=Sample+Bot+App&desc=A+sample+app+created+in+conjunction+with+the+python+bot+framework&public=false&type=ServerBot&carriers=7710,7310,3420&permissions=ReadAccounts,EditExtensions,SubscriptionWebhook,Glip&redirectUri=")
+
+When you are finished creating your Bot Application, make note of the Client ID and Client Secret. We will use those values in the next step. 
+
+### Edit .env 
+
+A sample .env file can be found in `.env.sample`. Create a copy of this file:
+
+```bash
+$ cp .env.sample .env
+```
+
+Then look for the following variables, and set them accordingly:
+
+* `RINGCENTRAL_BOT_SERVER`
+* `RINGCENTRAL_BOT_CLIENT_ID`
+* `RINGCENTRAL_BOT_CLIENT_SECRET`
+
+### Install Bot Behaviors
+
+This bot framework loads all bot behaviors from a file called `config.py`. Let's copy the parrot bot config to get started.
+
+```bash
+$ cp sample-bots/parrot.py ./config.py
+```
+
+### Start the Server
+
+```bash
+$ ./bin/start
+```
+
+### Add Bot to Glip
+
+When the server is up and running, you can add the bot to your sandbox Glip account. Navigate the dashboard for the app you created above. Select "Bot" from the left-hand sidebar menu. Save a preferred name for your bot, then click the "Add to Glip" button. 
+
+### Send a Test Message
+
+After the bot is added, we can message with it. Login to our [sandbox Glip](https://glip.devtest.ringcentral.com). Then start a chat with the bot using the name you chose in the previous step. 
+
+You should now be in private chat session with the bot. It should greet you with a message similar to:
+
+> Hello, I am a chatbot. Please reply "ParrotBot" if you want to talk to me.
+
+Type `@ParrotBot Polly want a cracker?` and let's see what happens. 
 
 ## Use CLI tool to create an bot app
 
@@ -55,8 +116,6 @@ Then just fill the promots, follow `my-ringcentral-chat-bot/README.md`'s guide, 
 
 ## Prerequisites
 
-- Python3.6+ and Pip3
-- Create the bot App: Login to [developer.ringcentral.com](https://developer.ringcentral.com) and create an `Server/Bot` app with permissions: `ReadAccounts, Edit Extensions, WebhookSubscriptions, Glip`(or more as you may need).
 
 ## Development & quick start
 
@@ -64,24 +123,26 @@ Then just fill the promots, follow `my-ringcentral-chat-bot/README.md`'s guide, 
 git clone git@github.com:zxdong262/ringcentral-chatbot-python.git
 cd ringcentral-chatbot-python
 
-# use virtualenv
-pip3 install virtualenv # might need sudo
+# use virtualenv (may require sudo)
+pip3 install virtualenv 
 
-# init virtual env
+# install ngrok and other prereqs for local development
+npm install
+
+# init and setup virtual env
 virtualenv venv --python=python3
-
-# use env
 source ./venv/bin/activate
 
 # install deps
-pip install python-dotenv ringcentral pydash boto3 flask pylint
+pip3 install python-dotenv ringcentral pydash boto3 flask pylint
+# python3 setup.py install
 
 # run ngrok proxy
 # since bot need https server,
 # so we need a https proxy for ringcentral to visit our local server
 ./bin/proxy
 # will show:
-# Forwarding https://xxxxx.ngrok.io -> localhost:8989
+# Forwarding https://xxxxx.ngrok.io -> localhost:9898
 
 # create env file
 cp .sample.env .env
