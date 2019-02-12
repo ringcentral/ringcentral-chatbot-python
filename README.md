@@ -20,27 +20,27 @@ Let's get a local chatbot server up and running so that you can understand how t
 
 This framework requires Python3.6+ and Pip3.
 
-First we install [virtualenv](https://virtualenv.pypa.io/en/latest/) which will create an isolated environment in which to install and run all the python libraries needed by this framework. Using virtualenv will ensure that the libraries installed for this project do not conflict or disrupt the other python projects you are working on. 
+First we install [virtualenv](https://virtualenv.pypa.io/en/latest/) which will create an isolated environment in which to install and run all the python libraries needed by this framework. Using virtualenv will ensure that the libraries installed for this project do not conflict or disrupt the other python projects you are working on.
 
 ```bash
-$ pip3 install virtualenv
-$ virtualenv venv --python=python3
-$ source ./venv/bin/activate
-$ pip3 install python-dotenv ringcentral pydash boto3 flask pylint ringcentral_client
+pip3 install virtualenv
+virtualenv venv --python=python3
+source ./venv/bin/activate
+pip3 install python-dotenv ringcentral pydash boto3 flask pylint ringcentral_client
 ```
 
 Next, we need to install and run [ngrok](https://ngrok.com/), a tool for routing web requests to a localhost. This is what will allow your local bot in development to receive webhooks from RingCentral. ngrok is a node app and is installed and start as follows:
 
 ```bash
-$ npm install
-$ ./bin/proxy
+npm install
+./bin/proxy
 ```
 
 After ngrok has started, it will display the URL when the ngrok proxy is operating. It will say something like:
 
 ```Forwarding https://xxxxx.ngrok.io -> localhost:9898```
 
-Make note of this URL, as you will need it in the next step. 
+Make note of this URL, as you will need it in the next step.
 
 ### Create Your Bot App
 
@@ -50,53 +50,53 @@ You will need to create your Bot App in RingCentral. Clicking the link, "Create 
 
 [Create Bot App](https://developer.ringcentral.com/new-app?name=Sample+Bot+App&desc=A+sample+app+created+in+conjunction+with+the+python+bot+framework&public=false&type=ServerBot&carriers=7710,7310,3420&permissions=ReadAccounts,EditExtensions,SubscriptionWebhook,Glip&redirectUri=)
 
-When you are finished creating your Bot Application, make note of the Client ID and Client Secret. We will use those values in the next step. 
+When you are finished creating your Bot Application, make note of the Client ID and Client Secret. We will use those values in the next step.
 
-### Edit .env 
+### Edit .env
 
 A sample .env file can be found in `.env.sample`. Create a copy of this file:
 
 ```bash
-$ cp .sample.env .env
+cp .sample.env .env
 ```
 
 Then look for the following variables, and set them accordingly:
 
-* `RINGCENTRAL_BOT_SERVER`
-* `RINGCENTRAL_BOT_CLIENT_ID`
-* `RINGCENTRAL_BOT_CLIENT_SECRET`
+- `RINGCENTRAL_BOT_SERVER`
+- `RINGCENTRAL_BOT_CLIENT_ID`
+- `RINGCENTRAL_BOT_CLIENT_SECRET`
 
 ### Install Bot Behaviors
 
 This bot framework loads all bot behaviors from a file called `config.py`. Let's copy the parrot bot config to get started.
 
 ```bash
-$ cp sample-bots/parrot.py ./config.py
+cp sample-bots/parrot.py ./config.py
 ```
 
 ### Start the Server
 
 ```bash
-$ ./bin/start
+./bin/start
 ```
 
 ### Add Bot to Glip
 
-When the server is up and running, you can add the bot to your sandbox Glip account. Navigate the dashboard for the app you created above. Select "Bot" from the left-hand sidebar menu. Save a preferred name for your bot, then click the "Add to Glip" button. 
+When the server is up and running, you can add the bot to your sandbox Glip account. Navigate the dashboard for the app you created above. Select "Bot" from the left-hand sidebar menu. Save a preferred name for your bot, then click the "Add to Glip" button.
 
 ### Send a Test Message
 
-After the bot is added, we can message with it. Login to our [sandbox Glip](https://glip.devtest.ringcentral.com). Then start a chat with the bot using the name you chose in the previous step. 
+After the bot is added, we can message with it. Login to our [sandbox Glip](https://glip.devtest.ringcentral.com). Then start a chat with the bot using the name you chose in the previous step.
 
 You should now be in private chat session with the bot. It should greet you with a message similar to:
 
 > Hello, I am a chatbot. Please reply "ParrotBot" if you want to talk to me.
 
-Type `@ParrotBot Polly want a cracker?` and let's see what happens. 
+Type `@ParrotBot Polly want a cracker?` and let's see what happens.
 
 ## Example bot apps
 
-The following bots were created using this framework, and should serves as guides as you develop your own original bot. 
+The following bots were created using this framework, and should serves as guides as you develop your own original bot.
 
 - [date-time-chatbot](https://github.com/zxdong262/ringcentral-date-time-chatbot): simple Glip chatbot that can tell time/date.
 - [assistant-bot](https://github.com/zxdong262/ringcentral-assistant-bot): simple assistant Glip bot to show user/company information, this bot will show you how to access user data.
@@ -136,11 +136,11 @@ aws_secret_access_key = <your aws_secret_access_key>
 
 For more information, refer to [https://docs.aws.amazon.com/general/latest/gr/aws-security-credentials.html](https://docs.aws.amazon.com/general/latest/gr/aws-security-credentials.html).
 
-Start by installing serverless and copying a sample config file for it. 
+Start by installing serverless and copying a sample config file for it.
 
 ```bash
-$ npm i
-$ cp dev/lambda/serverless.sample.yml dev/lambda/serverless.yml
+npm i
+cp dev/lambda/serverless.sample.yml dev/lambda/serverless.yml
 ```
 
 Edit `dev/lambda/serverless.yml`, and make sure you set the proper name and required env.
@@ -173,7 +173,7 @@ Edit `dev/lambda/serverless.yml`, and make sure you set the proper name and requ
 Deploy to AWS Lambda with `bin/deploy` and should observe the following:
 
 ```bash
-$ ./bin/deploy
+./bin/deploy
 Service Information
 service: ringcentral-bot
 stage: dev
