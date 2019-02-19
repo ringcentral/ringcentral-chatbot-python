@@ -114,7 +114,7 @@ class Bot:
     except Exception as e:
       debug(e)
       errStr = str(e)
-      if 'SUB-406' in errStr or 'Not allowed subscribe' in errStr:
+      if 'OAU-232' in errStr or 'SUB-406' in errStr or 'Not allowed subscribe' in errStr:
         printError('bot subscribe fail, will do subscribe one minutes later')
         event['wait'] = 50
         event['botId'] = self.id
