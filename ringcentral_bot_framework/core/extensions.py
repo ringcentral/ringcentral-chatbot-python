@@ -28,7 +28,7 @@ except Exception as e:
   print(e)
   pass
 
-def runExtensionFunction(name, *args):
+def runExtensionFunction(extensions, name, *args):
   '''
   run extension functions by name
   name must in extensionFuntionNames
