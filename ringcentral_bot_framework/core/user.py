@@ -83,7 +83,7 @@ class User:
 
   def auth(self, code):
     redirect_url = RINGCENTRAL_BOT_SERVER +'/user-oauth'
-    self.rc.login(auth_code=code, redirect_uri=redirect_url)
+    self.rc.authorize(auth_code=code, redirect_uri=redirect_url)
     self.token = self.rc.token
     self.id = self.token['owner_id']
     self.writeToDb({

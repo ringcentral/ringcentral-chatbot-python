@@ -32,7 +32,7 @@ def renewBot (event):
   bot = Bot()
   bot.id = event['botId']
   bot.token = event['token']
-  bot.platform._auth.set_data(bot.token)
+  bot.rc.token = bot.token
   bot.writeToDb({
     'id': bot.id,
     'token': bot.token,
