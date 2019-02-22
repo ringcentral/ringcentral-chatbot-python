@@ -9,7 +9,8 @@ def initBotWebhook(
   Bot,
   User,
   getBot,
-  getUser
+  getUser,
+  extensions
 ):
   def botWebhook(event):
     message = get(event, 'body')
@@ -41,6 +42,7 @@ def initBotWebhook(
       if creatorId == botId:
         return defaultResponse
       handledByExtension = runExtensionFunction(
+        extensions,
         'botGotPostAddAction',
         bot,
         groupId,
