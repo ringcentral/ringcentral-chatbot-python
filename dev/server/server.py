@@ -4,11 +4,23 @@ load_dotenv()
 from urllib.parse import parse_qs, urlencode
 import os, sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../..')
-from ringcentral_bot_framework import router
+from ringcentral_bot_framework import frameworkInit
 import pydash as _
 import json
+import config as conf
+import ringcentral_bot_framework_extension_botinfo as botinfo
+import ringcentral_bot_framework_extension_world_time as wt
 
 app = Flask('devtest')
+framework = frameworkInit(conf, [botinfo, wt])
+router = framework.router
+
+@app.route('/test', methods=['GET'])
+def index():
+  return 'rincgentral bot dev server running'
+@app.route('/favicon.ico', methods=['GET'])
+def favicon():
+  return ''
 
 @app.route('/<action>', methods=['GET', 'POST'])
 def act(action):
@@ -34,13 +46,6 @@ def act(action):
     if 'headers' in response:
         headers = response['headers']
     return resp, response['statusCode'], headers
-
-@app.route('/', methods=['GET'])
-def index():
-  return 'rincgentral bot dev server running'
-@app.route('/favicon.ico', methods=['GET'])
-def favicon():
-  return ''
 
 port = 9898
 host = 'localhost'

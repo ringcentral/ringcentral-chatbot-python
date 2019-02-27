@@ -10,6 +10,7 @@ from .bot_webhook import initBotWebhook
 from .config import initConfig
 from .data import initDataView
 from .user_webhook import initUserWebhook
+from .route import initRouter
 
 def frameworkInit(config, extensions = []):
   '''
@@ -17,23 +18,34 @@ def frameworkInit(config, extensions = []):
   '''
   conf = initConfig(config)
   dbAction = initDBAction(conf)
-  Bot, getBot, removeBot = initBotClass(conf, dbAction)
-  User, getUser, removeUser = initUserClass(conf, dbAction)
-  botAuth, renewBot = initBotAuthHandler(conf, Bot, dbAction)
+  BotClass, getBot, removeBot = initBotClass(conf, dbAction)
+  UserClass, getUser, removeUser = initUserClass(conf, dbAction)
+  botAuth, renewBot = initBotAuthHandler(conf, BotClass, dbAction)
   botWebhook = initBotWebhook(
-    conf, dbAction, Bot, User, getBot, getUser, extensions
+    conf, dbAction, BotClass, UserClass, getBot, getUser, extensions
   )
   dataView = initDataView(conf, dbAction)
   userAuth = initUserAuth(
-    conf, Bot, getBot, User, dbAction
+    conf, BotClass, getBot, UserClass, dbAction
   )
   userWebhook = initUserWebhook(
-    conf, Bot, getBot, User, getUser, dbAction
+    conf, BotClass, getBot, UserClass, getUser, dbAction
   )
 
+  routes = {
+    'bot-oauth': botAuth,
+    'renew-bot': renewBot,
+    'user-oauth': userAuth,
+    'bot-webhook': botWebhook,
+    'user-webhook': userWebhook,
+    'data': dataView
+  }
+
+  router = initRouter(routes)
+
   class BotFrameWork:
-    Bot = Bot
-    User = User
+    Bot = BotClass,
+    User = UserClass
 
     @staticmethod
     def dbAction(*args, **kwargs):
@@ -78,6 +90,10 @@ def frameworkInit(config, extensions = []):
     @staticmethod
     def userWebhook(*args, **kwargs):
       return userWebhook(*args, **kwargs)
+
+    @staticmethod
+    def router(*args, **kwargs):
+      return router(*args, **kwargs)
 
   return BotFrameWork
 

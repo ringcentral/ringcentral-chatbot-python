@@ -5,14 +5,13 @@ import os
 from os.path import dirname, realpath, join, isabs
 import pydash as _
 import importlib.util
-from .filedb import action, dbName
+from .filedb import initDB, dbName
 from .common import debug, path_import
-from .config import configAll as conf
 
 def initDBAction(conf):
   builtInDbs = ['filedb', 'dynamodb']
   dbType = 'filedb'
-  dbAction = action
+  dbAction = initDB(conf)
   DBNAME = dbName
 
   try:
@@ -28,7 +27,7 @@ def initDBAction(conf):
       dbPath = join(dir_path, dbType + '.py')
       pdbName = 'ringcentral_bot_framework.core.' + dbType
       db = path_import(pdbName, dbPath)
-      dbAction = db.action
+      dbAction = db.initDB(conf)
       DBNAME = db.dbName
     elif dbType == 'custom':
       DBNAME = conf.dbName()

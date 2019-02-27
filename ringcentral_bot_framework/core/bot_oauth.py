@@ -18,7 +18,6 @@ def initBotAuthHandler(conf, Bot, dbAction):
     bot.renewWebHooks(event)
     conf.botAuthAction(bot, dbAction)
     return result('Bot added')
-  return botAuth
 
   def renewBot (event):
     """
