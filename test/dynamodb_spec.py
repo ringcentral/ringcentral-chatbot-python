@@ -29,5 +29,11 @@ class TestDynamodbMethods(unittest.TestCase):
     x2 = action('bot', 'get')
     print(x2)
     self.assertEqual(x2[1]['fg'], 'sdf')
+    action('bot', 'add', {'s': 's1', 'id': 'xss1', 'dgfdf': [
+      'sdfs', 'sdfsd'
+    ]})
+    x2 = action('bot', 'get', { 'key': 's', 'value': 's1' })
+    self.assertEqual(x2[0]['s'], 's1')
+    self.assertEqual(len(x2), 1)
 if __name__ == '__main__':
     unittest.main()
