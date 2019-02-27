@@ -142,7 +142,17 @@ class Bot:
         self.delSubscription(sub['id'])
 
     except Exception as e:
-      printError(e, 'renewWebHooks')
+      debug(e)
+      errStr = str(e)
+      if 'OAU-232' in errStr or 'SUB-406' in errStr or 'Not allowed subscribe' in errStr:
+        printError('bot subscribe fail, will do subscribe one minutes later')
+        event['wait'] = 50
+        event['botId'] = self.id
+        event['token'] = self.token
+        event['pathParameters']['action'] = 'renew-bot'
+        selfTrigger(event)
+      else:
+        printError(e, 'renewWebHooks')
 
   def delSubscription (self, id):
     debug('del bot sub id:', id)
