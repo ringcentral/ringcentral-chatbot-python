@@ -145,11 +145,28 @@ def getItem(id, table):
     debug(e)
     return False
 
-def scan(table):
+def scan(table, query = None):
+  values = {}
+  expr = ''
+  if not query is None:
+    values = {
+      ':a': {
+        'S': query['value']
+      }
+    }
+    expr = f'{query["key"]} = :a'
   try:
-    res = client.scan(
-      TableName=createTableName(table)
-    )
+    res = None
+    if expr == '':
+      res = client.scan(
+        TableName=createTableName(table)
+      )
+    else:
+      res = client.scan(
+        TableName=createTableName(table),
+        ExpressionAttributeValues=values,
+        FilterExpression=expr,
+      )
     return list(map(formatItem, res['Items']))
   except Exception as e:
     debug('dynamodb scan error')
@@ -165,7 +182,7 @@ def action(tableName, action, data = None):
   * for add, {id: xxx, token: {...}, groups: {...}}
   * for remove, {id: xxx} or {ids: [...]}
   * for update, {id: xxx, update: {...}}
-  * for get, singleUser:{id: xxx}, allUser: {}
+  * for get, singleUser:{id: xxx}, allUser: {}, query: { 'key': 'xx', 'value': 'yy'}
   """
   debug('db op:', tableName, action, data)
   prepareDb()
@@ -189,6 +206,9 @@ def action(tableName, action, data = None):
     if not id is None:
       return getItem(id, tableName)
     else:
-      return scan(tableName)
+      query = None
+      if not _.get(data, 'key') is None:
+        query = data
+      return scan(tableName, query)
 
   return action
