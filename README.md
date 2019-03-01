@@ -46,7 +46,7 @@ Make note of this URL, as you will need it in the next step.
 
 You will need to create your Bot App in RingCentral. Clicking the link, "Create Bot App" below will do this for you. When you click it, you will to enter in the callback URL for the bot. This will be the ngrok URL above, plus `/bot-oauth`. For example:
 
-    https://kahsdfkhsd.ngrok.io/bot-oauth
+    https://xxxxxx.ngrok.io/bot-oauth
 
 [Create Bot App](https://developer.ringcentral.com/new-app?name=Sample+Bot+App&desc=A+sample+app+created+in+conjunction+with+the+python+bot+framework&public=false&type=ServerBot&carriers=7710,7310,3420&permissions=ReadAccounts,EditExtensions,SubscriptionWebhook,Glip&redirectUri=)
 

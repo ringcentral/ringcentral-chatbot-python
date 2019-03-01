@@ -214,7 +214,7 @@ def dbWrapper(tableName, action, data = None):
   * for add, {'id': 'xxx', 'token': {...}, 'groups': {...}, 'data': {...}}
   * for remove, {'id': xxx} or {'ids': [...]}
   * for update, {'id': xxx, 'update': {...}}
-  * for get, singleUser:{'id': xxx}, allUser: None
+  * for get, singleUser:{'id': xxx}, allUser: None, query: { 'key': 'xx', 'value': 'yy' }
   """
 
   # todo prepare/check database

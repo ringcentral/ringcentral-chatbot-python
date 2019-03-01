@@ -11,6 +11,7 @@ from .config import initConfig
 from .data import initDataView
 from .user_webhook import initUserWebhook
 from .route import initRouter
+from .flask_request_parser import flaskRequestParser
 
 def frameworkInit(config, extensions = []):
   '''
@@ -48,52 +49,99 @@ def frameworkInit(config, extensions = []):
     User = UserClass
 
     @staticmethod
-    def dbAction(*args, **kwargs):
-      return dbAction(*args, **kwargs)
+    def dbAction(tableName, action, data = None):
+      """db action
+      * make sure it it stateless,
+      * in every action, you should check database is ready or not, if not, init it first
+      * check https://github.com/zxdong262/ringcentral-chatbot-python/blob/master/ringcentral_bot_framework/core/dynamodb.py or https://github.com/zxdong262/ringcentral-chatbot-python/blob/master/ringcentral_bot_framework/core/filedb.py as example
+      * @param {String} tableName, user or bot, or other table you defined
+      * @param {String} action, add, remove, update, get
+      * @param {Object} data
+      * for add, {'id': 'xxx', 'token': {...}, 'groups': {...}, 'data': {...}}
+      * for remove, {'id': xxx} or {'ids': [...]}
+      * for update, {'id': xxx, 'update': {...}}
+      * for get, singleUser:{'id': xxx}, allUser: None, query: { 'key': 'xx', 'value': 'yy' }
+      """
+      return dbAction(tableName, action, data = None)
 
     @staticmethod
-    def getBot(*args, **kwargs):
-      return getBot(*args, **kwargs)
+    def getBot(id):
+      '''
+      get bot data from database, init and return bot instance, if fails or not found will return False
+      '''
+      return getBot(id)
 
     @staticmethod
-    def removeBot(*args, **kwargs):
-      return removeBot(*args, **kwargs)
+    def removeBot(id):
+      '''
+      remove bot data from database
+      '''
+      return removeBot(id)
 
     @staticmethod
-    def getUser(*args, **kwargs):
-      return getUser(*args, **kwargs)
+    def getUser(id):
+      '''
+      get user data from database, init and return user instance, if fails or not found will return False
+      '''
+      return getUser(id)
 
     @staticmethod
-    def removeUser(*args, **kwargs):
-      return removeUser(*args, **kwargs)
+    def removeUser(id):
+      '''
+      remove user data from database
+      '''
+      return removeUser(id)
 
     @staticmethod
-    def botAuth(*args, **kwargs):
-      return botAuth(*args, **kwargs)
+    def botAuth(event):
+      return botAuth(event)
 
     @staticmethod
-    def renewBot(*args, **kwargs):
-      return renewBot(*args, **kwargs)
+    def renewBot(event):
+      return renewBot(event)
 
     @staticmethod
-    def botWebhook(*args, **kwargs):
-      return botWebhook(*args, **kwargs)
+    def botWebhook(event):
+      return botWebhook(event)
 
     @staticmethod
-    def dataView(*args, **kwargs):
-      return dataView(*args, **kwargs)
+    def dataView(event):
+      return dataView(event)
 
     @staticmethod
-    def userAuth(*args, **kwargs):
-      return userAuth(*args, **kwargs)
+    def userAuth(event):
+      return userAuth(event)
 
     @staticmethod
-    def userWebhook(*args, **kwargs):
-      return userWebhook(*args, **kwargs)
+    def userWebhook(event):
+      return userWebhook(event)
 
     @staticmethod
-    def router(*args, **kwargs):
-      return router(*args, **kwargs)
+    def router(event):
+      '''
+      process event and return result object:
+      {
+        'headers': dict,
+        'body': dict,
+        'statusCode': number
+      }
+      '''
+      return router(event)
+
+    @staticmethod
+    def flaskRequestParser(request, action):
+      '''
+      parse flask request to event format:
+      {
+        'pathParameters': {
+          'action': string
+        },
+        'queryStringParameters': dict,
+        'body': dict,
+        'headers': dict
+      }
+      '''
+      return flaskRequestParser(request, action)
 
   return BotFrameWork
 
