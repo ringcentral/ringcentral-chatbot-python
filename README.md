@@ -198,19 +198,15 @@ Do not forget to set your RingCentral app's redirect URL to Lambda's API Gateway
 
 ## Using Bot Extensions
 
-RingCentral Chatbot Framework for Python Extensions will extend bot command support with simple setting in `.env`.
+RingCentral Chatbot Framework for Python Extensions will extend bot command support.
 
-Just set like this in `.env`, support multiple extensions seperated by `,`
+Just uncommment line8-10 in `dev/server/server.py`, comment out line12:
 
-```bash
-EXTENSIONS=ringcentral_bot_framework_extension_botinfo,ringcentral_bot_framework_extension_world_time
+```python
+import ringcentral_bot_framework_extension_botinfo as botinfo
+import ringcentral_bot_framework_extension_world_time as wt
+framework = frameworkInit(conf, [botinfo, wt])
 ```
-
-And install these extensions by `pip install ringcentral_bot_framework_extension_botinfo ringcentral_bot_framework_extension_world_time`, it is done.
-
-![ ](https://github.com/zxdong262/ringcentral-chatbot-python-ext-bot-info/raw/master/screenshots/ss.png)
-
-You can search for more extension in [pypi.org](https://pypi.org) with keyword `ringcentral_bot_framework_extension`.
 
 ## Write a extension your self
 
