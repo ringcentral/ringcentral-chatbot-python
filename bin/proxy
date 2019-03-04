@@ -1,3 +1,4 @@
 #!/bin/bash
 cd `dirname $0`
-../node_modules/.bin/ngrok http 9898
+cd ..
+ngrok http 9898

@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/zxdong262/ringcentral-chatbot-python#readme",
   "devDependencies": {
-    "ngrok": "3.1.0",
     "serverless": "1.33.2",
     "serverless-python-requirements": "4.2.5",
     "shelljs": "0.8.3"
