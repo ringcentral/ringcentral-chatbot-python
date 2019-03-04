@@ -1,72 +1,80 @@
 from .common import result, debug
-from .bot import Bot, getBot
-from .user import User, getUser
 import time
-from .config import configAll as conf
-from .db import dbAction
 from pydash import get, is_dict
 from .extensions import runExtensionFunction
 
-def botWebhook(event):
-  message = get(event, 'body')
-  body = get(message, 'body')
-  defaultResponse = result('bot WebHook replied', 200, {
-    'headers': {
-      'validation-token': get(event, 'headers.validation-token') or get(event, 'headers.Validation-Token')
-    }
-  })
-  if not is_dict(body) :
-    return defaultResponse
-
-  botId = get(message, 'ownerId')
-  eventType = get(body, 'eventType')
-  groupId = get(body, 'groupId') or get(body, 'id')
-  bot = getBot(botId)
-  creatorId = get(body, 'creatorId')
-  if not isinstance(bot, Bot):
-    return defaultResponse
-
-  user = getUser(creatorId)
-  if user == False:
-    user = User()
-  if eventType == 'GroupJoined':
-    conf.botJoinPrivateChatAction(bot, groupId, user, dbAction)
-
-  elif eventType == 'PostAdded':
-    # for bot self post, ignore
-    if creatorId == botId:
+def initBotWebhook(
+  conf,
+  dbAction,
+  Bot,
+  User,
+  getBot,
+  getUser,
+  extensions
+):
+  def botWebhook(event):
+    message = get(event, 'body')
+    body = get(message, 'body')
+    defaultResponse = result('bot WebHook replied', 200, {
+      'headers': {
+        'validation-token': get(event, 'headers.validation-token') or get(event, 'headers.Validation-Token')
+      }
+    })
+    if not is_dict(body) :
       return defaultResponse
-    handledByExtension = runExtensionFunction(
-      'botGotPostAddAction',
-      bot,
-      groupId,
-      creatorId,
-      user,
-      get(body, 'text'),
-      dbAction
-    )
-    conf.botGotPostAddAction(
-      bot,
-      groupId,
-      creatorId,
-      user,
-      get(body, 'text'),
-      dbAction,
-      handledByExtension
-    )
 
-  elif eventType == 'Delete':
-    conf.botDeleteAction(
-      bot,
-      message,
-      dbAction
-    )
+    botId = get(message, 'ownerId')
+    eventType = get(body, 'eventType')
+    groupId = get(body, 'groupId') or get(body, 'id')
+    bot = getBot(botId)
+    creatorId = get(body, 'creatorId')
+    if not isinstance(bot, Bot):
+      return defaultResponse
 
-  elif eventType == 'GroupLeft':
-    conf.botGroupLeftAction(
-      bot,
-      message,
-      dbAction
-    )
+    user = getUser(creatorId)
+    if user == False:
+      user = User()
+    if eventType == 'GroupJoined':
+      conf.botJoinPrivateChatAction(bot, groupId, user, dbAction)
 
-  return defaultResponse
+    elif eventType == 'PostAdded':
+      # for bot self post, ignore
+      if creatorId == botId:
+        return defaultResponse
+      handledByExtension = runExtensionFunction(
+        extensions,
+        'botGotPostAddAction',
+        bot,
+        groupId,
+        creatorId,
+        user,
+        get(body, 'text'),
+        dbAction
+      )
+      conf.botGotPostAddAction(
+        bot,
+        groupId,
+        creatorId,
+        user,
+        get(body, 'text'),
+        dbAction,
+        handledByExtension
+      )
+
+    elif eventType == 'Delete':
+      conf.botDeleteAction(
+        bot,
+        message,
+        dbAction
+      )
+
+    elif eventType == 'GroupLeft':
+      conf.botGroupLeftAction(
+        bot,
+        message,
+        dbAction
+      )
+
+    return defaultResponse
+
+  return botWebhook

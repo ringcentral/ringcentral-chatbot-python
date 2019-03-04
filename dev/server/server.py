@@ -1,46 +1,34 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from dotenv import load_dotenv
 load_dotenv()
-from urllib.parse import parse_qs, urlencode
 import os, sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../..')
-from ringcentral_bot_framework import router
-import pydash as _
-import json
+from ringcentral_bot_framework import frameworkInit
+import config as conf
+# import ringcentral_bot_framework_extension_botinfo as botinfo
+# import ringcentral_bot_framework_extension_world_time as wt
+# framework = frameworkInit(conf, [botinfo, wt])
+
+framework = frameworkInit(conf)
 
 app = Flask('devtest')
 
-@app.route('/<action>', methods=['GET', 'POST'])
-def act(action):
-    body = request.data
-    if not body and request.form:
-      body = urlencode(request.form)
-      body = parse_qs(body)
-    elif not body:
-      try:
-        body = request.json
-      except:
-        pass
-    response = router({
-      'pathParameters': {
-        'action': action
-      },
-      'queryStringParameters': dict(request.args),
-      'body': body if _.predicates.is_dict(body) else json.loads(body or '{}'),
-      'headers': dict(request.headers)
-    })
-    resp = response['body']
-    headers = {}
-    if 'headers' in response:
-        headers = response['headers']
-    return resp, response['statusCode'], headers
-
-@app.route('/', methods=['GET'])
+@app.route('/test', methods=['GET'])
 def index():
-  return 'rincgentral bot dev server running'
+  return 'RingCentral bot dev server running'
 @app.route('/favicon.ico', methods=['GET'])
 def favicon():
   return ''
+
+@app.route('/<action>', methods=['GET', 'POST'])
+def act(action):
+  event = framework.flaskRequestParser(request, action)
+  response = framework.router(event)
+  resp = response['body']
+  headers = {}
+  if 'headers' in response:
+      headers = response['headers']
+  return resp, response['statusCode'], headers
 
 port = 9898
 host = 'localhost'

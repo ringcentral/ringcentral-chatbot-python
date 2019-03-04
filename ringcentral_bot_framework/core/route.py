@@ -9,30 +9,15 @@ extend or overide default route by set `routes` in config.py
 """
 
 from urllib.parse import parse_qs, urlencode
-from .bot_oauth import botAuth, renewBot
-from .user_oauth import userAuth
-from .bot_webhook import botWebhook
-from .user_webhook import userWebhook
-from .data import dataView
 from .common import debug, defaultEventHandler
 from pydash import get
 from pydash.predicates import is_dict
 import json
 
-routes = {
-  'bot-oauth': botAuth,
-  'renew-bot': renewBot,
-  'user-oauth': userAuth,
-  'bot-webhook': botWebhook,
-  'user-webhook': userWebhook,
-  'data': dataView
-}
-
-def router(event):
-  debug('got event', event)
-  action = get(event, 'pathParameters.action')
-  handler = defaultEventHandler
-  debug('action=====', action)
+def eventParser(event):
+  '''
+  fix event format
+  '''
   body = get(event, 'body')
   if not is_dict(body):
     if 'application/x-www-form-urlencoded' in (
@@ -45,8 +30,19 @@ def router(event):
       except:
         event['body'] = {}
   debug('event=====', event)
-  try:
-    handler = routes[action]
-  except:
-    pass
-  return handler(event)
+  return event
+
+def initRouter(routes):
+  def router(event):
+    debug('got event', event)
+    action = get(event, 'pathParameters.action')
+    handler = defaultEventHandler
+    debug('action=====', action)
+    event = eventParser(event)
+    try:
+      handler = routes[action]
+    except:
+      pass
+    return handler(event)
+
+  return router

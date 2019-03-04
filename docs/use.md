@@ -1,49 +1,73 @@
-'''
-framework entry
-'''
-from .bot import initBotClass
-from .db import initDBAction
-from .user import initUserClass
-from .bot_oauth import initBotAuthHandler
-from .user_oauth import initUserAuth
-from .bot_webhook import initBotWebhook
-from .config import initConfig
-from .data import initDataView
-from .user_webhook import initUserWebhook
-from .route import initRouter
-from .flask_request_parser import flaskRequestParser
+# Use
 
-def frameworkInit(config, extensions = []):
-  '''
-  init bot framwork from config object and extensions array
-  '''
-  conf = initConfig(config)
-  dbAction = initDBAction(conf)
-  BotClass, getBot, removeBot = initBotClass(conf, dbAction)
-  UserClass, getUser, removeUser = initUserClass(conf, dbAction)
-  botAuth, renewBot = initBotAuthHandler(conf, BotClass, dbAction)
-  botWebhook = initBotWebhook(
-    conf, dbAction, BotClass, UserClass, getBot, getUser, extensions
-  )
-  dataView = initDataView(conf, dbAction)
-  userAuth = initUserAuth(
-    conf, BotClass, getBot, UserClass, dbAction
-  )
-  userWebhook = initUserWebhook(
-    conf, BotClass, getBot, UserClass, getUser, dbAction
-  )
+## Use in Local development with Flask
 
-  routes = {
-    'bot-oauth': botAuth,
-    'renew-bot': renewBot,
-    'user-oauth': userAuth,
-    'bot-webhook': botWebhook,
-    'user-webhook': userWebhook,
-    'data': dataView
-  }
+```python
+from flask import Flask, request
+from dotenv import load_dotenv
+load_dotenv()
+import os, sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../..')
+from ringcentral_bot_framework import frameworkInit
 
-  router = initRouter(routes)
+# put all bot logic in `config.py`, check `sample-bots/kitchen-sync.py` to see all the config functions
+import config as conf
 
+# Uncomments line17-19 to use extensions
+# import ringcentral_bot_framework_extension_botinfo as botinfo
+# import ringcentral_bot_framework_extension_world_time as wt
+# framework = frameworkInit(conf, [botinfo, wt])
+
+framework = frameworkInit(conf)
+
+app = Flask('devtest')
+
+@app.route('/<action>', methods=['GET', 'POST'])
+def act(action):
+  event = framework.flaskRequestParser(request, action)
+  response = framework.router(event)
+  resp = response['body']
+  headers = {}
+  if 'headers' in response:
+      headers = response['headers']
+  return resp, response['statusCode'], headers
+
+port = 9898
+host = 'localhost'
+
+app.run(
+  host=host,
+  port=port,
+  debug=True,
+  load_dotenv=True
+)
+
+```
+
+## Use in AWS Lambda
+
+```python
+from ringcentral_bot_framework import frameworkInit
+import config as conf
+
+# Uncomments line54-56 to use extensions
+# import ringcentral_bot_framework_extension_botinfo as botinfo
+# import ringcentral_bot_framework_extension_world_time as wt
+# framework = frameworkInit(conf, [botinfo, wt])
+
+framework = frameworkInit(conf)
+
+def bot(event, context):
+
+    return framework.router(event)
+
+```
+
+## Framework member functions and properties
+
+Read [source code](../ringcentral_bot_framework/core/__init__.py) for more detail.
+
+```py
   class BotFrameWork:
     Bot = BotClass,
     User = UserClass
@@ -142,6 +166,4 @@ def frameworkInit(config, extensions = []):
       }
       '''
       return flaskRequestParser(request, action)
-
-  return BotFrameWork
-
+```
