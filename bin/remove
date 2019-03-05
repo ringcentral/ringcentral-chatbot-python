@@ -1,0 +1,5 @@
+
+echo 'removing bot'
+cd `dirname $0`
+cd ../dev/lambda
+../../node_modules/.bin/serverless remove
