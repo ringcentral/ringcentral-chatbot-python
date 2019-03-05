@@ -66,8 +66,6 @@ endpoints:
   GET - https://dddddd.execute-api.us-east-1.amazonaws.com/dev/
 ```
 
-Relpace `RINGCENTRAL_BOT_SERVER: https://xxxxx.execute-api.us-east-1.amazonaws.com/dev` in serverless.yml with `RINGCENTRAL_BOT_SERVER: https://dddddd.execute-api.us-east-1.amazonaws.com/dev` and run `./bin/deploy` to deploy again.
-
 You may watch the Lambda server log by running:
 
 ```bash
