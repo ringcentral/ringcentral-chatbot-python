@@ -126,6 +126,11 @@ def frameworkInit(config, extensions = []):
         'statusCode': number
       }
       '''
+      for extension in extensions:
+        if not extension.route is None:
+          res = extension.route(event)
+          if not res is None:
+            return res
       return router(event)
 
     @staticmethod
