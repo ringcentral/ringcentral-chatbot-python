@@ -1,6 +1,6 @@
 
-const axios = require('axios')
-const {copyFileSync, readFileSync, writeFileSync} = require('fs')
+
+const {readFileSync, writeFileSync} = require('fs')
 const {exec} = require('child_process')
 const yaml = require('js-yaml')
 const {resolve} = require('path')
