@@ -7,4 +7,4 @@ rm -rf ringcentral_bot_framework
 cp -r ../../ringcentral_bot_framework ./
 cp -r ../../requirements.txt ./
 cp -r ../../config.py ./
-../../node_modules/.bin/serverless deploy
+node ../../bin/deploy.js
