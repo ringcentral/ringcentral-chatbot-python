@@ -11,7 +11,7 @@ import ringcentral_bot_framework_extension_world_time as wt
 framework = frameworkInit(conf, [botinfo, wt])
 ```
 
-## Write a extension your self
+## Write a extension
 
 Write one extension will be simple, just check out [botinfo extension](https://github.com/zxdong262/ringcentral-chatbot-python-ext-bot-info) as an example, you just need to write one function there.
 
@@ -53,4 +53,26 @@ def botGotPostAddAction(
     return True
   else:
     return False
+
+
+def route(event, framework):
+  '''
+  custom route example
+  handle '/ext-custom'
+  '''
+  action = ''
+  try:
+    action = event['pathParameters']['action']
+    if not action == 'ext-custom':
+      return None
+
+    listBots = framework.dbAction('bot', 'get', None)
+    return {
+      'statusCode': 200,
+      'body': json.dumps(listBots)
+    }
+
+  except Exception as e:
+    print(e)
+    return None
 ```
