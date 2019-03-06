@@ -12,6 +12,7 @@ from .data import initDataView
 from .user_webhook import initUserWebhook
 from .route import initRouter
 from .flask_request_parser import flaskRequestParser
+import pydash as _
 
 def frameworkInit(config, extensions = []):
   '''
@@ -127,8 +128,8 @@ def frameworkInit(config, extensions = []):
       }
       '''
       for extension in extensions:
-        if not extension.route is None:
-          res = extension.route(event)
+        if hasattr(extension, 'route') and _.predicates.is_function(extension.route):
+          res = extension.route(event, BotFrameWork)
           if not res is None:
             return res
       return router(event)
