@@ -17,7 +17,7 @@ def initDataView(configAll, dbAction):
     tables = list(map(lambda x: x['name'], configAll.dbTables()))
     if disabled:
       return result('Data viewer diabled, set DATA_VIEWER_ENABLED=yes to enable it')
-    tableName = _.get(event, 'queryStringParameters.tableName') or 'bot'
+    tableName = _.get(event, 'queryStringParameters.tableName[0]') or _.get(event, 'queryStringParameters.tableName') or 'bot'
     if not tableName in tables:
       return result('tableName not right', 400)
     res = dbAction(tableName, 'get')

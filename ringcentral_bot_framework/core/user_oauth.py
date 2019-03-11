@@ -14,8 +14,9 @@ def initUserAuth(
 ):
   def userAuth(event):
     user = User()
-    user.auth(get(event, 'queryStringParameters.code'))
-    state = get(event, 'queryStringParameters.state') or ','
+    code = get(event, 'queryStringParameters.code[0]') or get(event, 'queryStringParameters.code')
+    user.auth(code)
+    state = get(event, 'queryStringParameters.state[0]') or get(event, 'queryStringParameters.state') or ','
     arr = state.split(',')
     groupId = get(arr, '[0]')
     botId = get(arr, '[1]')

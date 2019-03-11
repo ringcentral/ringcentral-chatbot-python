@@ -9,7 +9,7 @@ from pydash import get
 def initBotAuthHandler(conf, Bot, dbAction):
   def botAuth(event):
     bot = Bot()
-    code = get(event, 'queryStringParameters.code')
+    code = get(event, 'queryStringParameters.code[0]') or get(event, 'queryStringParameters.code')
     if is_string(code):
       bot.auth(code)
     else:
