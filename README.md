@@ -23,10 +23,8 @@ This framework requires Python3.6+ and Pip3.
 First we install [virtualenv](https://virtualenv.pypa.io/en/latest/) which will create an isolated environment in which to install and run all the python libraries needed by this framework. Using virtualenv will ensure that the libraries installed for this project do not conflict or disrupt the other python projects you are working on.
 
 ```bash
-pip3 install virtualenv
-virtualenv venv --python=python3
-source ./venv/bin/activate
-pip3 install python-dotenv ringcentral pydash boto3 flask pylint ringcentral_client pyngrok
+# init project
+bin/init
 ```
 
 Next, we need to run [ngrok](https://ngrok.com/), a tool for routing web requests to a localhost. This is what will allow your local bot in development to receive webhooks from RingCentral. ngrok is a node app and is installed and start as follows:

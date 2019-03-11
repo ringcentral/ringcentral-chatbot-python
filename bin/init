@@ -1,0 +1,7 @@
+#!/bin/bash
+cd `dirname $0`
+cd ..
+pip3 install virtualenv
+virtualenv venv --python=python3
+source ./venv/bin/activate
+pip3 install python-dotenv ringcentral pydash boto3 flask pylint ringcentral_client pyngrok
