@@ -29,10 +29,9 @@ source ./venv/bin/activate
 pip3 install python-dotenv ringcentral pydash boto3 flask pylint ringcentral_client pyngrok
 ```
 
-Next, we need to install and run [ngrok](https://ngrok.com/), a tool for routing web requests to a localhost. This is what will allow your local bot in development to receive webhooks from RingCentral. ngrok is a node app and is installed and start as follows:
+Next, we need to run [ngrok](https://ngrok.com/), a tool for routing web requests to a localhost. This is what will allow your local bot in development to receive webhooks from RingCentral. ngrok is a node app and is installed and start as follows:
 
 ```bash
-npm install
 ./bin/proxy
 ```
 
