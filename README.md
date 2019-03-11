@@ -118,6 +118,14 @@ Then just answer the prompts. Then follow the directions in `my-ringcentral-chat
 - [Deploy to AWS Lambda](docs/deploy-to-aws-lambda.md)
 - [Use or write extensions](docs/extensions.md)
 - [Direct Use](docs/use.md)
+- Init bot project in one line script:
+
+```bash
+wget -qO- https://raw.githubusercontent.com/zxdong262/ringcentral-chatbot-factory-py/master/bin/init.sh | bash
+
+# or with curl
+curl -o- https://raw.githubusercontent.com/zxdong262/ringcentral-chatbot-factory-py/master/bin/init.sh | bash
+```
 
 ## Unit Test
 
