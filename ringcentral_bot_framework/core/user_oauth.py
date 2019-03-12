@@ -2,7 +2,7 @@
 user auth
 """
 import time
-from .common import result
+from .common import result, getQueryParam
 from pydash import get
 
 def initUserAuth(
@@ -14,9 +14,9 @@ def initUserAuth(
 ):
   def userAuth(event):
     user = User()
-    code = get(event, 'queryStringParameters.code[0]') or get(event, 'queryStringParameters.code')
+    code = getQueryParam(event, 'code')
     user.auth(code)
-    state = get(event, 'queryStringParameters.state[0]') or get(event, 'queryStringParameters.state') or ','
+    state = getQueryParam(event, 'state') or ','
     arr = state.split(',')
     groupId = get(arr, '[0]')
     botId = get(arr, '[1]')

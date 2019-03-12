@@ -2,14 +2,13 @@
 bot auth
 """
 import time
-from .common import result, debug
+from .common import result, debug, getQueryParam
 from pydash.predicates import is_number, is_string
-from pydash import get
 
 def initBotAuthHandler(conf, Bot, dbAction):
   def botAuth(event):
     bot = Bot()
-    code = get(event, 'queryStringParameters.code[0]') or get(event, 'queryStringParameters.code')
+    code = getQueryParam(event, 'code')
     if is_string(code):
       bot.auth(code)
     else:

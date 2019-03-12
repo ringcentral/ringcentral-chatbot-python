@@ -70,3 +70,9 @@ def defaultEventHandler(event):
     'statusCode': 200,
     'body': json.dumps(event)
   }
+
+def getQueryParam(event, key):
+  v = _.get(event, f'queryStringParameters.{key}')
+  if _.predicates.is_list(v):
+    return v[0]
+  return v

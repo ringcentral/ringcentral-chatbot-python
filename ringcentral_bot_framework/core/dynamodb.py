@@ -13,7 +13,6 @@ from os.path import join
 from functools import reduce
 from pydash.predicates import is_string
 from pydash.strings import starts_with
-from .config import configAll as conf
 
 boto3.setup_default_session(region_name=os.environ['AWS_REGION'])
 client = boto3.client('dynamodb')
