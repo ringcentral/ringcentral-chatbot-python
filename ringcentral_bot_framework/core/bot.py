@@ -119,7 +119,7 @@ def initBotClass(conf, dbAction):
           event['botId'] = self.id
           event['token'] = self.token
           event['pathParameters']['action'] = 'renew-bot'
-          selfTrigger(event)
+          selfTrigger(event, conf, dbAction, Bot)
         else:
           printError(e, 'setupWebhook')
 

@@ -16,13 +16,14 @@ def lambdaName():
   except:
     return False
 
-def selfTrigger(event):
+def selfTrigger(event, conf, dbAction, BotClass):
   debug('self tringgering')
   name = lambdaName()
   if not name:
     botAuth = import_module('ringcentral_bot_framework.core.bot_oauth')
+    botAuth, renewBot = botAuth.initBotAuthHandler(conf, BotClass, dbAction)
     thread = threading.Thread(
-      target=botAuth.renewBot,
+      target=renewBot,
       args=(event,)
     )
     thread.start()
