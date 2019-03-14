@@ -75,6 +75,7 @@ cp sample-bots/parrot.py ./config.py
 
 ```bash
 ./bin/start
+source venv/bin/activate
 ```
 
 ### Add Bot to Glip
@@ -121,6 +122,7 @@ Then just answer the prompts. Then follow the directions in `my-ringcentral-chat
 - Init bot project in one line script:
 
 ```bash
+# use wget
 wget -qO- https://raw.githubusercontent.com/zxdong262/ringcentral-chatbot-factory-py/master/bin/init.sh | bash
 
 # or with curl
