@@ -25,6 +25,7 @@ First we install [virtualenv](https://virtualenv.pypa.io/en/latest/) which will 
 ```bash
 # init project
 bin/init
+source venv/bin/activate
 ```
 
 Next, we need to run [ngrok](https://ngrok.com/), a tool for routing web requests to a localhost. This is what will allow your local bot in development to receive webhooks from RingCentral. ngrok is a node app and is installed and start as follows:
@@ -75,7 +76,6 @@ cp sample-bots/parrot.py ./config.py
 
 ```bash
 ./bin/start
-source venv/bin/activate
 ```
 
 ### Add Bot to Glip
