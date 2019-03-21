@@ -92,6 +92,20 @@ You should now be in private chat session with the bot. It should greet you with
 
 Type `@ParrotBot Polly want a cracker?` and let's see what happens.
 
+## Quick start: Init a bot project with one line script
+
+Now you know how it works, you may try to init a bot project in one line script:
+
+```bash
+# make sure you have python3.6+ and pip3 installed
+
+# use wget
+wget -qO- https://raw.githubusercontent.com/zxdong262/ringcentral-chatbot-factory-py/master/bin/init.sh | bash
+
+# or with curl
+curl -o- https://raw.githubusercontent.com/zxdong262/ringcentral-chatbot-factory-py/master/bin/init.sh | bash
+```
+
 ## Example bot apps
 
 The following bots were created using this framework, and should serves as guides as you develop your own original bot.
@@ -119,15 +133,6 @@ Then just answer the prompts. Then follow the directions in `my-ringcentral-chat
 - [Deploy to AWS Lambda](docs/deploy-to-aws-lambda.md)
 - [Use or write extensions](docs/extensions.md)
 - [Direct Use](docs/use.md)
-- Init bot project in one line script:
-
-```bash
-# use wget
-wget -qO- https://raw.githubusercontent.com/zxdong262/ringcentral-chatbot-factory-py/master/bin/init.sh | bash
-
-# or with curl
-curl -o- https://raw.githubusercontent.com/zxdong262/ringcentral-chatbot-factory-py/master/bin/init.sh | bash
-```
 
 ## Unit Test
 
