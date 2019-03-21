@@ -41,6 +41,7 @@ def initBotWebhook(
       # for bot self post, ignore
       if creatorId == botId:
         return defaultResponse
+      text = get(body, 'text') or ''
       handledByExtension = runExtensionFunction(
         extensions,
         'botGotPostAddAction',
@@ -48,7 +49,7 @@ def initBotWebhook(
         groupId,
         creatorId,
         user,
-        get(body, 'text'),
+        text,
         dbAction
       )
       conf.botGotPostAddAction(
@@ -56,7 +57,7 @@ def initBotWebhook(
         groupId,
         creatorId,
         user,
-        get(body, 'text'),
+        text,
         dbAction,
         handledByExtension
       )
