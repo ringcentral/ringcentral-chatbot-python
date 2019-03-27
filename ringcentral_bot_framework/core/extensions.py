@@ -19,7 +19,6 @@ def runExtensionFunction(extensions, name, *args):
     func = ext.__dict__.get(name)
     hanldedByPrevious = False
     if not func is None:
-      print(name, 'not')
       hanldedByPrevious = func(*args, res)
     res = res or hanldedByPrevious
 
