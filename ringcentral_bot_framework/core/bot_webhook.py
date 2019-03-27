@@ -25,6 +25,7 @@ def initBotWebhook(
 
     botId = get(message, 'ownerId')
     eventType = get(body, 'eventType')
+    msgType = get(body, 'type')
     groupId = get(body, 'groupId') or get(body, 'id')
     bot = getBot(botId)
     creatorId = get(body, 'creatorId')
@@ -37,7 +38,7 @@ def initBotWebhook(
     if eventType == 'GroupJoined':
       conf.botJoinPrivateChatAction(bot, groupId, user, dbAction)
 
-    elif eventType == 'PostAdded':
+    elif eventType == 'PostAdded' and msgType == 'TextMessage':
       # for bot self post, ignore
       if creatorId == botId:
         return defaultResponse
@@ -50,7 +51,8 @@ def initBotWebhook(
         creatorId,
         user,
         text,
-        dbAction
+        dbAction,
+        event
       )
       conf.botGotPostAddAction(
         bot,
@@ -59,7 +61,8 @@ def initBotWebhook(
         user,
         text,
         dbAction,
-        handledByExtension
+        handledByExtension,
+        event
       )
 
     elif eventType == 'Delete':
@@ -74,6 +77,30 @@ def initBotWebhook(
         bot,
         message,
         dbAction
+      )
+
+    else:
+      text = get(body, 'text') or ''
+      handledByExtension = runExtensionFunction(
+        extensions,
+        'defaultEventHandler',
+        bot,
+        groupId,
+        creatorId,
+        user,
+        text,
+        dbAction,
+        event
+      )
+      conf.defaultEventHandler(
+        bot,
+        groupId,
+        creatorId,
+        user,
+        text,
+        dbAction,
+        handledByExtension,
+        event
       )
 
     return defaultResponse

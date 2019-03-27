@@ -6,7 +6,7 @@ edit config.py functions to override default bot behavior
 __name__ = 'localConfig'
 __package__ = 'ringcentral_bot_framework'
 
-'''
+
 import copy
 
 def botJoinPrivateChatAction(bot, groupId, user, dbAction):
@@ -85,6 +85,21 @@ def botAuthAction(bot, dbAction):
   After bot auth success,
   can do some bot actions
   default: do nothing
+  """
+  return
+
+def defaultEventHandler(
+  bot,
+  groupId,
+  creatorId,
+  user,
+  text,
+  dbAction,
+  handledByExtension,
+  event
+):
+  """
+  default event handler, for event not match any above
   """
   return
 
@@ -255,5 +270,3 @@ def dbName():
   * set DB_TYPE=custom in .env to activate
   """
   return 'custom'
-
-'''

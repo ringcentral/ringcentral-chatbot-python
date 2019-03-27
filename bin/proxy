@@ -1,3 +1,4 @@
 #!/bin/bash
 cd `dirname $0`
+echo "init ngrok, please wait"
 ngrok http 9898

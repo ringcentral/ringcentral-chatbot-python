@@ -27,7 +27,8 @@ def botGotPostAddAction(
   user,
   text,
   dbAction,
-  handledByExtension
+  handledByExtension,
+  event
 ):
   """
   bot got group chat message: text
@@ -85,6 +86,21 @@ def botAuthAction(bot, dbAction):
   can do some bot actions
   default: do nothing
   '''
+  return
+
+def defaultEventHandler(
+  bot,
+  groupId,
+  creatorId,
+  user,
+  text,
+  dbAction,
+  handledByExtension,
+  event
+):
+  """
+  default event handler, for event not match any above
+  """
   return
 
 def userAuthSuccessAction(bot, groupId, userId, dbAction):
