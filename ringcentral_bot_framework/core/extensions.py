@@ -17,7 +17,9 @@ def runExtensionFunction(extensions, name, *args):
   res = False
   for ext in extensions:
     func = ext.__dict__.get(name)
-    hanldedByPrevious = func(*args, res)
+    hanldedByPrevious = False
+    if not func is None:
+      hanldedByPrevious = func(*args, res)
     res = res or hanldedByPrevious
 
   return res

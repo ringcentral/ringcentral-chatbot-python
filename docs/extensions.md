@@ -75,4 +75,19 @@ def route(event, framework):
   except Exception as e:
     print(e)
     return None
+
+def defaultEventHandler(
+  bot,
+  groupId,
+  creatorId,
+  user,
+  text,
+  dbAction,
+  handledByExtension,
+  event
+):
+  """
+  default event handler, for event not match any above
+  """
+  return
 ```
