@@ -112,7 +112,7 @@ The following bots were created using this framework, and should serves as guide
 
 - [date-time-chatbot](https://github.com/zxdong262/ringcentral-date-time-chatbot): simple Glip chatbot that can tell time/date.
 - [assistant-bot](https://github.com/zxdong262/ringcentral-assistant-bot): simple assistant Glip bot to show user/company information, this bot will show you how to access user data.
-- [survey-bot](https://github.com/zxdong262/ringcentral-survey-bot): example survey bot, this bot will show you how to create/use custom database wrapper.
+- [poll-bot](https://github.com/zxdong262/ringcentral-poll-bot): Glip poll bot, this bot will show you how to create/use custom database wrapper.
 - [translate-bot](https://github.com/zxdong262/ringcentral-translate-bot): translate bot for glip.
 - [welcome-bot](https://github.com/zxdong262/ringcentral-welcome-bot-py): Glip chatbot to welcome new team member.
 - [at-all-bot](https://github.com/zxdong262/ringcentral-at-all-bot): Add AT all function to glip with this bot.
