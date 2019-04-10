@@ -1,8 +1,13 @@
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 import unittest
-from ringcentral_bot_framework.core.db import dbAction as action, DBNAME
-from ringcentral_bot_framework.core.user import User, getUser
+from ringcentral_bot_framework import frameworkInit
+import default_conf as conf
+framework = frameworkInit(conf)
+DBNAME = 'filedb'
+action = framework.dbAction
+getUser = framework.getUser
+User = framework.User()
 
 class TestUser(unittest.TestCase):
 

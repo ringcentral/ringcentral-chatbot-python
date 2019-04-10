@@ -1,8 +1,12 @@
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 import unittest
-from ringcentral_bot_framework.core.db import dbAction as action, DBNAME
 import pydash as _
+from ringcentral_bot_framework import frameworkInit
+import default_conf as conf
+framework = frameworkInit(conf)
+DBNAME = 'filedb'
+action = framework.dbAction
 
 class TestFiledbMethods(unittest.TestCase):
 

@@ -46,8 +46,13 @@ def frameworkInit(config, extensions = []):
   router = initRouter(routes)
 
   class BotFrameWork:
-    Bot = BotClass,
-    User = UserClass
+    @staticmethod
+    def Bot():
+      return BotClass
+
+    @staticmethod
+    def User():
+      return UserClass
 
     @staticmethod
     def dbAction(tableName, action, data = None):
@@ -63,7 +68,7 @@ def frameworkInit(config, extensions = []):
       * for update, {'id': xxx, 'update': {...}}
       * for get, singleUser:{'id': xxx}, allUser: None, query: { 'key': 'xx', 'value': 'yy' }
       """
-      return dbAction(tableName, action, data = None)
+      return dbAction(tableName, action, data)
 
     @staticmethod
     def getBot(id):
