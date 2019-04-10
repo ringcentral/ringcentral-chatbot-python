@@ -69,8 +69,13 @@ Read [source code](../ringcentral_bot_framework/core/__init__.py) for more detai
 
 ```py
   class BotFrameWork:
-    Bot = BotClass,
-    User = UserClass
+    @staticmethod
+    def Bot():
+      return BotClass
+
+    @staticmethod
+    def User():
+      return UserClass
 
     @staticmethod
     def dbAction(tableName, action, data = None):
