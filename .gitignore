@@ -108,6 +108,7 @@ venv.bak/
 /temp/
 /filedb/
 /config.py
+/bot.py
 /package-lock.json
 /yarn.lock
 /node_modules

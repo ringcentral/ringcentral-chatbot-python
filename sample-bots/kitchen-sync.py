@@ -270,3 +270,15 @@ def dbName():
   * set DB_TYPE=custom in .env to activate
   """
   return 'custom'
+
+
+'''
+use extensions
+
+example:
+
+import ringcentral_bot_framework_extension_world_time as wt
+extensions = [wt]
+
+'''
+extensions = []

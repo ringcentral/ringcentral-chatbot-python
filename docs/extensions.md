@@ -3,12 +3,16 @@
 
 RingCentral Chatbot Framework for Python Extensions will extend bot command support.
 
-Just uncommment line8-10 in `dev/server/server.py`, comment out line12:
+Just add extensions in your bot config file:
 
 ```python
-import ringcentral_bot_framework_extension_botinfo as botinfo
-import ringcentral_bot_framework_extension_world_time as wt
-framework = frameworkInit(conf, [botinfo, wt])
+
+'''
+use extensions
+example:
+'''
+import ringcentral_bot_framework_extension_botinfo as wt
+extensions = [wt]
 ```
 
 ## Write a extension

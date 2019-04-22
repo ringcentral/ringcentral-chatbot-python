@@ -69,13 +69,14 @@ Then look for the following variables, and set them accordingly:
 This bot framework loads all bot behaviors from a file called `config.py`. Let's copy the parrot bot config to get started.
 
 ```bash
-cp sample-bots/parrot.py ./config.py
+cp sample-bots/parrot.py ./bot.py
 ```
 
 ### Start the Server
 
 ```bash
-./bin/start
+# rcs is cli server module from ringcentral_chatbot_server
+rcs bot.py
 ```
 
 ### Add Bot to Glip

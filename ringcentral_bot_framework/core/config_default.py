@@ -8,6 +8,17 @@ __package__ = 'ringcentral_bot_framework.core'
 
 import copy
 
+'''
+use extensions
+
+example:
+
+import ringcentral_bot_framework_extension_world_time as wt
+extensions = [wt]
+
+'''
+extensions = []
+
 def botJoinPrivateChatAction(bot, groupId, user, dbAction):
   """
   bot join private chat event handler

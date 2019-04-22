@@ -14,10 +14,11 @@ from .route import initRouter
 from .flask_request_parser import flaskRequestParser
 import pydash as _
 
-def frameworkInit(config, extensions = []):
+def frameworkInit(config, extensions = None):
   '''
   init bot framwork from config object and extensions array
   '''
+  extensions = extensions or _.get(config, 'extensions') or []
   conf = initConfig(config)
   dbAction = initDBAction(conf)
   BotClass, getBot, removeBot = initBotClass(conf, dbAction)

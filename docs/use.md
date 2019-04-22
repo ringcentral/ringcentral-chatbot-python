@@ -1,6 +1,12 @@
 # Use
 
-## Use in Local development with Flask
+## Use with ringcentral_chatbot_server cli
+
+```bash
+rcs your_bot_config.py
+```
+
+## Use in Local development with Flask server
 
 ```python
 from flask import Flask, request
@@ -12,11 +18,6 @@ from ringcentral_bot_framework import frameworkInit
 
 # put all bot logic in `config.py`, check `sample-bots/kitchen-sync.py` to see all the config functions
 import config as conf
-
-# Uncomments line17-19 to use extensions
-# import ringcentral_bot_framework_extension_botinfo as botinfo
-# import ringcentral_bot_framework_extension_world_time as wt
-# framework = frameworkInit(conf, [botinfo, wt])
 
 framework = frameworkInit(conf)
 
@@ -49,11 +50,6 @@ app.run(
 ```python
 from ringcentral_bot_framework import frameworkInit
 import config as conf
-
-# Uncomments line54-56 to use extensions
-# import ringcentral_bot_framework_extension_botinfo as botinfo
-# import ringcentral_bot_framework_extension_world_time as wt
-# framework = frameworkInit(conf, [botinfo, wt])
 
 framework = frameworkInit(conf)
 
