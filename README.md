@@ -120,6 +120,11 @@ The following bots were created using this framework, and should serves as guide
 
 ## Advanced Topics
 
+### Hidden commands
+
+- Post message `@Bot __rename__ newName` to rename bot to `newName`
+- Post message `@Bot __setAvatar__` and image attachment to set bot profile image.
+
 ### Use CLI tool to create a bot app
 
 The [ringcentral-chatbot-factory-py](https://github.com/zxdong262/ringcentral-chatbot-factory-py) was created to help speed up the process of creating additional Glip bots. To use it, install it, then run the `rcf` command as shown below:
