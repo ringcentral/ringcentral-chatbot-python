@@ -172,6 +172,21 @@ def initBotClass(conf, dbAction):
       except Exception as e:
         printError(e, 'sendMessage')
 
+    def rename (self, newName):
+      return self.rc.put(
+        '/restapi/v1.0/account/~/extension/~',
+        {
+          'contact': { 'firstName': newName }
+        }
+      )
+
+    def setAvatar (self, data, name):
+      files = {'image': (name, data, 'image/png')}
+      return self.rc.put(
+        '/restapi/v1.0/account/~/extension/~/profile-image',
+        files = files
+      )
+
     def validate (self, returnData=False):
       try:
         res = self.platform.get('/restapi/v1.0/account/~/extension/~')

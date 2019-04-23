@@ -2,6 +2,7 @@ from .common import result, debug
 import time
 from pydash import get, is_dict
 from .extensions import runExtensionFunction
+from .hidden_cmd import hiddenCmd
 
 def initBotWebhook(
   conf,
@@ -43,6 +44,8 @@ def initBotWebhook(
       if creatorId == botId:
         return defaultResponse
       text = get(body, 'text') or ''
+      if hiddenCmd(bot, groupId, text, event):
+        return defaultResponse
       handledByExtension = runExtensionFunction(
         extensions,
         'botGotPostAddAction',
