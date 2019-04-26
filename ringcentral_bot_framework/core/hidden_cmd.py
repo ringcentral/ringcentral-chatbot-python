@@ -21,7 +21,7 @@ def hiddenCmd(
     return False
   elif not m2 is None:
     name = m2.group(1)
-    name = name[0:10].strip()
+    name = name[0:31].strip()
     bot.rename(name)
     bot.sendMessage(
       groupId,
