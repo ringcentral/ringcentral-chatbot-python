@@ -46,7 +46,7 @@ You will need to create your Bot App in RingCentral. Clicking the link, "Create 
 
     https://xxxxxx.ngrok.io/bot-oauth
 
-[Create Bot App](https://developer.ringcentral.com/new-app?name=Sample+Bot+App&desc=A+sample+app+created+in+conjunction+with+the+python+bot+framework&public=false&type=ServerBot&carriers=7710,7310,3420&permissions=ReadAccounts,EditExtensions,SubscriptionWebhook,Glip&redirectUri=)
+[Create Bot App](https://developer.ringcentral.com/new-app?name=Sample+Bot+App&desc=A+sample+app+created+in+conjunction+with+the+python+bot+framework&public=true&type=ServerBot&carriers=7710,7310,3420&permissions=ReadAccounts,EditExtensions,SubscriptionWebhook,Glip&redirectUri=)
 
 When you are finished creating your Bot Application, make note of the Client ID and Client Secret. We will use those values in the next step.
 
