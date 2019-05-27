@@ -223,7 +223,7 @@ def dbWrapper(tableName, action, data = None):
   * set DB_TYPE=custom in .env to activate
   * make sure it it stateless,
   * in every action, you should check database is ready or not, if not, init it first
-  * check https://github.com/zxdong262/ringcentral-chatbot-python/blob/master/ringcentral_bot_framework/core/dynamodb.py or https://github.com/zxdong262/ringcentral-chatbot-python/blob/master/ringcentral_bot_framework/core/filedb.py as example
+  * check https://github.com/ringcentral/ringcentral-chatbot-python/blob/master/ringcentral_bot_framework/core/dynamodb.py or https://github.com/ringcentral/ringcentral-chatbot-python/blob/master/ringcentral_bot_framework/core/filedb.py as example
   * @param {String} tableName, user or bot, or other table you defined
   * @param {String} action, add, remove, update, get
   * @param {Object} data

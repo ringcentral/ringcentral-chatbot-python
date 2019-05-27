@@ -1,6 +1,6 @@
-# [ringcentral-chatbot-python](https://github.com/zxdong262/ringcentral-chatbot-python) <!-- omit in toc -->
+# [ringcentral-chatbot-python](https://github.com/ringcentral/ringcentral-chatbot-python) <!-- omit in toc -->
 
-[![Build Status](https://travis-ci.org/zxdong262/ringcentral-chatbot-python.svg?branch=test)](https://travis-ci.org/zxdong262/ringcentral-chatbot-python)
+[![Build Status](https://travis-ci.org/ringcentral/ringcentral-chatbot-python.svg?branch=test)](https://travis-ci.org/ringcentral/ringcentral-chatbot-python)
 
 Welcome to the RingCentral Chatbot Framework for Python. This framework dramatically simplifies the process of building a bot to work with Glip, RingCentral's group chat system. It is intended to do most of the heavy lifting for developers, allowing them to focus primarily on the logic and user experience of their bot.
 
@@ -101,10 +101,10 @@ Now you know how it works, you may try to init a bot project in one line script:
 # make sure you have python3.6+ and pip3 installed
 
 # use wget
-wget -qO- https://raw.githubusercontent.com/zxdong262/ringcentral-chatbot-factory-py/master/bin/init.sh | bash
+wget -qO- https://raw.githubusercontent.com/ringcentral/ringcentral-chatbot-factory-py/master/bin/init.sh | bash
 
 # or with curl
-curl -o- https://raw.githubusercontent.com/zxdong262/ringcentral-chatbot-factory-py/master/bin/init.sh | bash
+curl -o- https://raw.githubusercontent.com/ringcentral/ringcentral-chatbot-factory-py/master/bin/init.sh | bash
 ```
 
 ## Example bot apps
@@ -127,7 +127,7 @@ The following bots were created using this framework, and should serves as guide
 
 ### Use CLI tool to create a bot app
 
-The [ringcentral-chatbot-factory-py](https://github.com/zxdong262/ringcentral-chatbot-factory-py) was created to help speed up the process of creating additional Glip bots. To use it, install it, then run the `rcf` command as shown below:
+The [ringcentral-chatbot-factory-py](https://github.com/ringcentral/ringcentral-chatbot-factory-py) was created to help speed up the process of creating additional Glip bots. To use it, install it, then run the `rcf` command as shown below:
 
 ```bash
 pip3 install ringcentral_chatbot_factory
@@ -136,7 +136,7 @@ rcf my-ringcentral-chat-bot
 
 Then just answer the prompts. Then follow the directions in `my-ringcentral-chat-bot/README.md` to get up and running.
 
-![ ](https://github.com/zxdong262/ringcentral-chatbot-factory-py/raw/master/screenshots/cli.png)
+![ ](https://github.com/ringcentral/ringcentral-chatbot-factory-py/raw/master/screenshots/cli.png)
 
 - [Deploy to AWS Lambda](docs/deploy-to-aws-lambda.md)
 - [Use or write extensions](docs/extensions.md)

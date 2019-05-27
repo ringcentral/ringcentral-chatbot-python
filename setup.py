@@ -16,7 +16,7 @@ setuptools.setup(
     description="RingCentral Chatbot Framework for Python",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/zxdong262/ringcentral-chatbot-python",
+    url="https://github.com/ringcentral/ringcentral-chatbot-python",
     packages=setuptools.find_packages(),
     keywords=['ringcentral', 'bot', 'framework'],
     install_requires=[i.strip() for i in open('requirements.txt').readlines()],
