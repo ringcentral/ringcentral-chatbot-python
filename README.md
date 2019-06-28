@@ -1,4 +1,4 @@
-# [ringcentral-chatbot-python](https://github.com/ringcentral/ringcentral-chatbot-python) <!-- omit in toc -->
+# [RingCentral chatbot framework for Python](https://github.com/ringcentral/ringcentral-chatbot-python) <!-- omit in toc -->
 
 [![Build Status](https://travis-ci.org/ringcentral/ringcentral-chatbot-python.svg?branch=test)](https://travis-ci.org/ringcentral/ringcentral-chatbot-python)
 
