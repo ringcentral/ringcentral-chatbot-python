@@ -107,6 +107,8 @@ wget -qO- https://raw.githubusercontent.com/ringcentral/ringcentral-chatbot-fact
 curl -o- https://raw.githubusercontent.com/ringcentral/ringcentral-chatbot-factory-py/master/bin/init.sh | bash
 ```
 
+A video to show the process: [https://youtu.be/x5sTrj5xSN8](https://youtu.be/x5sTrj5xSN8)
+
 ## Example bot apps
 
 The following bots were created using this framework, and should serves as guides as you develop your own original bot.
