@@ -8,7 +8,7 @@ Welcome to the RingCentral Chatbot Framework for Python. This framework dramatic
 
 - **Token Management** - handles the server logic associated with bot authentication, and auth token persistence
 - **Event Subscribtion** - automatically subscribes to bot events, and renews those subscriptions when they expire
-- **Easy Customization** - modify bot behaviors by editing `config.py`
+- **Easy Customization** - modify bot behaviors by editing `bot.py`
 - **Data Persistence** - built-in suport for filedb and AWS dynamodb, with fully customizable DB layer
 - **Turn-key hosting** - built-in suport for AWS lambda to host your bot
 
@@ -42,7 +42,7 @@ Make note of this URL, as you will need it in the next step.
 
 ### Create Your Bot App
 
-You will need to create your Bot App in RingCentral. Clicking the link, "Create Bot App" below will do this for you. When you click it, you will to enter in the callback URL for the bot. This will be the ngrok URL above, plus `/bot-oauth`. For example:
+You will need to create your Bot App in RingCentral. Clicking the link, "Create Bot App" below will do this for you. Remember to select `messagging bot` bot and for `All RingCentral customers`, When you click it, you will to enter in the `OAuth Redirect URI ` for the bot. This will be the ngrok URL above, plus `/bot-oauth`. For example:
 
     https://xxxxxx.ngrok.io/bot-oauth
 

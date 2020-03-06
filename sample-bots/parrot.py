@@ -26,7 +26,8 @@ def botGotPostAddAction(
   user,
   text,
   dbAction,
-  handledByExtension
+  handledByExtension,
+  event
 ):
   """
   This is invoked when the user sends a message to the bot.
