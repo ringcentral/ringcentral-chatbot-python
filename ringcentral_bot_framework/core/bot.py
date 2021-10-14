@@ -172,6 +172,17 @@ def initBotClass(conf, dbAction):
       except Exception as e:
         printError(e, 'sendMessage')
 
+    def sendAdaptiveCard (self, groupId, messageObj):
+      print(messageObj)
+      try:
+        url = f'/restapi/v1.0/glip/chats/{groupId}/adaptive-cards'
+        self.rc.post(
+          url,
+          messageObj
+        )
+      except Exception as e:
+        printError(e, 'sendMessage')
+
     def rename (self, newName):
       return self.rc.put(
         '/restapi/v1.0/account/~/extension/~',

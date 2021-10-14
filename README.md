@@ -122,6 +122,10 @@ The following bots were created using this framework, and should serves as guide
 
 ## Advanced Topics
 
+### Adaptive cards support
+
+Check [sample-bots/parrot-adaptive-card.py](sample-bots/parrot-adaptive-card.py) as an example, just use `bot.sendAdaptiveCard`
+
 ### Hidden commands
 
 - Post message `@Bot __rename__ newName` to rename bot to `newName`
