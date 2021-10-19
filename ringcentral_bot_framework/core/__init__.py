@@ -10,6 +10,7 @@ from .bot_webhook import initBotWebhook
 from .config import initConfig
 from .data import initDataView
 from .user_webhook import initUserWebhook
+from .interactive import initInteractive
 from .route import initRouter
 from .flask_request_parser import flaskRequestParser
 import pydash as _
@@ -34,6 +35,9 @@ def frameworkInit(config, extensions = None):
   userWebhook = initUserWebhook(
     conf, BotClass, getBot, UserClass, getUser, dbAction
   )
+  onInteractive = initInteractive(
+    conf, getBot, dbAction, extensions
+  )
 
   routes = {
     'bot-oauth': botAuth,
@@ -41,7 +45,8 @@ def frameworkInit(config, extensions = None):
     'user-oauth': userAuth,
     'bot-webhook': botWebhook,
     'user-webhook': userWebhook,
-    'data': dataView
+    'data': dataView,
+    'interactive': onInteractive
   }
 
   router = initRouter(routes)

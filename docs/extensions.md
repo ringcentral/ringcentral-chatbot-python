@@ -58,6 +58,21 @@ def botGotPostAddAction(
   else:
     return False
 
+def onInteractiveMessage(
+  bot,
+  groupId,
+  userInfo,
+  data,
+  dbAction,
+  handledByExtension,
+  event
+):
+  """
+  bot got interactive message from user action in ringcentral app adaptive cards,
+  do something about it
+  default: do nothing
+  """
+  return None
 
 def route(event, framework):
   '''

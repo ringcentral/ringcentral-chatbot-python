@@ -153,6 +153,22 @@ def userEventAction(
         'text': f'![:Person]({user.id}), got event "{eventType}"'
       })
 
+def onInteractiveMessage(
+  bot,
+  groupId,
+  userInfo,
+  data,
+  dbAction,
+  handledByExtension,
+  event
+):
+  """
+  bot got interactive message from user action in ringcentral app adaptive cards,
+  do something about it
+  default: do nothing
+  """
+  return
+
 def botFilters():
   """
   customize bot filters to subscribe

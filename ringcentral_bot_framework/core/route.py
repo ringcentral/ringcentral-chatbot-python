@@ -4,6 +4,7 @@ route /{action} to different event handeler
 /user-oauth user auth
 /bot-webhook bot webhook
 /user-webhook user webhook
+/interactive interactive from adaptive cards
 
 extend or overide default route by set `routes` in config.py
 """

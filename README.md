@@ -126,6 +126,12 @@ The following bots were created using this framework, and should serves as guide
 
 Check [sample-bots/parrot-adaptive-card.py](sample-bots/parrot-adaptive-card.py) as an example, just use `bot.sendAdaptiveCard`
 
+### Interactive message
+
+Since we support `adaptive cards`, we also support interactive messages when using adaptive cards actions, so bot can get interative message directly from user actions.
+
+Check [sample-bots/interactive.py](sample-bots/interactive.py) as an example, define your own `onInteractiveMessage` function to handle interative messages.
+
 ### Hidden commands
 
 - Post message `@Bot __rename__ newName` to rename bot to `newName`
