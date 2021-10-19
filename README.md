@@ -128,7 +128,7 @@ Check [sample-bots/parrot-adaptive-card.py](sample-bots/parrot-adaptive-card.py)
 
 ### Interactive message
 
-Since we support `adaptive cards`, we also support interactive messages when using adaptive cards actions, so bot can get interative message directly from user actions.
+Since we support `adaptive cards`, we also support interactive messages when using adaptive cards actions, so bot can get interactive messages directly from user actions, you need goto app setting page in `developer.ringcentral.com`, enable `Interactive Messages`, and set `https://xxxxx.ngrok.io/interactive` as `Outbound Webhook URL`
 
 Check [sample-bots/interactive.py](sample-bots/interactive.py) as an example, define your own `onInteractiveMessage` function to handle interative messages.
 

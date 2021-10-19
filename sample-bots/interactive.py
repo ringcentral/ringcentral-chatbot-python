@@ -57,6 +57,7 @@ def botGotPostAddAction(
 ):
     '''
     This is invoked when the user sends a message to the bot.
+    To use interactive messages, make sure add `groupId` and `botId` to action data
     '''
     if handledByExtension:
         return
