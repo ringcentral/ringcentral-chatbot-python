@@ -124,7 +124,9 @@ The following bots were created using this framework, and should serves as guide
 
 ### Adaptive cards support
 
-Check [sample-bots/parrot-adaptive-card.py](sample-bots/parrot-adaptive-card.py) as an example, just use `bot.sendAdaptiveCard`
+Check [sample-bots/parrot-adaptive-card.py](sample-bots/parrot-adaptive-card.py) as an example,
+- Use `bot.sendAdaptiveCard` to send AdaptiveCard
+- Use `bot.updateAdaptiveCard` to update AdaptiveCard
 
 ### Interactive message
 
