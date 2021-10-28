@@ -185,7 +185,6 @@ def initBotClass(conf, dbAction):
     def updateAdaptiveCard (self, postId, messageObj):
       try:
         url = f'/restapi/v1.0/glip/adaptive-cards/{postId}'
-        print('url', url)
         return self.rc.put(
           url,
           messageObj
